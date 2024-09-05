@@ -3,9 +3,10 @@ FROM node:22 AS build
 
 WORKDIR /app
 COPY ./frontend/package*.json ./
-RUN npm install
+RUN npm install -g yarn
+RUN yarn
 COPY ./frontend ./
-RUN npm run build
+RUN yarn run build
 
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
