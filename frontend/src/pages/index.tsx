@@ -13,7 +13,7 @@ export default function IndexPage() {
 
   return (
     <div className="flex h-screen justify-center items-center ">
-      <div className="flex px-8 rounded-lg flex-col w-1/5 h-3/5 justify-center items-center mx-auto flex-wrap md:flex-nowrap gap-4 shadow-lg ">
+      <div className="flex px-8 rounded-lg flex-col w-[400px] h-[500px] justify-center items-center mx-auto flex-wrap md:flex-nowrap gap-4 shadow-lg ">
         <div className="pb-8">
           <Logo className="mb-8" height={100} width={200} logo="title" />
           <h1 className="font-bold text-4xl">
