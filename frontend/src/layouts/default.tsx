@@ -17,11 +17,11 @@ export default function DefaultLayout({
         <Link
           isExternal
           className="flex items-center gap-1 text-current"
-          href="https://nextui-docs-v2.vercel.app?utm_source=next-pages-template"
-          title="nextui.org homepage"
+          href="https://colas.com"
+          
         >
-          <span className="text-default-600">Powered by</span>
-          <p className="text-primary">NextUI</p>
+          <span className="text-default-600">Copyright</span>
+          <p className="text-warning">Colas 2024</p>
         </Link>
       </footer>
     </div>

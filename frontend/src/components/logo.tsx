@@ -1,6 +1,12 @@
 import {Image} from "@nextui-org/image";
 
 
-export default function Logo ({className}:{className:string}){
-   return <Image className={className} width={200} height={100} src="Colas.png"/>
+type LogoProps = {
+   className?:string
+   width:number
+   height:number
+   logo:'title'|'n-title'
+}
+export default function Logo ({className,width,height,logo}:LogoProps){
+   return <Image className={className} width={width} height={height} src={logo==='title'? 'Colas.png':'image.png'}/>
 }

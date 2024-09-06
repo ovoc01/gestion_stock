@@ -23,7 +23,7 @@ import {
   HeartFilledIcon,
   SearchIcon,
 } from "@/components/icons";
-import { Logo } from "@/components/icons";
+import Logo from "@/components/logo"
 
 export const Navbar = () => {
   const searchInput = (
@@ -56,8 +56,7 @@ export const Navbar = () => {
             color="foreground"
             href="/"
           >
-            <Logo />
-            <p className="font-bold text-inherit">ACME</p>
+            <Logo  height={30} width={90} logo="n-title" className="mx-auto"/>
           </Link>
         </NavbarBrand>
         <div className="hidden lg:flex gap-4 justify-start ml-2">
