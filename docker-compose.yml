@@ -21,4 +21,4 @@ services:
       context: .
       dockerfile: ml_service/Dockerfile
     ports:
-      - "5000:5000"
+      - "4500:4500"
