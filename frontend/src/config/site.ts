@@ -7,23 +7,24 @@ export const siteConfig = {
     {
       label: "Dashboard",
       href: "/",
+      isDropDown: false
     },
     {
       label: "Réferentiels",
       href: "/docs",
+      child:[
+        {
+            label:'Articles',
+            href:'/referentiels/articles'
+        }
+      ]
     },
     {
       label: "Mouvement",
       href: "/pricing",
+      
     },
-    {
-      label: "Blog",
-      href: "/blog",
-    },
-    {
-      label: "About",
-      href: "/about",
-    },
+
   ],
   navMenuItems: [
     {
