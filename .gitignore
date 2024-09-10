@@ -1,2 +1,2 @@
-deploy.sh
-ml_service/venv
+/deploy.sh
+/ml_service/venv
