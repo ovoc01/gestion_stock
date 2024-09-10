@@ -22,3 +22,14 @@ services:
       dockerfile: ml_service/Dockerfile
     ports:
       - "4500:4500"
+
+  databases:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pixel
+      POSTGRES_DB: db_test
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
