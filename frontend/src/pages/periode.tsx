@@ -1,20 +1,13 @@
 
 
-import { SearchIcon } from "@/components/icons";
-import DefaultLayout from "@/layouts/default";
-
-import {
-   Table, TableHeader, TableColumn, TableBody,
-   TableRow, TableCell, getKeyValue, Pagination, Button, Dropdown,
-   DropdownItem, DropdownMenu, DropdownTrigger, Input,
-   useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter
-} from "@nextui-org/react";
+import {Input} from "@nextui-org/react";
 import { useState } from "react";
 
 import {
    Autocomplete,
    AutocompleteItem
 } from "@nextui-org/react";
+import CrudComponent from "@/components/crudComponents";
 
 export default function Periode() {
    const columns = [
@@ -96,9 +89,6 @@ export default function Periode() {
       }
    ]
 
-   const pages = 50
-   const [page, setPage] = useState(10)
-
    const rows = [
       {
          art_id: 1,
@@ -132,149 +122,35 @@ export default function Periode() {
       },
    ];
 
-   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
    return (
       <>
-         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-            <ModalContent>
-               {(onClose) => (
-                  <>
-                     <ModalHeader className="flex flex-col gap-1">Ajouter une nouvelle article</ModalHeader>
-                     <ModalBody>
-                        <div className="w-full flex flex-col gap-4 pb-5">
-                           <Input type="text" label="Libellé" isRequired />
-                           <Autocomplete
-                              label="Sous famille"
-                              className="w-full" 
-                           >
-                              {rows.map((animal) => (
-                                 <AutocompleteItem key={animal.art_id} value={animal.art_id}>
-                                    {animal.art_li}
-                                 </AutocompleteItem>
-                              ))}
-                           </Autocomplete>
-                           
-                           <Input type="number" label="Prix unitaire" isRequired />
-                           <Input type="number" label="Durée de vie estimative en jours"/>
-                        </div>
-                     </ModalBody>
-                     <ModalFooter>
-                        <Button color="danger" variant="light" onPress={onClose}>
-                           Annuler
-                        </Button>
-                        <Button className="bg-foreground text-background" onPress={onClose}>
-                           Valider
-                        </Button>
-                     </ModalFooter>
-                  </>
-               )}
-            </ModalContent>
-         </Modal>
+         <CrudComponent
+            columns={columns}
+            rowsData={rows}
+            onAdd={() => { }}
+            onSearch={() => { }}
+            addModalContent={
 
-         <DefaultLayout>
+               <div className="w-full flex flex-col gap-4 pb-5">
+                  <Input type="text" label="Libellé" isRequired />
+                  <Autocomplete
+                     label="Sous famille"
+                     className="w-full"
+                  >
+                     {rows.map((animal) => (
+                        <AutocompleteItem key={animal.art_id} value={animal.art_id}>
+                           {animal.art_li}
+                        </AutocompleteItem>
+                     ))}
+                  </Autocomplete>
 
-            <Table aria-label="Example table with dynamic content" className="w-full"
-               bottomContent={
-                  pages > 0 ? (
-                     <div className="flex w-full justify-center">
-                        <Pagination
-                           isCompact
-                           showControls
-                           showShadow
-                           color="default"
-                           page={page}
-                           total={pages}
-                           onChange={(page) => setPage(page)}
+                  <Input type="number" label="Prix unitaire" isRequired />
+                  <Input type="number" label="Durée de vie estimative en jours" />
+               </div>
 
-                        />
-                     </div>
-                  ) : null
-               }
-
-               topContent={<div className="flex flex-col gap-4">
-                  <div className="flex justify-between gap-3 items-end">
-                     <Input
-                        isClearable
-                        classNames={{
-                           base: "w-full sm:max-w-[44%] ",
-                           inputWrapper: "border-1",
-                        }}
-
-                        size="lg"
-                        startContent={<SearchIcon className="text-default-300" />}
-
-                        variant="bordered"
-
-                     />
-                     <div className="flex gap-3">
-                        <Dropdown>
-                           <DropdownTrigger className="hidden md:flex">
-                              <Button
-
-                                 size="lg"
-                                 variant="flat"
-                              >
-                                 Status
-                              </Button>
-                           </DropdownTrigger>
-                           <DropdownMenu
-                              disallowEmptySelection
-                              aria-label="Table Columns"
-                              closeOnSelect={false} >
-                              <DropdownItem key={"yes"} className="capitalize">
-                                 Test
-                              </DropdownItem>
-                           </DropdownMenu>
-                        </Dropdown>
-                        <Dropdown>
-                           <DropdownTrigger className="hidden md:flex">
-                              <Button
-                                 size="lg"
-                                 variant="flat"
-                              >
-                                 Columns
-                              </Button>
-                           </DropdownTrigger>
-                           <DropdownMenu
-                              disallowEmptySelection
-                              aria-label="Table Columns"
-                              closeOnSelect={false}
-
-                              selectionMode="multiple"
-
-                           >
-                              <DropdownItem key={"yes"} className="capitalize">
-                                 Test
-                              </DropdownItem>
-
-                           </DropdownMenu>
-                        </Dropdown>
-                        <Button
-                           className="bg-foreground text-background"
-                           onPress={onOpen}
-                           size="lg"
-                        >
-                           Ajouter Article
-                        </Button>
-                     </div>
-                  </div>
-
-               </div>}
-               topContentPlacement="outside"
-            >
-               <TableHeader columns={columns}>
-                  {(column) => <TableColumn className="text-sm" key={column.key}>{column.label}</TableColumn>}
-               </TableHeader>
-               <TableBody items={rows}>
-                  {(item) => (
-                     <TableRow key={item.art_id}>
-                        {(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
-                     </TableRow>
-                  )}
-               </TableBody>
-            </Table>
-         </DefaultLayout>
+            }
+         />
       </>
 
    );

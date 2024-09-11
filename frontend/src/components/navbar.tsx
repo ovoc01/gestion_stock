@@ -24,6 +24,7 @@ import {
   SearchIcon,
 } from "@/components/icons";
 import Logo from "@/components/logo"
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
 
 export const Navbar = () => {
   const searchInput = (
@@ -56,25 +57,37 @@ export const Navbar = () => {
             color="foreground"
             href="/"
           >
-            <Logo  height={30} width={90} logo="n-title" className="mx-auto"/>
+            <Logo height={30} width={90} logo="n-title" className="mx-auto" />
           </Link>
         </NavbarBrand>
         <div className="hidden lg:flex gap-4 justify-start ml-2">
-          {siteConfig.navItems.map((item) => (
-            
-            <NavbarItem key={item.href}>
-              <Link
-                className={clsx(
-                  linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium",
-                )}
-                color="foreground"
-                href={item.href}
-              >
-                {item.label}
-              </Link>
+
+          <Dropdown>
+            <NavbarItem>
+              <DropdownTrigger>
+                <Button
+                  disableRipple
+                  className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                  radius="sm"
+                  variant="light"
+                >
+                  Réferentiels
+                </Button>
+              </DropdownTrigger>
             </NavbarItem>
-          ))}
+            <DropdownMenu
+              aria-label="ACME features"
+              className="w-[240px]"
+              itemClasses={{
+                base: "gap-4",
+              }}
+            >
+              <DropdownItem key="autoscaling">
+                Articles
+              </DropdownItem>
+
+            </DropdownMenu>
+          </Dropdown>
         </div>
       </NavbarContent>
 
