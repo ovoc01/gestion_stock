@@ -1,7 +1,6 @@
 
 
 import {Input} from "@nextui-org/react";
-import { useState } from "react";
 
 import {
    Autocomplete,
@@ -131,7 +130,6 @@ export default function Periode() {
             onAdd={() => { }}
             onSearch={() => { }}
             addModalContent={
-
                <div className="w-full flex flex-col gap-4 pb-5">
                   <Input type="text" label="Libellé" isRequired />
                   <Autocomplete
