@@ -10,10 +10,10 @@ import {
 import Logo from "@/components/logo"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faPowerOff } from "@fortawesome/free-solid-svg-icons";
+import { faBuilding, faChevronDown, faDatabase, faLayerGroup, faMapLocationDot, faNewspaper, faPowerOff, faRuler, faWarehouse } from "@fortawesome/free-solid-svg-icons";
 
 export const Navbar = () => {
-  
+
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -31,6 +31,9 @@ export const Navbar = () => {
             <NavbarItem>
               <DropdownTrigger>
                 <Button
+                startContent = {
+                  <FontAwesomeIcon icon={faDatabase}/>
+                }
                   disableRipple
                   className="p-0 bg-transparent data-[hover=true]:bg-transparent"
                   radius="sm"
@@ -45,13 +48,36 @@ export const Navbar = () => {
             </NavbarItem>
             <DropdownMenu
               aria-label="ACME features"
-              className="w-[240px]"
+              className="w-[150px]"
               itemClasses={{
                 base: "gap-4",
               }}
             >
-              <DropdownItem key="autoscaling">
-                Articles
+
+              
+              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faBuilding}/>}>
+                Unité operationnel
+              </DropdownItem>
+              
+              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faWarehouse}/>}>
+                Magasin
+              </DropdownItem>
+              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faMapLocationDot}/>}>
+                Emplacment
+              </DropdownItem>
+              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faLayerGroup}/>}>
+                Famille
+              </DropdownItem>
+              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faLayerGroup}/>}>
+                Sous Famille
+              </DropdownItem>
+
+              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faNewspaper}/>}>
+                Article
+              </DropdownItem>
+
+              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faRuler}/>}>
+                Unité 
               </DropdownItem>
 
             </DropdownMenu>

@@ -1,7 +1,7 @@
 import { Link } from "@nextui-org/link";
 
 import { Navbar } from "@/components/navbar";
-
+import { Toaster } from 'sonner';
 export default function DefaultLayout({
   children,
 }: {
@@ -13,6 +13,7 @@ export default function DefaultLayout({
       <main className="container mx-auto w-4/5 px-6 flex-grow  pt-16">
         {children}
       </main>
+      <Toaster richColors/>
       <footer className="w-full flex items-center justify-center py-3">
         <Link
           isExternal

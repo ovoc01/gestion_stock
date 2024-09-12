@@ -10,4 +10,5 @@ public class StockInventoryApplication {
 		SpringApplication.run(StockInventoryApplication.class, args);
 	}
 
+	
 }

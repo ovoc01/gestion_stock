@@ -1,3 +1,5 @@
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
@@ -67,4 +69,37 @@ export const siteConfig = {
     discord: "https://discord.gg/9b6yyZKmH4",
     sponsor: "https://patreon.com/jrgarciadev",
   },
+  referentielsItems: [
+    
+    {
+      'label':'Unité operationnel',
+      'href':'/referentiels/uniteOperationnel',
+      'icon': faCheckCircle
+    },
+    {
+      'label':'Magasin',
+      'href':'/referentiels/magasin',
+      'icon': faCheckCircle
+    },
+    {
+      'label':'Emplacement',
+      'href':'/referentiels/emplacement',
+      'icon': faCheckCircle
+    },
+    {
+      'label':'Famille',
+      'href':'/referentiels/famille',
+      'icon': faCheckCircle
+    },
+    {
+      'label':'Sous Famille',
+      'href':'/referentiels/sousFamille',
+      'icon': faCheckCircle
+    },
+    {
+      'label':'Articles',
+      'href':'/referentiels/articles',
+      'icon': faCheckCircle
+    },
+  ]
 };

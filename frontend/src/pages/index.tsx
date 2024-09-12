@@ -29,7 +29,7 @@ export default function IndexPage() {
             </Checkbox>
           </div>
         </div>
-        <Button className="mt-6 w-full h-[40px] dark" onClick={() => navigate("/periodes")}>
+        <Button className="mt-6 w-full h-[40px] dark" onClick={() => navigate("/referentiels/uniteOperationnel")}>
           Se connectez
         </Button>
       </div>

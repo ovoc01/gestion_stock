@@ -19,6 +19,7 @@ import {
 import { useState } from "react";
 import { SearchIcon } from "@/components/icons";
 import DefaultLayout from "@/layouts/default";
+import { title } from "./primitives";
 
 interface Column {
    key: string;
@@ -31,6 +32,7 @@ interface RowData {
 }
 
 interface CrudComponentProps {
+   pageTitle?: string;
    columns: Column[];
    rowsData: RowData[];
    pages?: number;
@@ -38,6 +40,7 @@ interface CrudComponentProps {
    onAdd?: () => void;
    onSearch?: (searchTerm: string) => void;
    addModalContent?: React.ReactNode;
+   errorMessage?: string;
 }
 
 const CrudComponent: React.FC<CrudComponentProps> = ({
@@ -48,6 +51,8 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
    onAdd,
    onSearch,
    addModalContent,
+   errorMessage,
+   pageTitle
 }) => {
    const [page, setPage] = useState(initialPage);
    const [searchTerm, setSearchTerm] = useState("");
@@ -74,6 +79,9 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                         Ajouter
                      </ModalHeader>
                      <ModalBody>{addModalContent}</ModalBody>
+                     <h2 className="text-danger flex flex-col gap-1 ml-8" >
+                        {errorMessage}
+                     </h2>
                      <ModalFooter>
                         <Button color="danger" variant="light" onPress={onClose}>
                            Annuler
@@ -94,6 +102,13 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
          </Modal>
 
          <DefaultLayout>
+            <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+               <div className="inline-block max-w-lg text-center justify-center">
+                  <h1 className={title()} style={{
+                     textTransform:'capitalize'
+                  }}>{pageTitle}</h1>
+               </div>
+            </section>
             <Table
                aria-label="Tableau"
                className="w-full"
