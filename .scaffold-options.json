@@ -1,1 +1,0 @@
-{"url":"jdbc:postgresql://localhost:5432/konstruction","user":"postgres","pwd":"pixel","build":"maven","lang":"java","framework":"spring","groupId":"com.company.colas.invetory","projectName":"backend"}
