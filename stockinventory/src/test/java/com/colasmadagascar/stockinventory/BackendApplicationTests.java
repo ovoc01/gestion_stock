@@ -1,4 +1,4 @@
-package com.company.colas.invetory.backend;
+package com.colasmadagascar.stockinventory;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
