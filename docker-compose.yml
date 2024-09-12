@@ -29,7 +29,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pixel
-      POSTGRES_DB: db_test
+      POSTGRES_DB: gestion_stock_dev
     volumes:
       - ./database:/docker-entrypoint-initdb.d
     ports:
