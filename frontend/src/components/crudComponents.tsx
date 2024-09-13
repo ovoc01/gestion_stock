@@ -15,11 +15,16 @@ import {
    ModalHeader,
    ModalBody,
    ModalFooter,
+   Dropdown,
+   DropdownItem,
+   DropdownMenu,
+   DropdownTrigger,
 } from "@nextui-org/react";
 import { useState } from "react";
 import { SearchIcon } from "@/components/icons";
-import DefaultLayout from "@/layouts/default";
 import { title } from "./primitives";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {  faPlus, faShare } from "@fortawesome/free-solid-svg-icons";
 
 interface Column {
    key: string;
@@ -32,6 +37,7 @@ interface RowData {
 }
 
 interface CrudComponentProps {
+   pageIcon?: React.ReactNode;
    pageTitle?: string;
    columns: Column[];
    rowsData: RowData[];
@@ -43,6 +49,33 @@ interface CrudComponentProps {
    errorMessage?: string;
 }
 
+const ExportButton = () => {
+   return (
+      <Dropdown >
+         <DropdownTrigger>
+            <Button
+               
+               size="lg"
+               color="success"
+               className=" text-background px-4 py-2"
+               endContent={
+                  <FontAwesomeIcon icon={faShare} />
+               }
+            >
+               Exporter
+            </Button>
+         </DropdownTrigger>
+         <DropdownMenu  >
+            <DropdownItem key="new">PDF</DropdownItem>
+            <DropdownItem key="copy">Excel</DropdownItem>
+            <DropdownItem key="edit">CSV</DropdownItem>
+            
+         </DropdownMenu>
+      </Dropdown>
+   )
+}
+
+
 const CrudComponent: React.FC<CrudComponentProps> = ({
    columns,
    rowsData,
@@ -52,11 +85,16 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
    onSearch,
    addModalContent,
    errorMessage,
-   pageTitle
+   pageTitle,
+   pageIcon
 }) => {
    const [page, setPage] = useState(initialPage);
    const [searchTerm, setSearchTerm] = useState("");
    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+   const columnWithAction = columns.concat({
+      key: "action",
+      label: "Actions",
+   });
 
    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearchTerm(e.target.value);
@@ -69,9 +107,10 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
       );
    });
 
+
    return (
       <>
-         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+         <Modal isOpen={isOpen} onOpenChange={onOpenChange} >
             <ModalContent>
                {(onClose) => (
                   <>
@@ -83,10 +122,12 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                         {errorMessage}
                      </h2>
                      <ModalFooter>
-                        <Button color="danger" variant="light" onPress={onClose}>
+                        <Button size="lg" color="danger" variant="light" onPress={onClose} radius="sm">
                            Annuler
                         </Button>
                         <Button
+                           size="lg"
+                           radius="sm"
                            className="bg-foreground text-background"
                            onPress={() => {
                               onClose();
@@ -101,12 +142,12 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
             </ModalContent>
          </Modal>
 
-         <DefaultLayout>
+         <div>
             <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
                <div className="inline-block max-w-lg text-center justify-center">
                   <h1 className={title()} style={{
-                     textTransform:'capitalize'
-                  }}>{pageTitle}</h1>
+                     textTransform: 'capitalize'
+                  }}>{pageIcon} {pageTitle}</h1>
                </div>
             </section>
             <Table
@@ -146,10 +187,17 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                            onChange={handleSearch}
                         />
                         <div className="flex gap-3">
+
+                           <ExportButton />
+
                            <Button
-                              className="bg-foreground text-background"
+                              className="bg-foreground text-background px-4 py-2 "
                               onPress={onOpen}
                               size="lg"
+                              variant="flat"
+                              endContent={
+                                 <FontAwesomeIcon icon={faPlus} />
+                              }
                            >
                               Ajouter
                            </Button>
@@ -159,16 +207,17 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                }
                topContentPlacement="outside"
             >
-               <TableHeader columns={columns}>
+               <TableHeader columns={columnWithAction}>
                   {(column) => (
                      <TableColumn className="text-sm" key={column.key}>
                         {column.label}
                      </TableColumn>
                   )}
+
                </TableHeader>
-               <TableBody items={filteredRows}>
+               <TableBody items={filteredRows} emptyContent={"Pas d'élément à afficher"}>
                   {(item) => (
-                     <TableRow key={item[columns[0].key]}>
+                     <TableRow key={item[columns[0].key]} >
                         {(columnKey) => (
                            <TableCell>{getKeyValue(item, columnKey)}</TableCell>
                         )}
@@ -176,9 +225,11 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                   )}
                </TableBody>
             </Table>
-         </DefaultLayout>
+
+         </div>
       </>
    );
 };
 
 export default CrudComponent;
+

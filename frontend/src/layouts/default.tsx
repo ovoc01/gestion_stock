@@ -10,7 +10,7 @@ export default function DefaultLayout({
   return (
     <div className="relative flex flex-col h-screen ">
       <Navbar />
-      <main className="container mx-auto w-4/5 px-6 flex-grow  pt-16">
+      <main className="container mx-auto w-full px-6 flex-grow  pt-16">
         {children}
       </main>
       <Toaster richColors/>
@@ -22,7 +22,7 @@ export default function DefaultLayout({
           
         >
           <span className="text-default-600">© Copyright</span>
-          <p className="text-warning">Colas Madagascar</p>
+          <p className="text-warning">Colas Madagascar 2024</p>
         </Link>
       </footer>
     </div>

@@ -21,7 +21,7 @@ export default function IndexPage() {
           </h1>
         </div>
         <div className="w-full flex flex-col gap-4 pb-5">
-          <Input ref={usernameRef} type="text" label="Nom d'utilisateur" isRequired />
+          <Input ref={usernameRef} type="text" label="Nom d'utilisateur" isRequired  />
           <Input type={isPasswordShown ? 'text' : 'password'} label="Mot de passe" isRequired />
           <div className="flex flex-col justify-start w-full gap-3 ">
             <Checkbox onClick={() => setIsPasswordShown(!isPasswordShown)} >
@@ -29,7 +29,7 @@ export default function IndexPage() {
             </Checkbox>
           </div>
         </div>
-        <Button className="mt-6 w-full h-[40px] dark" onClick={() => navigate("/referentiels/uniteOperationnel")}>
+        <Button className="mt-6 w-full h-[40px] dark" onClick={() => navigate("/referentiels/unite-operationnels")}>
           Se connectez
         </Button>
       </div>

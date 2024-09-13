@@ -1,10 +1,10 @@
 import CrudComponent from "@/components/crudComponents"
-import { faLayerGroup } from "@fortawesome/free-solid-svg-icons";
+import { faCube, faLayerGroup } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 import { useEffect, useState } from "react";
-export default function FamillePage() {
+export default function SousFamillePage() {
 
 
 
@@ -18,20 +18,25 @@ export default function FamillePage() {
 
    const columns = [
       {
-         key: 'famId',
-         label: 'Famille Id',
+         key: 'sousFamId',
+         label: 'Sous Famille Id',
          type: 'integer'
       },
       {
-         key: 'famRef',
-         label: 'Reference',
+         key: 'famId',
+         label: 'Famille',
          type: 'string'
       },
       {
-         key: 'famLi',
+         key: 'sousFamLi',
          label: 'Libellé',
          type: 'string'
       },
+      {
+         key: 'sousFamDtCr',
+         label: 'Date de création',
+         type: 'string'
+      }
 
    ]
 
@@ -45,12 +50,12 @@ export default function FamillePage() {
 
    return (
       <CrudComponent
-         pageTitle="Famille"
+         pageTitle="Sous Famille"
          columns={columns}
          rowsData={data}
          onAdd={createNewFamille}
          onSearch={() => { }}
-         pageIcon={<FontAwesomeIcon icon={faLayerGroup} />}
+         pageIcon={<FontAwesomeIcon icon={faCube} />}
 
          addModalContent={
             <div className="w-full flex flex-col gap-4 pb-5">

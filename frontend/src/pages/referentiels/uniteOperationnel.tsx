@@ -1,4 +1,6 @@
 import CrudComponent from "@/components/crudComponents"
+import { faBuilding, faBuildingShield } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Input } from "@nextui-org/input";
 
@@ -58,6 +60,7 @@ export default function UniteOperationnelPage() {
          rowsData={data}
          onAdd={createNewUnOp}
          onSearch={() => { }}
+         pageIcon={<FontAwesomeIcon icon={faBuilding} />}
          
          addModalContent={
             <div className="w-full flex flex-col gap-4 pb-5">

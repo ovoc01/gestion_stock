@@ -1,105 +1,45 @@
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-
+import { faBox, faBuilding, faBuildingShield, faCheckCircle, faCube, faLayerGroup, faMapLocationDot, faNewspaper, faWarehouse } from "@fortawesome/free-solid-svg-icons";
+import { CSDropdownItemProps } from "@/types/types";
 export type SiteConfig = typeof siteConfig;
 
-export const siteConfig = {
-  name: "Vite + NextUI",
-  description: "Make beautiful websites regardless of your design experience.",
-  navItems: [
-    {
-      label: "Dashboard",
-      href: "/",
-      isDropDown: false
-    },
-    {
-      label: "Réferentiels",
-      href: "/docs",
-      child:[
-        {
-            label:'Articles',
-            href:'/referentiels/articles'
-        }
-      ]
-    },
-    {
-      label: "Mouvement",
-      href: "/pricing",
-      
-    },
-
-  ],
-  navMenuItems: [
-    {
-      label: "Profile",
-      href: "/profile",
-    },
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-    },
-    {
-      label: "Projects",
-      href: "/projects",
-    },
-    {
-      label: "Team",
-      href: "/team",
-    },
-    {
-      label: "Calendar",
-      href: "/calendar",
-    },
-    {
-      label: "Settings",
-      href: "/settings",
-    },
-    {
-      label: "Help & Feedback",
-      href: "/help-feedback",
-    },
-    {
-      label: "Logout",
-      href: "/logout",
-    },
-  ],
-  links: {
-    github: "https://github.com/nextui-org/nextui",
-    twitter: "https://twitter.com/getnextui",
-    docs: "https://nextui-docs-v2.vercel.app",
-    discord: "https://discord.gg/9b6yyZKmH4",
-    sponsor: "https://patreon.com/jrgarciadev",
+const referentielsItems: CSDropdownItemProps[] = [
+  {
+      label:'Service Exploitant',
+      href:'/referentiels/service-exploitants',
+      icon:faBuildingShield
   },
-  referentielsItems: [
-    
-    {
-      'label':'Unité operationnel',
-      'href':'/referentiels/uniteOperationnel',
-      'icon': faCheckCircle
-    },
-    {
-      'label':'Magasin',
-      'href':'/referentiels/magasin',
-      'icon': faCheckCircle
-    },
-    {
-      'label':'Emplacement',
-      'href':'/referentiels/emplacement',
-      'icon': faCheckCircle
-    },
-    {
-      'label':'Famille',
-      'href':'/referentiels/famille',
-      'icon': faCheckCircle
-    },
-    {
-      'label':'Sous Famille',
-      'href':'/referentiels/sousFamille',
-      'icon': faCheckCircle
-    },
-    {
-      'label':'Articles',
-      'href':'/referentiels/articles',
-      'icon': faCheckCircle
-    },
-  ]
+  {
+    'label': 'Unité operationnel',
+    'href': '/referentiels/unite-operationnels',
+    'icon': faBuilding
+  },
+  {
+    'label': 'Magasin',
+    'href': '/referentiels/magasins',
+    'icon': faWarehouse
+  },
+  {
+    'label': 'Emplacement',
+    'href': '/referentiels/emplacements',
+    'icon': faMapLocationDot
+  },
+  {
+    'label': 'Famille',
+    'href': '/referentiels/familles',
+    'icon': faLayerGroup
+  },
+  {
+    'label': 'Sous Famille',
+    'href': '/referentiels/sous-familles',
+    'icon': faCube
+  },
+  {
+    'label': 'Articles',
+    'href': '/referentiels/articles',
+    'icon': faNewspaper
+  },
+]
+
+export const siteConfig = {
+  referentielsItems: referentielsItems
 };

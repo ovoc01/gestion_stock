@@ -1,10 +1,10 @@
 import CrudComponent from "@/components/crudComponents"
-import { faLayerGroup } from "@fortawesome/free-solid-svg-icons";
+import { faMapLocationDot, faWarehouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 import { useEffect, useState } from "react";
-export default function FamillePage() {
+export default function EmplacementPage() {
 
 
 
@@ -18,24 +18,25 @@ export default function FamillePage() {
 
    const columns = [
       {
-         key: 'famId',
-         label: 'Famille Id',
+         key: 'emplId',
+         label: 'Emplacement Id',
          type: 'integer'
       },
       {
-         key: 'famRef',
-         label: 'Reference',
-         type: 'string'
-      },
-      {
-         key: 'famLi',
+         key: 'emplLi',
          label: 'Libellé',
          type: 'string'
       },
+      {
+         key: 'emplMag',
+         label: 'Magasin'
+      },
+      {
+         key: 'emptCr',
+         label: 'Date de création',
+      }
 
    ]
-
-
 
 
 
@@ -45,12 +46,12 @@ export default function FamillePage() {
 
    return (
       <CrudComponent
-         pageTitle="Famille"
+         pageTitle="Emplacement"
          columns={columns}
          rowsData={data}
          onAdd={createNewFamille}
          onSearch={() => { }}
-         pageIcon={<FontAwesomeIcon icon={faLayerGroup} />}
+         pageIcon={<FontAwesomeIcon icon={faMapLocationDot} />}
 
          addModalContent={
             <div className="w-full flex flex-col gap-4 pb-5">

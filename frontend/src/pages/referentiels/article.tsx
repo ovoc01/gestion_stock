@@ -1,10 +1,10 @@
 import CrudComponent from "@/components/crudComponents"
-import { faLayerGroup } from "@fortawesome/free-solid-svg-icons";
+import {  faNewspaper } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 import { useEffect, useState } from "react";
-export default function FamillePage() {
+export default function ArticlePage() {
 
 
 
@@ -18,20 +18,44 @@ export default function FamillePage() {
 
    const columns = [
       {
-         key: 'famId',
-         label: 'Famille Id',
+         key: 'artId',
+         label: 'Article Id',
          type: 'integer'
       },
       {
-         key: 'famRef',
+         key: 'artRef',
          label: 'Reference',
          type: 'string'
       },
       {
-         key: 'famLi',
+         key:'artCd',
+         label:'Code'
+      },
+      {
+         key: 'artLi',
          label: 'Libellé',
          type: 'string'
       },
+      {
+         key:'artPu',
+         label:'Prix unitaire'
+      },
+      {
+         key:'artQte',
+         label:'Quantité en Stock'
+      },
+      {
+         key:'artCmup',
+         label:'CMUP'
+      },
+      {
+         key:'artUsr',
+         label:'Utilisateur'
+      },
+      {
+         key:'artDtCr',
+         label:'Date de création',
+      }
 
    ]
 
@@ -45,12 +69,12 @@ export default function FamillePage() {
 
    return (
       <CrudComponent
-         pageTitle="Famille"
+         pageTitle="Article"
          columns={columns}
          rowsData={data}
          onAdd={createNewFamille}
          onSearch={() => { }}
-         pageIcon={<FontAwesomeIcon icon={faLayerGroup} />}
+         pageIcon={<FontAwesomeIcon icon={faNewspaper} />}
 
          addModalContent={
             <div className="w-full flex flex-col gap-4 pb-5">

@@ -10,9 +10,15 @@ import {
 import Logo from "@/components/logo"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBuilding, faChevronDown, faDatabase, faLayerGroup, faMapLocationDot, faNewspaper, faPowerOff, faRuler, faWarehouse } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightArrowLeft, faCalendarCheck, faChartSimple, faChevronDown, faCube, faDatabase, faLayerGroup, faMapLocationDot, faNewspaper, faPowerOff, faRuler, faWarehouse, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { siteConfig } from "@/config/site";
+
+
 
 export const Navbar = () => {
+  const navigate = useNavigate();
+
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
@@ -26,14 +32,46 @@ export const Navbar = () => {
             <Logo height={30} width={90} logo="n-title" className="mx-auto" />
           </Link>
         </NavbarBrand>
+        <NavbarItem>
+          <Button
+            startContent={
+              <FontAwesomeIcon icon={faChartSimple} />
+            }
+            disableRipple
+            className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+            radius="sm"
+            variant="light"
+            isDisabled
+
+          >
+            Dashboard
+          </Button>
+        </NavbarItem>
+
+        <NavbarItem>
+          <Button
+            startContent={
+              <FontAwesomeIcon icon={faCalendarCheck} />
+            }
+            disableRipple
+            className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+            radius="sm"
+            variant="light"
+
+
+          >
+            Périodes
+          </Button>
+        </NavbarItem>
+
         <div className="hidden lg:flex gap-4 justify-start ml-2">
           <Dropdown>
             <NavbarItem>
               <DropdownTrigger>
                 <Button
-                startContent = {
-                  <FontAwesomeIcon icon={faDatabase}/>
-                }
+                  startContent={
+                    <FontAwesomeIcon icon={faDatabase} />
+                  }
                   disableRipple
                   className="p-0 bg-transparent data-[hover=true]:bg-transparent"
                   radius="sm"
@@ -47,6 +85,52 @@ export const Navbar = () => {
               </DropdownTrigger>
             </NavbarItem>
             <DropdownMenu
+              
+              className="w-[150px]"
+              itemClasses={{
+                base: "gap-4",
+              }}
+              items={siteConfig.referentielsItems}
+            >
+              {
+                (item)=>(
+                  <DropdownItem key={item.label}  startContent={<FontAwesomeIcon icon={item.icon!}/>} onClick={(e)=>{
+                    e.preventDefault()
+                    navigate(item.href)
+                  }}>
+                    {item.label}
+                  </DropdownItem>
+                )
+              }
+              
+
+
+            </DropdownMenu>
+          </Dropdown>
+        </div>
+
+        <div className="hidden lg:flex gap-4 justify-start ml-2">
+          <Dropdown>
+            <NavbarItem>
+              <DropdownTrigger>
+                <Button
+                  startContent={
+                    <FontAwesomeIcon icon={faArrowRightArrowLeft} />
+                  }
+                  disableRipple
+                  className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                  radius="sm"
+                  variant="light"
+                  isDisabled
+                  endContent={
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  }
+                >
+                  Mouvements
+                </Button>
+              </DropdownTrigger>
+            </NavbarItem>
+            <DropdownMenu
               aria-label="ACME features"
               className="w-[150px]"
               itemClasses={{
@@ -54,49 +138,39 @@ export const Navbar = () => {
               }}
             >
 
-              
-              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faBuilding}/>}>
-                Unité operationnel
-              </DropdownItem>
-              
-              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faWarehouse}/>}>
-                Magasin
-              </DropdownItem>
-              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faMapLocationDot}/>}>
-                Emplacment
-              </DropdownItem>
-              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faLayerGroup}/>}>
-                Famille
-              </DropdownItem>
-              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faLayerGroup}/>}>
-                Sous Famille
+
+              <DropdownItem key="autoscaling" >
+                Entrée
               </DropdownItem>
 
-              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faNewspaper}/>}>
-                Article
+              <DropdownItem key="autoscaling" >
+                Sortie
               </DropdownItem>
 
-              <DropdownItem key="autoscaling"  startContent={<FontAwesomeIcon icon={faRuler}/>}>
-                Unité 
-              </DropdownItem>
 
             </DropdownMenu>
           </Dropdown>
         </div>
+
+
+
+
       </NavbarContent>
 
       <NavbarContent
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
+
         <NavbarItem className="hidden sm:flex gap-2" >
           Bonjour 👋🏽  Mirindra RAZAFINDRASOAVA
         </NavbarItem>
         <NavbarItem className="hidden md:flex">
           <Button
-            isExternal
+
+            color="danger"
             as={Link}
-            className="text-sm font-normal text-default-600 bg-default-100"
+            className="text-sm font-normal "
             endContent={
               <FontAwesomeIcon icon={faPowerOff} />
             }
