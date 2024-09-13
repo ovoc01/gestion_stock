@@ -44,13 +44,14 @@ interface CrudComponentProps {
    rowsData: RowData[];
    pages?: number;
    initialPage?: number;
-   onAdd?: () => void;
-   onSearch?: (searchTerm: string) => void;
-   onPageChange?: (page: number) => void;
    addModalContent?: React.ReactNode;
    errorMessage?: string;
    modalTitle?: string;
    isActionAuthorized?: boolean
+   onAdd?: () => void;
+   onSearch?: (searchTerm: string) => void;
+   onPageChange?: (page: number) => void;
+   onRowDelete?:(id:number)=>void
 }
 
 const ExportButton = () => {
@@ -79,7 +80,7 @@ const ExportButton = () => {
    )
 }
 
-const DeleteModal = ({ isOpen, onOpenChange ,liValue}: { isOpen: boolean, onOpenChange: (isOpen: boolean) => void,liValue:string|null }) => {
+const DeleteModal = ({ isOpen, onOpenChange ,liValue,idValue,onRowDelete}: { isOpen: boolean, onOpenChange: (isOpen: boolean) => void,liValue:string|null ,idValue:number|null,onRowDelete:(id:number) => void}) => {
    return (
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
          <ModalContent>
@@ -105,7 +106,7 @@ const DeleteModal = ({ isOpen, onOpenChange ,liValue}: { isOpen: boolean, onOpen
                         className="bg-foreground text-background"
                         onPress={() => {
                            // Supprimer l'élément
-                           onClose();
+                           onRowDelete(idValue!)
                         }}
                      >
                         Valider
@@ -132,11 +133,13 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
    errorMessage,
    pageTitle,
    pageIcon,
-   isActionAuthorized
+   isActionAuthorized,
+   onRowDelete
 }) => {
 
    const [searchTerm, setSearchTerm] = useState("");
    const [liValueToDelete, setLiValueToDelete] = useState<string | null>(null); 
+   const [idValueDelete, setIdValueToDelete] = useState<number | null>(null); 
    const { isOpen, onOpen, onOpenChange } = useDisclosure();
    const { isOpen: deleteIsOpen, onOpen: deleteOnOpen, onOpenChange: deleteOnOpenChange } = useDisclosure();
 
@@ -185,6 +188,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                   </Button>
                   <Button color="danger" variant="light" onPress={()=>{
                      setLiValueToDelete(liValue)
+                     setIdValueToDelete(idValue)
                      deleteOnOpen()
                   }}>
                      <FontAwesomeIcon icon={faTrash} fontSize={16} />
@@ -232,7 +236,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                )}
             </ModalContent>
          </Modal>
-         <DeleteModal isOpen={deleteIsOpen} onOpenChange={deleteOnOpenChange} liValue={liValueToDelete}/>
+         <DeleteModal isOpen={deleteIsOpen} onOpenChange={deleteOnOpenChange} liValue={liValueToDelete} idValue={idValueDelete} onRowDelete={onRowDelete!}/>
 
          <div >
             <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">

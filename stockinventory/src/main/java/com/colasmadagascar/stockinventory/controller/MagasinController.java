@@ -80,6 +80,21 @@ public class MagasinController  {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteMagasin(@PathVariable("id")Long id){
+        HashMap<String,Object> data = new HashMap<>();
+
+        try{
+            //TODO
+            magasinService.deleteEntityById(id);
+            data.put("message","Magasin supprimé");
+            return ResponseEntity.ok(data);
+        }catch(Exception e){
+            data.put("error",e.getMessage());
+            return ResponseEntity.badRequest().body(data);
+        }
+    }
+
 
 
 

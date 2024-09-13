@@ -1,5 +1,5 @@
 import CrudComponent from "@/components/crudComponents"
-import { createMagasin, getAllMagasins } from "@/services/api/batiment.service";
+import { createMagasin, deleteMagasin, getAllMagasins } from "@/services/api/batiment.service";
 import { faWarehouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -84,8 +84,19 @@ export default function MagasinPage() {
       .then((response)=>{
          toast.success(response.message)
          setIsNewRowAdded(!isNewRowAdded)
+         setLabel('')
+         setCommentaire('')
+         
       })
    };
+
+   const onRowDelete = async (id:number)=> {
+      await deleteMagasin(id)
+         .then((response)=>{
+            toast.success(response.message)
+            setIsNewRowAdded(!isNewRowAdded)
+         })
+   }
 
    const onPageChange = (page: number) => {
       searchParams.set('page', page.toString());
@@ -107,6 +118,7 @@ export default function MagasinPage() {
          initialPage={page}
          onPageChange={onPageChange}
          pages={totalPage}
+         onRowDelete={onRowDelete}
 
          addModalContent={
             <div className="w-full flex flex-col justify-center gap-4 align-center min-h-[170px] pb-5">

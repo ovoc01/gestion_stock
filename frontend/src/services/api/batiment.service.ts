@@ -19,3 +19,8 @@ export const createMagasin = async (label: string, dateCreation: Date, commentai
    });
    return response.data;
 }
+
+export const deleteMagasin = async(magasinId:number) =>{
+   const response = await axios.delete(BASE_URL+`magasins/${magasinId}`)
+   return response.data;
+}
