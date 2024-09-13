@@ -11,7 +11,8 @@ module.exports = {
   ],
   theme: {
     container:{
-      center:true
+      center:true,
+      
     },
     colors:{
         dark:'#fff'

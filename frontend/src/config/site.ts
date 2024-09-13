@@ -1,4 +1,4 @@
-import { faBox, faBuilding, faBuildingShield, faCheckCircle, faCube, faLayerGroup, faMapLocationDot, faNewspaper, faWarehouse } from "@fortawesome/free-solid-svg-icons";
+import {  faBuilding, faBuildingShield, faCube, faLayerGroup, faMapLocationDot, faNewspaper, faRuler, faWarehouse } from "@fortawesome/free-solid-svg-icons";
 import { CSDropdownItemProps } from "@/types/types";
 export type SiteConfig = typeof siteConfig;
 
@@ -38,6 +38,11 @@ const referentielsItems: CSDropdownItemProps[] = [
     'href': '/referentiels/articles',
     'icon': faNewspaper
   },
+  {
+    'label':'Unite',
+    'href':'/referentiels/unites',
+    'icon':faRuler
+  }
 ]
 
 export const siteConfig = {

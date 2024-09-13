@@ -21,7 +21,7 @@ export const Navbar = () => {
 
 
   return (
-    <NextUINavbar maxWidth="xl" position="sticky">
+    <NextUINavbar  maxWidth="2xl" position="sticky" className="px-8">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand className="gap-3 max-w-fit">
           <Link
@@ -38,7 +38,7 @@ export const Navbar = () => {
               <FontAwesomeIcon icon={faChartSimple} />
             }
             disableRipple
-            className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+            className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
             radius="sm"
             variant="light"
             isDisabled
@@ -54,7 +54,7 @@ export const Navbar = () => {
               <FontAwesomeIcon icon={faCalendarCheck} />
             }
             disableRipple
-            className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+            className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
             radius="sm"
             variant="light"
 
@@ -73,7 +73,7 @@ export const Navbar = () => {
                     <FontAwesomeIcon icon={faDatabase} />
                   }
                   disableRipple
-                  className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                  className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
                   radius="sm"
                   variant="light"
                   endContent={
@@ -94,7 +94,7 @@ export const Navbar = () => {
             >
               {
                 (item)=>(
-                  <DropdownItem key={item.label}  startContent={<FontAwesomeIcon icon={item.icon!}/>} onClick={(e)=>{
+                  <DropdownItem key={item.label} className="text-lg"  startContent={<FontAwesomeIcon icon={item.icon!}/>} onClick={(e)=>{
                     e.preventDefault()
                     navigate(item.href)
                   }}>
@@ -118,7 +118,7 @@ export const Navbar = () => {
                     <FontAwesomeIcon icon={faArrowRightArrowLeft} />
                   }
                   disableRipple
-                  className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                  className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
                   radius="sm"
                   variant="light"
                   isDisabled
@@ -163,14 +163,15 @@ export const Navbar = () => {
       >
 
         <NavbarItem className="hidden sm:flex gap-2" >
-          Bonjour 👋🏽  Mirindra RAZAFINDRASOAVA
+          Bonjour 👋🏽  <h2 className="font-semibold text-lg">Mirindra RAZAFINDRASOAVA</h2>
         </NavbarItem>
         <NavbarItem className="hidden md:flex">
           <Button
 
             color="danger"
             as={Link}
-            className="text-sm font-normal "
+            size="lg"
+            className="text-sm font-normal text-lg"
             endContent={
               <FontAwesomeIcon icon={faPowerOff} />
             }

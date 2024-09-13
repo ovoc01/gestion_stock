@@ -6,6 +6,7 @@ import Layout from "@/pages/referentiels/layout";
 import MagasinPage from "@/pages/referentiels/magasin";
 import ServiceExploitantPage from "@/pages/referentiels/serviceExploitant";
 import SousFamillePage from "@/pages/referentiels/sousFamille";
+import UnitePage from "@/pages/referentiels/unite";
 import UniteOperationnelPage from "@/pages/referentiels/uniteOperationnel";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -45,6 +46,10 @@ export const routes = createBrowserRouter([
          {
             path:'articles',
             element:<ArticlePage/>
+         },
+         {
+            path:'unites',
+            element:<UnitePage/>
          }
       ]  
    }

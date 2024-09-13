@@ -8,12 +8,12 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex flex-col h-screen ">
+    <div className="relative flex flex-col h-screen w-full  ">
       <Navbar />
-      <main className="container mx-auto w-full px-6 flex-grow  pt-16">
+      <main className="container mx-auto w-full  flex-grow  pt-16">
         {children}
       </main>
-      <Toaster richColors/>
+      <Toaster position="top-right" richColors/>
       <footer className="w-full flex items-center justify-center py-3">
         <Link
           isExternal

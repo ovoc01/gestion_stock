@@ -1,10 +1,10 @@
 import CrudComponent from "@/components/crudComponents"
-import { faBuildingShield} from "@fortawesome/free-solid-svg-icons";
+import { faLayerGroup, faRuler } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 import { useEffect, useState } from "react";
-export default function ServiceExploitantPage() {
+export default function UnitePage() {
 
 
 
@@ -18,24 +18,18 @@ export default function ServiceExploitantPage() {
 
    const columns = [
       {
-         key: 'serviceId',
-         label: 'Service Id',
+         key: 'uniteId',
+         label: 'Unité Id',
          type: 'integer'
       },
       {
-         key: 'serviceLi',
+         key: 'uniteLi',
          label: 'Libellé',
          type: 'string'
       },
       {
-         key: 'serviceNumBu',
-         label: 'Numéro BU',
-         type: 'string'
-      },
-
-      {
-         key: 'serviceDtCr',
-         label: 'Date Création',
+         key: 'uniteAbr',
+         label: 'Abbréviation',
          type: 'string'
       },
 
@@ -51,12 +45,12 @@ export default function ServiceExploitantPage() {
 
    return (
       <CrudComponent
-         pageTitle="Service exploitant"
+         pageTitle="Unité"
          columns={columns}
          rowsData={data}
          onAdd={createNewFamille}
          onSearch={() => { }}
-         pageIcon={<FontAwesomeIcon icon={faBuildingShield} />}
+         pageIcon={<FontAwesomeIcon icon={faRuler} />}
 
          addModalContent={
             <div className="w-full flex flex-col gap-4 pb-5">
