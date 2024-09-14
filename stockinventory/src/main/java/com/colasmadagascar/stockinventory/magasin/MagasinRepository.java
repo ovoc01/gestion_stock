@@ -1,10 +1,9 @@
-package com.colasmadagascar.stockinventory.repository;
+package com.colasmadagascar.stockinventory.magasin;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.colasmadagascar.stockinventory.entity.Magasin;
 
 @Repository
 

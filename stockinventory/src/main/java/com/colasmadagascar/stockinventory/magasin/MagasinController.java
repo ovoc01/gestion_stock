@@ -1,7 +1,6 @@
-package com.colasmadagascar.stockinventory.controller;
+package com.colasmadagascar.stockinventory.magasin;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import com.colasmadagascar.stockinventory.entity.Magasin;
-import com.colasmadagascar.stockinventory.service.MagasinService;
 
 @RestController
 @RequestMapping("/magasins")

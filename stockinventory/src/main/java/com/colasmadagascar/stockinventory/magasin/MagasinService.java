@@ -1,14 +1,11 @@
-package com.colasmadagascar.stockinventory.service;
+package com.colasmadagascar.stockinventory.magasin;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.colasmadagascar.stockinventory.entity.Magasin;
-import com.colasmadagascar.stockinventory.repository.MagasinRepository;
 
 @Service
 

@@ -1,9 +1,7 @@
-package com.colasmadagascar.stockinventory.entity;
+package com.colasmadagascar.stockinventory.magasin;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import com.colasmadagascar.stockinventory.utils.Utils;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
