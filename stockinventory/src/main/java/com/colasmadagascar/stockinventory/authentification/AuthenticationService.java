@@ -49,11 +49,11 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getLogin(),
+                        request.getUsername(),
                         request.getPassword()
                 )
         );
-        var user = utilisateurRepository.findByUsrLogin(request.getLogin()).orElseThrow();
+        var user = utilisateurRepository.findByUsrLogin(request.getUsername()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
