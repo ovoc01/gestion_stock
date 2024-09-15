@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.colasmadagascar.stockinventory.utilisateur.role.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,7 +15,9 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name="utilisateur")
-
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Utilisateur  implements UserDetails {
 
     @Id
@@ -33,9 +38,14 @@ public class Utilisateur  implements UserDetails {
     @Column
     Timestamp usrDtCr;
 
-    @ManyToOne
-    @JoinColumn(name="role_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="roleId")
     Role role;
+
+
+
+
+
 
 
     public void setUsrId(Long usrId){
@@ -118,7 +128,7 @@ public class Utilisateur  implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
@@ -134,5 +144,9 @@ public class Utilisateur  implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getFullName (){
+        return this.getUsrPrenom() + " " + this.getUsrNom();
     }
 }

@@ -6,20 +6,30 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name="role")
-
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@ToString
 public class Role  implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    
     Long roleId;
 
     @Column
     String roleLi;
+
+    public Role(Long roleId){
+        this.roleId = roleId;
+    }
 
     
 
