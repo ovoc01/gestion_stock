@@ -8,15 +8,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 
 @Service
-
 public class UniteService  {
    @Autowired
    UniteRepository uniteRepository;
 
    
    public List<Unite> getAllEntities(int page,int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page-1, size);
         return uniteRepository.findAll(pageable).toList();
+    }
+
+
+    public long count(){
+       return uniteRepository.count();
     }
 
 

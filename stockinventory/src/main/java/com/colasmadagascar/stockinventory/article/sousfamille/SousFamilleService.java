@@ -14,7 +14,7 @@ public class SousFamilleService  {
 
    
    public List<SousFamille> getAllEntities(int page,int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page-1, size);
         return sousFamilleRepository.findAll(pageable).toList();
     }
 

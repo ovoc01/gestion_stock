@@ -20,6 +20,7 @@ public class UniteController  {
         try{
             List<Unite>unites =  uniteService.getAllEntities(page, size);
             data.put("unites",unites);
+            data.put("totalPages",uniteService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -63,8 +64,23 @@ public class UniteController  {
 
         try{
             uniteService.saveEntity(unite);
-            data.put("message","Unite created successfully");
+            data.put("message","Unite updated successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
+        }catch(Exception e){
+            data.put("error",e.getMessage());
+            return ResponseEntity.badRequest().body(data);
+        }
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteUnite(@PathVariable("id")Long id){
+        HashMap<String,Object> data = new HashMap<>();
+
+        try{
+            uniteService.deleteEntityById(id);
+            data.put("message","Unite deleted successfully");
+            return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
             return ResponseEntity.badRequest().body(data);
