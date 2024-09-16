@@ -11,18 +11,17 @@ import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
-@RequestMapping("/magasins")
+@RequestMapping("api/v1/magasins")
 @CrossOrigin("*")
-
 public class MagasinController  {
     @Autowired  MagasinService magasinService;
     
     @GetMapping
     public ResponseEntity<Object> getAllMagasin(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size){
         HashMap<String,Object> data = new HashMap<>();
-        Pageable pageable = PageRequest.of(page-1, size);
+
         try{
-            List<Magasin> magasins =  magasinService.getAllEntities(pageable);
+            List<Magasin> magasins =  magasinService.getAllEntities(size,page);
             data.put("magasins",magasins);
             data.put("totalPages",magasinService.count());
 
@@ -65,12 +64,12 @@ public class MagasinController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateMagasin(@PathVariable("id")Long id){
+    public ResponseEntity<Object> updateMagasin(@PathVariable("id")Long id,@RequestBody  MagasinUpdateRequest magasinUpdateRequest){
         HashMap<String,Object> data = new HashMap<>();
 
         try{
-            //TODO
-            return ResponseEntity.ok("success");
+            magasinService.updateEntity(magasinUpdateRequest);
+            return ResponseEntity.ok("Magasin modifié");
         }catch(Exception e){
             data.put("error",e.getMessage());
             return ResponseEntity.badRequest().body(data);
