@@ -1,4 +1,4 @@
-package com.colasmadagascar.stockinventory.article.sousfamille;
+package com.colasmadagascar.stockinventory.serviceexp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -7,21 +7,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.List;
 
-
-
 @RestController
-@RequestMapping("api/v1/sous-familles")
+@RequestMapping("api/v1/services")
 
-public class SousFamilleController  {
-    @Autowired  SousFamilleService sousFamilleService;
+public class ServiceController  {
+    @Autowired  ServiceExploitantService serviceService;
     
     @GetMapping
-    public ResponseEntity<Object> getAllSousFamille(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
+    public ResponseEntity<Object> getAllService(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
         HashMap<String,Object> data = new HashMap<>();
         try{
-            List<SousFamilleDTO>sousFamilles =  sousFamilleService.getAllEntities(page, size);
-            data.put("sousFamilles",sousFamilles);
-            data.put("totalPages",sousFamilleService.count());
+            List<ServiceExploitant>services =  serviceService.getAllEntities(page,size);
+            data.put("services",services);
+            data.put("totalPages",serviceService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -30,16 +28,13 @@ public class SousFamilleController  {
 
     }
 
-
-
-
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findByIdSousFamille(@PathVariable("id")Long id){
+    public ResponseEntity<Object> findByIdService(@PathVariable("id")Long id){
         HashMap<String,Object> data = new HashMap<>();
 
         try{
-            SousFamille sousFamille = sousFamilleService.getEntityById(id).get();
-            data.put("sousFamille",sousFamille);
+            ServiceExploitant service = serviceService.getEntityById(id).get();
+            data.put("service",service);
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -49,11 +44,11 @@ public class SousFamilleController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createSousFamille(@RequestBody SousFamilleRequest sousFamille){
+    public ResponseEntity<Object> createService(@RequestBody ServiceExploitant service){
         HashMap<String,Object> data = new HashMap<>();
         try{
-            sousFamilleService.saveEntity(sousFamille);
-            data.put("message","SousFamille created successfully");
+            serviceService.saveEntity(service);
+            data.put("message","Service created successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -63,12 +58,12 @@ public class SousFamilleController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSousFamille(@RequestBody SousFamilleRequest sousFamille){
+    public ResponseEntity<Object> updateService(@RequestBody ServiceExploitant service){
         HashMap<String,Object> data = new HashMap<>();
 
         try{
-            sousFamilleService.updateEntity(sousFamille);
-            data.put("message","SousFamille updated successfully");
+            serviceService.saveEntity(service);
+            data.put("message","Service updated successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -76,18 +71,21 @@ public class SousFamilleController  {
         }
     }
 
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteSousFamille(@PathVariable("id")Long id){
+    public ResponseEntity<Object> deleteService(@PathVariable("id")Long id){
         HashMap<String,Object> data = new HashMap<>();
         try{
-            sousFamilleService.deleteEntityById(id);
-            data.put("message","SousFamille deleted successfully");
+            serviceService.deleteEntityById(id);
+            data.put("message","Service deleted successfully");
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
             return ResponseEntity.badRequest().body(data);
         }
+    
     }
+
+
+
 
 }

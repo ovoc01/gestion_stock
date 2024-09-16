@@ -1,4 +1,4 @@
-package com.colasmadagascar.stockinventory.article.sousfamille;
+package com.colasmadagascar.stockinventory.serviceexp.unop;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -7,21 +7,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.List;
 
-
-
 @RestController
-@RequestMapping("api/v1/sous-familles")
+@RequestMapping("api/v1/uniteOperationnels")
 
-public class SousFamilleController  {
-    @Autowired  SousFamilleService sousFamilleService;
+public class UniteOperationnelController  {
+    @Autowired  UniteOperationnelService uniteOperationnelService;
     
     @GetMapping
-    public ResponseEntity<Object> getAllSousFamille(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
+    public ResponseEntity<Object> getAllUniteOperationnel(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
         HashMap<String,Object> data = new HashMap<>();
         try{
-            List<SousFamilleDTO>sousFamilles =  sousFamilleService.getAllEntities(page, size);
-            data.put("sousFamilles",sousFamilles);
-            data.put("totalPages",sousFamilleService.count());
+            List<UniteOperationnel>uniteOperationnels =  uniteOperationnelService.getAllEntities(page,size);
+            data.put("uniteOperationnels",uniteOperationnels);
+            data.put("totalPages",uniteOperationnelService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -30,16 +28,13 @@ public class SousFamilleController  {
 
     }
 
-
-
-
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findByIdSousFamille(@PathVariable("id")Long id){
+    public ResponseEntity<Object> findByIdUniteOperationnel(@PathVariable("id")Long id){
         HashMap<String,Object> data = new HashMap<>();
 
         try{
-            SousFamille sousFamille = sousFamilleService.getEntityById(id).get();
-            data.put("sousFamille",sousFamille);
+            UniteOperationnel uniteOperationnel = uniteOperationnelService.getEntityById(id).get();
+            data.put("uniteOperationnel",uniteOperationnel);
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -49,11 +44,11 @@ public class SousFamilleController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createSousFamille(@RequestBody SousFamilleRequest sousFamille){
+    public ResponseEntity<Object> createUniteOperationnel(@RequestBody UniteOperationnel uniteOperationnel){
         HashMap<String,Object> data = new HashMap<>();
         try{
-            sousFamilleService.saveEntity(sousFamille);
-            data.put("message","SousFamille created successfully");
+            uniteOperationnelService.saveEntity(uniteOperationnel);
+            data.put("message","UniteOperationnel created successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -63,12 +58,12 @@ public class SousFamilleController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSousFamille(@RequestBody SousFamilleRequest sousFamille){
+    public ResponseEntity<Object> updateUniteOperationnel(@RequestBody UniteOperationnel uniteOperationnel){
         HashMap<String,Object> data = new HashMap<>();
 
         try{
-            sousFamilleService.updateEntity(sousFamille);
-            data.put("message","SousFamille updated successfully");
+            uniteOperationnelService.saveEntity(uniteOperationnel);
+            data.put("message","UniteOperationnel updated successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -76,18 +71,21 @@ public class SousFamilleController  {
         }
     }
 
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteSousFamille(@PathVariable("id")Long id){
+    public ResponseEntity<Object> deleteUniteOperationnel(@PathVariable("id")Long id){
         HashMap<String,Object> data = new HashMap<>();
         try{
-            sousFamilleService.deleteEntityById(id);
-            data.put("message","SousFamille deleted successfully");
+            uniteOperationnelService.deleteEntityById(id);
+            data.put("message","UniteOperationnel deleted successfully");
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
             return ResponseEntity.badRequest().body(data);
         }
+    
     }
+
+
+
 
 }
