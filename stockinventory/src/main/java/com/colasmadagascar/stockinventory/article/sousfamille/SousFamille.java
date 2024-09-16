@@ -1,6 +1,5 @@
 package com.colasmadagascar.stockinventory.article.sousfamille;
 
-import com.colasmadagascar.stockinventory.article.famille.Famille;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -66,13 +65,6 @@ public class SousFamille  {
     }
 
 
-    public void setFamille(Famille famille){
-        this.famille = famille;
-    }
-
-    public Famille getFamille(){
-        return this.famille;
-    }
 
 
 

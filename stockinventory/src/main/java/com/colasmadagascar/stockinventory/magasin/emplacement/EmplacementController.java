@@ -1,4 +1,4 @@
-package com.colasmadagascar.stockinventory.article.famille;
+package com.colasmadagascar.stockinventory.magasin.emplacement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,17 +10,17 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("api/v1/familles")
+@RequestMapping("api/v1/emplacements")
 
-public class FamilleController  {
-    @Autowired  FamilleService familleService;
+public class EmplacementController  {
+    @Autowired  EmplacementService emplacementService;
     
     @GetMapping
-    public ResponseEntity<Object> getAllFamille(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
+    public ResponseEntity<Object> getAllEmplacement(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
         HashMap<String,Object> data = new HashMap<>();
         try{
-            List<Famille>familles =  familleService.getAllEntities(page, size);
-            data.put("familles",familles);
+            List<Emplacement>emplacements =  emplacementService.getAllEntities(page, size);
+            data.put("emplacements",emplacements);
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -30,12 +30,12 @@ public class FamilleController  {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findByIdFamille(@PathVariable("id")Long id){
+    public ResponseEntity<Object> findByIdEmplacement(@PathVariable("id")Long id){
         HashMap<String,Object> data = new HashMap<>();
 
         try{
-            Famille famille = familleService.getEntityById(id).get();
-            data.put("famille",famille);
+            Emplacement emplacement = emplacementService.getEntityById(id).get();
+            data.put("emplacement",emplacement);
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -45,11 +45,11 @@ public class FamilleController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createFamille(@RequestBody Famille famille){
+    public ResponseEntity<Object> createEmplacement(@RequestBody Emplacement emplacement){
         HashMap<String,Object> data = new HashMap<>();
         try{
-            familleService.saveEntity(famille);
-            data.put("message","Famille created successfully");
+            emplacementService.saveEntity(emplacement);
+            data.put("message","Emplacement created successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -59,12 +59,12 @@ public class FamilleController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateFamille(@RequestBody Famille famille){
+    public ResponseEntity<Object> updateEmplacement(@RequestBody Emplacement emplacement){
         HashMap<String,Object> data = new HashMap<>();
 
         try{
-            familleService.saveEntity(famille);
-            data.put("message","Famille created successfully");
+            emplacementService.saveEntity(emplacement);
+            data.put("message","Emplacement created successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){
             data.put("error",e.getMessage());

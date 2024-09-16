@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 @Service
 
 public class SousFamilleService  {
@@ -12,8 +13,9 @@ public class SousFamilleService  {
    SousFamilleRepository sousFamilleRepository;
 
    
-   public List<SousFamille> getAllEntities() {
-        return sousFamilleRepository.findAll();
+   public List<SousFamille> getAllEntities(int page,int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return sousFamilleRepository.findAll(pageable).toList();
     }
 
 

@@ -6,20 +6,20 @@ import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.List;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
+
 
 @RestController
-@RequestMapping("/sousFamilles")
-@CrossOrigin("*")
+@RequestMapping("api/v1/sousFamilles")
 
 public class SousFamilleController  {
     @Autowired  SousFamilleService sousFamilleService;
     
     @GetMapping
-    public ResponseEntity<Object> getAllSousFamille() {
+    public ResponseEntity<Object> getAllSousFamille(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
         HashMap<String,Object> data = new HashMap<>();
         try{
-            List<SousFamille>sousFamilles =  sousFamilleService.getAllEntities();
+            List<SousFamille>sousFamilles =  sousFamilleService.getAllEntities(page, size);
             data.put("sousFamilles",sousFamilles);
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
@@ -59,12 +59,13 @@ public class SousFamilleController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSousFamille(@PathVariable("id")Long id){
+    public ResponseEntity<Object> updateSousFamille(@RequestBody SousFamille sousFamille){
         HashMap<String,Object> data = new HashMap<>();
 
         try{
-            //TODO
-            return ResponseEntity.ok("success");
+            sousFamilleService.saveEntity(sousFamille);
+            data.put("message","SousFamille created successfully");
+            return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){
             data.put("error",e.getMessage());
             return ResponseEntity.badRequest().body(data);
