@@ -21,6 +21,7 @@ public class FamilleController  {
         try{
             List<Famille>familles =  familleService.getAllEntities(page, size);
             data.put("familles",familles);
+            data.put("totalPages",familleService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -74,5 +75,17 @@ public class FamilleController  {
 
 
 
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteFamille(@PathVariable("id")Long id){
+        HashMap<String,Object> data = new HashMap<>();
+        try{
+            familleService.deleteEntityById(id);
+            data.put("message","Famille deleted successfully");
+            return new ResponseEntity<>(data, HttpStatus.CREATED);
+        }catch(Exception e){
+            e.printStackTrace();
+            data.put("error",e.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(data);
+        }
+    }
 }

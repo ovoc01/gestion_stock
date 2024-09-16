@@ -32,11 +32,14 @@ public class FamilleService {
         return familleRepository.save(famille);
     }
 
+    public long count (){
+        return familleRepository.count();
+    }
     private String createFamilleLogRef(String label) {
         String[] words = label.split(" ");
         StringBuilder sb = new StringBuilder();
         for (String word : words) {
-            sb.append(word.charAt(0)).append(word.charAt(1));
+            sb.append(word.toUpperCase().charAt(0)).append(word.toUpperCase().charAt(1));
         }
         return sb.toString();
     }

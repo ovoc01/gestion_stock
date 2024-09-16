@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("api/v1/sousFamilles")
+@RequestMapping("api/v1/sous-familles")
 
 public class SousFamilleController  {
     @Autowired  SousFamilleService sousFamilleService;
@@ -19,8 +19,9 @@ public class SousFamilleController  {
     public ResponseEntity<Object> getAllSousFamille(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
         HashMap<String,Object> data = new HashMap<>();
         try{
-            List<SousFamille>sousFamilles =  sousFamilleService.getAllEntities(page, size);
+            List<SousFamilleDTO>sousFamilles =  sousFamilleService.getAllEntities(page, size);
             data.put("sousFamilles",sousFamilles);
+            data.put("totalPages",sousFamilleService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -28,6 +29,9 @@ public class SousFamilleController  {
         }
 
     }
+
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> findByIdSousFamille(@PathVariable("id")Long id){
@@ -45,7 +49,7 @@ public class SousFamilleController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createSousFamille(@RequestBody SousFamille sousFamille){
+    public ResponseEntity<Object> createSousFamille(@RequestBody SousFamilleRequest sousFamille){
         HashMap<String,Object> data = new HashMap<>();
         try{
             sousFamilleService.saveEntity(sousFamille);
@@ -59,12 +63,12 @@ public class SousFamilleController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSousFamille(@RequestBody SousFamille sousFamille){
+    public ResponseEntity<Object> updateSousFamille(@RequestBody SousFamilleRequest sousFamille){
         HashMap<String,Object> data = new HashMap<>();
 
         try{
-            sousFamilleService.saveEntity(sousFamille);
-            data.put("message","SousFamille created successfully");
+            sousFamilleService.updateEntity(sousFamille);
+            data.put("message","SousFamille updated successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -72,6 +76,19 @@ public class SousFamilleController  {
         }
     }
 
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteSousFamille(@PathVariable("id")Long id){
+        HashMap<String,Object> data = new HashMap<>();
+        try{
+            sousFamilleService.deleteEntityById(id);
+            data.put("message","SousFamille deleted successfully");
+            return new ResponseEntity<>(data, HttpStatus.OK);
+        }catch(Exception e){
+            data.put("error",e.getMessage());
+            return ResponseEntity.badRequest().body(data);
+        }
+    }
 
 
 

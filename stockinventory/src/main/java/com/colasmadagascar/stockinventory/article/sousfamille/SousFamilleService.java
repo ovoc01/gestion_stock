@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 
 public class SousFamilleService  {
@@ -13,9 +15,24 @@ public class SousFamilleService  {
    SousFamilleRepository sousFamilleRepository;
 
    
-   public List<SousFamille> getAllEntities(int page,int size) {
+   public List<SousFamilleDTO> getAllEntities(int page,int size) {
         Pageable pageable = PageRequest.of(page-1, size);
-        return sousFamilleRepository.findAll(pageable).toList();
+        return sousFamilleRepository.findAllSousFamilles(pageable).toList();
+    }
+
+    public long count(){
+        return sousFamilleRepository.count();
+    }
+
+    @Transactional
+    public void saveEntity(SousFamilleRequest request){
+
+       sousFamilleRepository.createSousFamille(request.getSousFamLi(),request.getFamilleId());
+    }
+
+    @Transactional
+    public void updateEntity(SousFamilleRequest request){
+        sousFamilleRepository.updateSousFamille(request.getSousFamLi(),request.getFamilleId(),request.getSousFamId());
     }
 
 
