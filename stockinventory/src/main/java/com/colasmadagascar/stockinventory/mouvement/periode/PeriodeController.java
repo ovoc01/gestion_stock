@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/periodes")
+@RequestMapping("api/v1/mouvements/periodes")
 
 public class PeriodeController  {
     @Autowired  PeriodeService periodeService;
@@ -31,7 +31,6 @@ public class PeriodeController  {
     @GetMapping("/{id}")
     public ResponseEntity<Object> findByIdPeriode(@PathVariable("id")Long id){
         HashMap<String,Object> data = new HashMap<>();
-
         try{
             Periode periode = periodeService.getEntityById(id).get();
             data.put("periode",periode);

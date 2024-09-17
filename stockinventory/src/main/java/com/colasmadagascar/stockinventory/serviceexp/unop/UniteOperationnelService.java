@@ -9,26 +9,22 @@ import org.springframework.data.domain.PageRequest;
 
 @Service
 
-public class UniteOperationnelService  {
-   @Autowired
-   UniteOperationnelRepository uniteOperationnelRepository;
+public class UniteOperationnelService {
+    @Autowired
+    UniteOperationnelRepository uniteOperationnelRepository;
 
-   
-   public List<UniteOperationnel> getAllEntities(int page,int size) {
-        Pageable pageable = PageRequest.of(page-1, size);
+    public List<UniteOperationnel> getAllEntities(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
         return uniteOperationnelRepository.findAll(pageable).toList();
     }
-
 
     public Optional<UniteOperationnel> getEntityById(Long id) {
         return uniteOperationnelRepository.findById(id);
     }
 
-
     public UniteOperationnel saveEntity(UniteOperationnel uniteOperationnel) {
         return uniteOperationnelRepository.save(uniteOperationnel);
     }
-
 
     public UniteOperationnel updateEntity(UniteOperationnel uniteOperationnel) {
         return uniteOperationnelRepository.save(uniteOperationnel);
@@ -38,10 +34,8 @@ public class UniteOperationnelService  {
         uniteOperationnelRepository.deleteById(id);
     }
 
-    public long count(){
+    public long count() {
         return uniteOperationnelRepository.count();
     }
-
-
 
 }

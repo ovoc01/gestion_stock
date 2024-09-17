@@ -17,7 +17,7 @@ public class ArticleController  {
     public ResponseEntity<Object> getAllArticle(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
         HashMap<String,Object> data = new HashMap<>();
         try{
-            List<Article>articles =  articleService.getAllEntities(page,size);
+            List<ArticleDTO>articles =  articleService.getAllArticleDTO(page,size);
             data.put("articles",articles);
             data.put("totalPages",articleService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
@@ -44,10 +44,10 @@ public class ArticleController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createArticle(@RequestBody Article article){
+    public ResponseEntity<Object> createArticle(@RequestBody ArticleRequest article){
         HashMap<String,Object> data = new HashMap<>();
         try{
-            articleService.saveEntity(article);
+            articleService.saveEntityFromRequest(article);
             data.put("message","Article created successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){

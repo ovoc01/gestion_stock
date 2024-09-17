@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/uniteOperationnels")
+@RequestMapping("api/v1/unite-operationnels")
 
 public class UniteOperationnelController  {
     @Autowired  UniteOperationnelService uniteOperationnelService;

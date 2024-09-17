@@ -32,4 +32,13 @@ public class Utils {
             throw e;
         }
     }
+
+    public static String createFamilleLogRef(String label) {
+        String[] words = label.split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (String word : words) {
+            sb.append(word.toUpperCase().charAt(0)).append(word.toUpperCase().charAt(1));
+        }
+        return sb.toString();
+    }
 }

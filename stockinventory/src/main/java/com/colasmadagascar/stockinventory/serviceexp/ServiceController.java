@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/services")
+@RequestMapping("api/v1/service-exploitants")
 
 public class ServiceController  {
     @Autowired  ServiceExploitantService serviceService;
@@ -18,7 +18,7 @@ public class ServiceController  {
         HashMap<String,Object> data = new HashMap<>();
         try{
             List<ServiceExploitant>services =  serviceService.getAllEntities(page,size);
-            data.put("services",services);
+            data.put("serviceExploitants",services);
             data.put("totalPages",serviceService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
