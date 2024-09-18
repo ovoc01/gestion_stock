@@ -75,6 +75,4 @@ public class Periode  {
         return this.periodeEtat;
     }
 
-
-
 }

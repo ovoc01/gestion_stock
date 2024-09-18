@@ -9,26 +9,25 @@ import org.springframework.data.domain.PageRequest;
 
 @Service
 
-public class PeriodeService  {
-   @Autowired
-   PeriodeRepository periodeRepository;
+public class PeriodeService {
+    @Autowired
+    PeriodeRepository periodeRepository;
 
-   
-   public List<Periode> getAllEntities(int page,int size) {
-        Pageable pageable = PageRequest.of(page-1, size);
+    public List<Periode> getAllEntities(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
         return periodeRepository.findAll(pageable).toList();
     }
-
 
     public Optional<Periode> getEntityById(Long id) {
         return periodeRepository.findById(id);
     }
 
-
     public Periode saveEntity(Periode periode) {
+        if(periode.getPeriodeDtFin()!=null){
+            periode.setPeriodeEtat(5);
+        }
         return periodeRepository.save(periode);
     }
-
 
     public Periode updateEntity(Periode periode) {
         return periodeRepository.save(periode);
@@ -38,10 +37,8 @@ public class PeriodeService  {
         periodeRepository.deleteById(id);
     }
 
-    public long count(){
+    public long count() {
         return periodeRepository.count();
     }
-
-
 
 }

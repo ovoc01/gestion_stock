@@ -19,8 +19,9 @@ public class EmplacementController  {
     public ResponseEntity<Object> getAllEmplacement(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
         HashMap<String,Object> data = new HashMap<>();
         try{
-            List<Emplacement>emplacements =  emplacementService.getAllEntities(page, size);
+            List<EmplacementDTO>emplacements =  emplacementService.getAllEntitiesDTO(page, size);
             data.put("emplacements",emplacements);
+            data.put("totalPages",emplacementService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -45,10 +46,10 @@ public class EmplacementController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createEmplacement(@RequestBody Emplacement emplacement){
+    public ResponseEntity<Object> createEmplacement(@RequestBody EmplacementRequest emplacement){
         HashMap<String,Object> data = new HashMap<>();
         try{
-            emplacementService.saveEntity(emplacement);
+            emplacementService.createEmplacement(emplacement);
             data.put("message","Emplacement created successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){
@@ -59,12 +60,12 @@ public class EmplacementController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateEmplacement(@RequestBody Emplacement emplacement){
+    public ResponseEntity<Object> updateEmplacement(@RequestBody EmplacementRequest emplacement){
         HashMap<String,Object> data = new HashMap<>();
 
         try{
-            emplacementService.saveEntity(emplacement);
-            data.put("message","Emplacement created successfully");
+            emplacementService.updateEmplacement(emplacement);;
+            data.put("message","Emplacement update successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){
             data.put("error",e.getMessage());
@@ -72,7 +73,18 @@ public class EmplacementController  {
         }
     }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> createEmplacement(@PathVariable("id")Long id){
+        HashMap<String,Object> data = new HashMap<>();
+        try{
+            emplacementService.deleteEntityById(id);;
+            data.put("message","Emplacement deleted successfully");
+            return new ResponseEntity<>(data, HttpStatus.CREATED);
+        }catch(Exception e){
+            data.put("error",e.getMessage());
+            return ResponseEntity.badRequest().body(data);
+        }
+    }
 
 
 }
