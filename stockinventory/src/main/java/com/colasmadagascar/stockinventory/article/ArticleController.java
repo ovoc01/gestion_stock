@@ -1,5 +1,6 @@
 package com.colasmadagascar.stockinventory.article;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class ArticleController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createArticle(@RequestBody ArticleRequest article){
+    public ResponseEntity<Object> createArticle(@Valid  @RequestBody ArticleRequest article){
         HashMap<String,Object> data = new HashMap<>();
         try{
             articleService.saveEntityFromRequest(article);

@@ -1,6 +1,7 @@
 package com.colasmadagascar.stockinventory.authentification;
 
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +19,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody RegisterRequest register) {
+    public ResponseEntity<Object> register(@Valid @RequestBody RegisterRequest register) {
         HashMap<String, Object> map = new HashMap<>();
-
-
         try {
             authenticationService.register(register);
             map.put("message", "Utilisateur créée avec succes");
@@ -34,7 +33,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody AuthenticationRequest authRequest) {
+    public ResponseEntity<Object> login(@Valid @RequestBody AuthenticationRequest authRequest) {
         HashMap<String, Object> map = new HashMap<>();
         try {
             return ResponseEntity.ok(authenticationService.authenticate(authRequest));

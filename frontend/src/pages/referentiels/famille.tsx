@@ -20,7 +20,9 @@ export default function FamillePage() {
    const [isNewRowAdded, setIsNewRowAdded] = useState(false);
    const [totalPage, setTotalPage] = useState<number>();
    const [label, setLabel] = useState('')
-   const [labelError, setLabelError] = useState<string | null>(null);
+
+   const [requestError, setRequestError] = useState<any>(null)
+   
    const [rowToUpdate, setRowToUpdate] = useState<number | null>(null);
 
 
@@ -81,23 +83,29 @@ export default function FamillePage() {
       setLabel('')
       setRowToUpdate(null)
       setDateCreation(now(getLocalTimeZone()))
+      setRequestError(null)
 
    }
 
 
 
    const createNewFamille = async () => {
-      if (label.trim() === '') {
+      /* if (label.trim() === '') {
          setLabelError('Le libellé est obligatoire')
          return;
-      }
+      } */
       await createFamille(label, dateCreation!.toDate(getLocalTimeZone()))
          .then((response) => {
             toast.success('Famille créée avec succès', response)
             setIsNewRowAdded(!isNewRowAdded)
          })
          .catch((error) => {
-            toast.error('Erreur lors de la création de la famille ', error);
+            if (error.response) {
+               if (error.response.status === 400) {
+                  setRequestError(error.response.data)
+                  
+               }
+            }
          })
 
    }
@@ -126,7 +134,11 @@ export default function FamillePage() {
             setIsNewRowAdded(!isNewRowAdded)
          })
          .catch((error) => {
-            toast.error('Erreur lors de la modification de la famille ', error.data.error);
+            if (error.response) {
+               if (error.response.status === 400) {
+                  setRequestError(error.response.data)
+               }
+            }
          })
    }
 
@@ -156,15 +168,16 @@ export default function FamillePage() {
          onRowUpdate={onRowUpdate}
          resetInput={resetInput}
          dataAbbreviation="famille"
+         
 
          addModalContent={
             <div className="w-full flex flex-col gap-4 pb-5">
-               <Input value={label} isInvalid={labelError !== null} errorMessage={labelError} type="text" label="Libellé" isRequired isClearable validationBehavior="aria" radius="sm" size="lg" onChange={(e) => setLabel(e.target.value)} />
+               
+               <Input value={label} isInvalid={requestError?.familleLiError !== null && requestError?.familleLiError !== undefined} errorMessage={requestError?.familleLiError} type="text" label="Libellé" isRequired isClearable validationBehavior="aria" radius="sm" size="lg" onChange={(e) => setLabel(e.target.value)} />
                <DatePicker
                   label="Date de création"
                   hideTimeZone
                   showMonthAndYearPickers
-
                   value={dateCreation}
                   defaultValue={dateCreation}
                   radius="sm"

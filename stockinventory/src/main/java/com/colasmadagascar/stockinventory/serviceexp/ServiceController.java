@@ -1,5 +1,6 @@
 package com.colasmadagascar.stockinventory.serviceexp;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class ServiceController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createService(@RequestBody ServiceExploitant service){
+    public ResponseEntity<Object> createService(@Valid @RequestBody ServiceExploitant service){
         HashMap<String,Object> data = new HashMap<>();
         try{
             serviceService.saveEntity(service);
@@ -58,7 +59,7 @@ public class ServiceController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateService(@RequestBody ServiceExploitant service){
+    public ResponseEntity<Object> updateService(@Valid @RequestBody ServiceExploitant service){
         HashMap<String,Object> data = new HashMap<>();
 
         try{
