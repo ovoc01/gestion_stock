@@ -1,4 +1,4 @@
-import {  faBuilding, faBuildingShield, faCube, faLayerGroup, faMapLocationDot, faNewspaper, faRuler, faWarehouse } from "@fortawesome/free-solid-svg-icons";
+import {  faArrowLeft, faArrowRight, faBuilding, faBuildingShield, faCalendarCheck, faCube, faLayerGroup, faMapLocationDot, faNewspaper, faRuler, faUsers, faWarehouse } from "@fortawesome/free-solid-svg-icons";
 import { CSDropdownItemProps } from "@/types/types";
 export type SiteConfig = typeof siteConfig;
 
@@ -45,6 +45,35 @@ const referentielsItems: CSDropdownItemProps[] = [
   }
 ]
 
+const mouvementsItems:CSDropdownItemProps[] = [
+  {
+    'label':'Periodes',
+    'href':'/mouvements/periodes',
+    icon:faCalendarCheck
+  },
+  {
+    'label':'Entrée',
+    'href':'/mouvements/entrees',
+    icon:faArrowRight
+  },
+  {
+    'label':'Sortie',
+    'href':'/mouvements/sortie',
+    icon:faArrowLeft
+  }
+
+]
+
+const userItems:CSDropdownItemProps[] = [
+  {
+    'label':'Listes',
+    'href':'/utilisateurs',
+    icon:faUsers
+  },
+]
+
 export const siteConfig = {
-  referentielsItems: referentielsItems
+  referentielsItems: referentielsItems,
+  mouvementsItems: mouvementsItems,
+  userItems:userItems
 };

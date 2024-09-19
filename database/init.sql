@@ -23,6 +23,7 @@ CREATE TABLE article (
     art_ref VARCHAR(100) UNIQUE,
     art_cd VARCHAR(100) UNIQUE,
     art_pu DOUBLE Precision,
+    art_qte DOUBLE Precision,
     art_cmp double precision,
     art_dte TIMESTAMP WITH TIME ZONE,
     art_dern_mdf TIMESTAMP WITH TIME ZONE,
@@ -44,7 +45,8 @@ CREATE TABLE unite (
 CREATE TABLE stock_par_emplacement (
     stock_par_empl_id SERIAL PRIMARY KEY,
     empl_id INT,
-    quantite INT,
+    art_id int REFERENCES article (art_id),
+    quantite DOUBLE Precision,
     cmup DOUBLE Precision
 );
 
@@ -227,3 +229,77 @@ ADD CONSTRAINT fk_travailler_dans_utilisateur FOREIGN KEY (usr_id) REFERENCES ut
 
 ALTER TABLE travailler_dans
 ADD CONSTRAINT fk_travailler_dans_service FOREIGN KEY (service_id) REFERENCES service (service_id);
+
+insert into role (role_li) values ('Administrateur');
+
+insert into role (role_li) values ('Utilisateur Simple');
+
+insert into role (role_li) values ('Super Utilisateur');
+
+insert into
+    service (service_li, service_num_bu)
+values ('Informatique', 2345023);
+
+insert into
+    service (service_li, service_num_bu)
+values (
+        'Atelier bois et fer',
+        2345001
+    );
+
+insert into unite (unite_li, unite_abrv) values ('Kilogramme', 'kg');
+
+insert into unite (unite_li, unite_abrv) values ('Piece', 'pc');
+
+insert into unite (unite_li, unite_abrv) values ('Litre', 'l');
+
+insert into unite (unite_li, unite_abrv) values ('Carton', 'ct');
+
+insert into
+    famille (famille_li, fam_log_ref)
+values ('Consommable', 'CO');
+
+insert into
+    famille (famille_li, fam_log_ref)
+values (
+        'Divers Informatique',
+        'DIINF'
+    );
+
+insert into
+    sous_famille (sous_fam_li, famille_id)
+values ('Telephone', 2)
+
+CREATE OR REPLACE FUNCTION p_calculate_cmup_on_insert()
+RETURNS TRIGGER AS $$
+DECLARE
+  new_cmup double precision; -- Adjust data type and precision if needed 
+	new_qte double precision;
+BEGIN
+  -- Calculate the new CMUP only once
+  SELECT (
+    (spe.quantite * spe.cmup) + (NEW.cmde_ligne_qte * NEW.cmde_ligne_pu)
+  ) / (spe.quantite + NEW.cmde_ligne_qte)
+  INTO new_cmup
+  FROM stock_par_emplacement spe
+  WHERE spe.art_id = NEW.art_id AND spe.empl_id = NEW.empl_id;
+
+	select ( spe.quantite + NEW.cmde_ligne_qte)
+	into new_qte
+	FROM stock_par_emplacement spe
+  WHERE spe.art_id = NEW.art_id AND spe.empl_id = NEW.empl_id;
+
+  -- Update stock_par_emplacement with the calculated CMUP
+  UPDATE stock_par_emplacement
+  SET cmup = new_cmup,
+	quantite = new_qte
+  WHERE art_id = NEW.art_id AND empl_id = NEW.empl_id;
+
+  -- Update cmde_ligne with the calculated CMUP
+  UPDATE commande_ligne
+  SET art_cmup = new_cmup
+  WHERE cmde_ligne_id = NEW.cmde_ligne_id;
+
+  RETURN NULL; 
+END;
+$$ LANGUAGE plpgsql;

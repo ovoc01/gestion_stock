@@ -6,6 +6,8 @@ public interface EmplacementDTO {
       Long getEmplId();
       String getEmplLi();
       String getServiceLi();
+      Long getMagId();
+      Long getServiceId();
       String getMagLi();
       LocalDateTime getEmplDtCr();
       String getEmplDernMdf();

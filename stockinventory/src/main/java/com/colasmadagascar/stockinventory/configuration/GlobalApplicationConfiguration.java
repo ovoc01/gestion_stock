@@ -26,7 +26,7 @@ public class GlobalApplicationConfiguration {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                 UserDetails userDetails =  utilisateurRepository.findByUsrLogin(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
-                //System.out.println(userDetails);
+                System.out.println(userDetails.getAuthorities());
                 return userDetails;
             }
         };

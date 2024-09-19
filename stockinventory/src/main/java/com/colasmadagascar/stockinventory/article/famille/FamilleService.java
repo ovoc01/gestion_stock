@@ -34,6 +34,15 @@ public class FamilleService {
         return familleRepository.save(famille);
     }
 
+    public Famille saveEntity(FamilleRequest familleReq) {
+        var famille = Famille
+                .builder()
+                .familleLi(familleReq.getFamilleLi())
+                .famLogRef(createFamilleLogRef(familleReq.getFamilleLi()))
+                .build();
+        return familleRepository.save(famille);
+    }
+
     public long count (){
         return familleRepository.count();
     }

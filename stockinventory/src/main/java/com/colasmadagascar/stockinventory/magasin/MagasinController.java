@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.HttpStatus;
 import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,10 +17,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class MagasinController  {
     @Autowired  MagasinService magasinService;
     
+
+    //@PreAuthorize("hasAuthority('Administrateur')")
     @GetMapping
     public ResponseEntity<Object> getAllMagasin(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size){
         HashMap<String,Object> data = new HashMap<>();
-
         try{
             List<Magasin> magasins =  magasinService.getAllEntities(size,page);
             data.put("magasins",magasins);
@@ -71,6 +73,7 @@ public class MagasinController  {
             magasinService.updateEntity(magasinUpdateRequest);
             return ResponseEntity.ok("Magasin modifié");
         }catch(Exception e){
+            e.printStackTrace();
             data.put("error",e.getMessage());
             return ResponseEntity.badRequest().body(data);
         }

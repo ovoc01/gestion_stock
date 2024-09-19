@@ -25,6 +25,7 @@ services:
 
 
   databases:
+    
     image: postgres:14-alpine
     environment:
       POSTGRES_USER: postgres
@@ -34,3 +35,4 @@ services:
       - ./database:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
+    

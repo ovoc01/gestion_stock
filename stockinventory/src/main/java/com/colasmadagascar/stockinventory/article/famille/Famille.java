@@ -1,17 +1,19 @@
 package com.colasmadagascar.stockinventory.article.famille;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
 @Entity
 @Table(name="famille")
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Famille  {
 
     @Id
@@ -20,6 +22,8 @@ public class Famille  {
     Long familleId;
 
     @Column
+    @NotNull(message = "Libellé du famille ne doit pas être null")
+    @NotBlank(message ="Libellé du famille ne doit pas être vide" )
     String familleLi;
     @Column
     Integer familleNumCom;

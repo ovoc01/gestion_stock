@@ -1,4 +1,5 @@
 import IndexPage from "@/pages";
+import PeriodePage from "@/pages/mouvements/periode";
 import ArticlePage from "@/pages/referentiels/article";
 import EmplacementPage from "@/pages/referentiels/emplacement";
 import FamillePage from "@/pages/referentiels/famille";
@@ -8,6 +9,7 @@ import ServiceExploitantPage from "@/pages/referentiels/serviceExploitant";
 import SousFamillePage from "@/pages/referentiels/sousFamille";
 import UnitePage from "@/pages/referentiels/unite";
 import UniteOperationnelPage from "@/pages/referentiels/uniteOperationnel";
+import UtilisateurPage from "@/pages/utilisateurs";
 import { createBrowserRouter } from "react-router-dom";
 
 export const routes = createBrowserRouter([
@@ -52,5 +54,25 @@ export const routes = createBrowserRouter([
             element:<UnitePage/>
          }
       ]  
+   },
+   {
+         path:'/mouvements/',
+         element:<Layout/>,
+         children:[
+            {
+               'path':'periodes',
+               element:<PeriodePage/>
+            }
+         ]
+   },
+   {
+      path:'/utilisateurs/',
+      element:<Layout/>,
+      children:[
+         {
+            path:'',
+            element:<UtilisateurPage/>
+         }
+      ]
    }
 ])
