@@ -1,5 +1,6 @@
 package com.colasmadagascar.stockinventory.magasin;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +53,7 @@ public class MagasinController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createMagasin(@RequestBody Magasin magasin){
+    public ResponseEntity<Object> createMagasin(@Valid  @RequestBody Magasin magasin){
         HashMap<String,Object> data = new HashMap<>();
         try{
             magasinService.saveEntity(magasin);
@@ -66,7 +67,7 @@ public class MagasinController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateMagasin(@PathVariable("id")Long id,@RequestBody  MagasinUpdateRequest magasinUpdateRequest){
+    public ResponseEntity<Object> updateMagasin(@PathVariable("id")Long id,@Valid @RequestBody  MagasinUpdateRequest magasinUpdateRequest){
         HashMap<String,Object> data = new HashMap<>();
 
         try{

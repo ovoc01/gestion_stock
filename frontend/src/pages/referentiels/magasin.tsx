@@ -15,13 +15,14 @@ export default function MagasinPage() {
    const [label, setLabel] = useState('')
    const [dateCreation, setDateCreation] = useState<DateValue>(now(getLocalTimeZone()))
    const [commentaire, setCommentaire] = useState('')
-   const [isValidLabel, setIsValidLabel] = useState(false)
-   const [labelError, setLabelError] = useState('')
+
    const [isNewRowAdded, setIsNewRowAdded] = useState(false);
    const [totalPage, setTotalPage] = useState<number>();
 
    const location = useLocation();
    const navigate = useNavigate();
+
+   const [requestError, setRequestError] = useState<any>(null)
 
 
    const [data, setData] = useState<MagasinDataProps[] | null>([]);
@@ -91,11 +92,7 @@ export default function MagasinPage() {
 
 
    const createNewFamille = async () => {
-      if (label === '') {
-         setIsValidLabel(true)
-         setLabelError('Le libellé est obligatoire')
-         return
-      }
+      
       console.log(dateCreation)
       await createMagasin(label, dateCreation!.toDate(getLocalTimeZone()), commentaire)
          .then((response) => {
@@ -103,7 +100,12 @@ export default function MagasinPage() {
             setIsNewRowAdded(!isNewRowAdded)
             setLabel('')
             setCommentaire('')
-
+         }).catch((error)=>{
+            if(error.response){
+               if(error.response.status  === 400){
+                  setRequestError(error.response.data)
+               }
+            }
          })
    };
 
@@ -116,11 +118,7 @@ export default function MagasinPage() {
    }
 
    const onRowUpdate = async () => {
-      if (label === '') {
-         setIsValidLabel(true)
-         setLabelError('Le libellé est obligatoire')
-         return
-      }
+      
       await updateMagasin(rowToUpdate!, label, dateCreation!.toDate(getLocalTimeZone()), commentaire)
          .then((response) => {
             toast.success(response.message)
@@ -128,8 +126,12 @@ export default function MagasinPage() {
             setRowToUpdate(null)
             setLabel('')
             setCommentaire('')
-         }).catch((error) => {
-            toast.error('Erreur lors de la mise à jour',error)
+         }).catch((error)=>{
+            if(error.response){
+               if(error.response.status  === 400){
+                  setRequestError(error.response.data)
+               }
+            }
          })
    }
 
@@ -146,6 +148,7 @@ export default function MagasinPage() {
       setLabel('')
       setCommentaire('')
       setRowToUpdate(null)
+      setRequestError(null)
    }
    return (
       <CrudComponent
@@ -169,7 +172,8 @@ export default function MagasinPage() {
 
          addModalContent={
             <div className="w-full flex flex-col justify-center gap-4 align-center min-h-[170px] pb-5">
-               <Input value={label} type="text" label="Libellé" isRequired isClearable validationBehavior="aria" radius="sm" size="lg" onChange={(e) => onLabelChange(e)} isInvalid={isValidLabel} errorMessage={labelError} />
+               <Input value={label}  type="text" label="Libellé" isRequired isClearable validationBehavior="aria" radius="sm" size="lg" 
+               onChange={(e) => onLabelChange(e)} isInvalid={requestError?.magLiError !==null && requestError?.magLiError !==undefined } errorMessage={requestError?.magLiError} />
                <DatePicker
                   label="Date de création"
                   hideTimeZone

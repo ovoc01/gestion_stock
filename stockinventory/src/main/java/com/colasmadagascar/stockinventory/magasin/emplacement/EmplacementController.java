@@ -1,5 +1,6 @@
 package com.colasmadagascar.stockinventory.magasin.emplacement;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class EmplacementController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createEmplacement(@RequestBody EmplacementRequest emplacement){
+    public ResponseEntity<Object> createEmplacement(@Valid  @RequestBody EmplacementRequest emplacement){
         HashMap<String,Object> data = new HashMap<>();
         try{
             emplacementService.createEmplacement(emplacement);
@@ -60,7 +61,7 @@ public class EmplacementController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateEmplacement(@RequestBody EmplacementRequest emplacement){
+    public ResponseEntity<Object> updateEmplacement(@Valid @RequestBody EmplacementRequest emplacement){
         HashMap<String,Object> data = new HashMap<>();
 
         try{

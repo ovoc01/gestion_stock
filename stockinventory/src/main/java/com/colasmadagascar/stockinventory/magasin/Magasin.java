@@ -8,26 +8,30 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.sql.Timestamp;
 
 @Entity
-@Table(name="magasin")
+@Table(name = "magasin")
 @ToString
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Magasin  {
+public class Magasin {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     Long magId;
 
     @Column
+    @NotBlank(message = "Le libellé du magasin est requis")
+    @NotNull(message = "Le libellé du magasin est requis")
     String magLi;
     @Column
     String magCom;
@@ -37,17 +41,6 @@ public class Magasin  {
     LocalDateTime magDtCr;
     @Column
     LocalDateTime magDernMdf;
-
-    
-
-    
-
-
-
-
-
-
-
 
 
 }

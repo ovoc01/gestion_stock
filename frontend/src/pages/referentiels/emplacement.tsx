@@ -13,12 +13,12 @@ export default function EmplacementPage() {
    const page = searchParams.get('page') ? parseInt(searchParams.get('page')!) : 1;
    const size = searchParams.get('size') ? parseInt(searchParams.get('size')!) : 5;
    const [label, setLabel] = useState('')
-   const [magId, setMagId] = useState<number | null>(0)
-   const [serviceId, setServiceId] = useState<number | null>(0)
+   const [magId, setMagId] = useState<number | null>(null)
+   const [serviceId, setServiceId] = useState<number | null>(null)
    const [isNewRowAdded, setIsNewRowAdded] = useState(false);
 
    const [rowToUpdate, setRowToUpdate] = useState<number | null>(null);
-   
+   const [requestError, setRequestError] = useState<any>(null)
 
    const [serviceExploitants, setServiceExploitants] = useState<ServiceExploitantDataProps[] | null>([])
    const [magasins, setMagasins] = useState<MagasinDataProps[] | null>([])
@@ -45,16 +45,16 @@ export default function EmplacementPage() {
    }, []);
 
 
-   useEffect(()=>{
-      if(rowToUpdate){
-         const row = data!.find((row:EmplacementDataProps)=>row.emplId === rowToUpdate)
-         if(row){
+   useEffect(() => {
+      if (rowToUpdate) {
+         const row = data!.find((row: EmplacementDataProps) => row.emplId === rowToUpdate)
+         if (row) {
             setLabel(row.emplLi)
             setServiceId(row.serviceId)
             setMagId(row.magId)
          }
       }
-   },[rowToUpdate])
+   }, [rowToUpdate])
 
 
    useEffect(() => {
@@ -107,7 +107,11 @@ export default function EmplacementPage() {
             setIsNewRowAdded(!isNewRowAdded)
          })
          .catch((error) => {
-            toast.error('Erreur lors de l\'ajout de l\'emplacement', error)
+            if (error.response) {
+               if (error.response.status === 400) {
+                  setRequestError(error.response.data)
+               }
+            }
          })
    };
 
@@ -123,11 +127,17 @@ export default function EmplacementPage() {
 
    const onRowUpdate = () => {
       updateEmplacement(rowToUpdate!, label, magId!, serviceId!)
-      .then((response) => {
-         toast.success('Emplacement modifié avec succès', response)
-         setIsNewRowAdded(!isNewRowAdded)
-         setRowToUpdate(null)
-      })
+         .then((response) => {
+            toast.success('Emplacement modifié avec succès', response)
+            setIsNewRowAdded(!isNewRowAdded)
+            setRowToUpdate(null)
+         }).catch((error) => {
+            if (error.response) {
+               if (error.response.status === 400) {
+                  setRequestError(error.response.data)
+               }
+            }
+         })
    }
 
    return (
@@ -142,7 +152,13 @@ export default function EmplacementPage() {
          onRowDelete={onRowDelete}
          onRowUpdate={onRowUpdate}
          setRowToUpdate={setRowToUpdate}
+         resetInput={() => {
+            setLabel('')
+            setRowToUpdate(null)
+            setRequestError(null)
+         }}
          isUpdateAuthorized
+
 
 
          addModalContent={
@@ -156,6 +172,9 @@ export default function EmplacementPage() {
                   }}
 
                   selectedKeys={serviceId ? [serviceId.toString()] : []}
+
+                  isInvalid={requestError?.serviceIdError !== null && requestError?.serviceIdError !== undefined}
+                  errorMessage={requestError?.serviceIdError}
                >
                   {serviceExploitants!.map((service) => (
                      <SelectItem key={service.serviceId} value={service.serviceId}>
@@ -174,6 +193,8 @@ export default function EmplacementPage() {
                   }}
 
                   selectedKeys={magId ? [magId.toString()] : []}
+                  isInvalid={requestError?.magIdError !== null && requestError?.magIdError !== undefined}
+                  errorMessage={requestError?.magIdError}
                >
                   {magasins!.map((mag) => (
                      <SelectItem key={mag.magId} value={mag.magId}>
@@ -181,7 +202,11 @@ export default function EmplacementPage() {
                      </SelectItem>
                   ))}
                </Select>
-               <Input value={label} type="text" label="Libellé" validationBehavior="aria" radius="sm" size="md" onChange={(e) => setLabel(e.target.value)} />
+               <Input value={label} type="text" label="Libellé" validationBehavior="aria" radius="sm" size="md"
+                  onChange={(e) => setLabel(e.target.value)}
+                  isInvalid={requestError?.emplLiError !== null && requestError?.emplLiError !== undefined}
+                  errorMessage={requestError?.emplLiError}
+               />
             </div>
          }
       />
