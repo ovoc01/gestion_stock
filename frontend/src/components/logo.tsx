@@ -8,5 +8,5 @@ type LogoProps = {
    logo:'title'|'n-title'
 }
 export default function Logo ({className,width,height,logo}:LogoProps){
-   return <Image className={className} width={width} height={height} src={logo==='title'? 'Colas.png':'image.png'}/>
+   return <Image className={className} width={width} height={height} src={logo==='title'? '/Colas.png':'/image.png'}/>
 }

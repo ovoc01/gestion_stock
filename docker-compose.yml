@@ -11,9 +11,15 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/Dockerfile
+      dockerfile: stockinventory/Dockerfile
     ports:
       - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://databases:5432/gestion_stock_dev # Notice 'databases' as the hostname
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: pixel
+    depends_on:  # Ensure the database starts before the backend
+      - databases
     
 
   ml_service:
@@ -25,6 +31,7 @@ services:
 
 
   databases:
+    
     image: postgres:14-alpine
     environment:
       POSTGRES_USER: postgres
@@ -34,3 +41,4 @@ services:
       - ./database:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
+    

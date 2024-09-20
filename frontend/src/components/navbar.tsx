@@ -10,12 +10,24 @@ import {
 import Logo from "@/components/logo"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faPowerOff } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightArrowLeft, faChartSimple, faChevronDown, faDatabase, faPowerOff, faUser } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { siteConfig } from "@/config/site";
+
+
 
 export const Navbar = () => {
-  
+  const navigate = useNavigate();
+  const userName = localStorage.getItem('user')
+  const logout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    navigate('/')
+  }
+
+
   return (
-    <NextUINavbar maxWidth="xl" position="sticky">
+    <NextUINavbar maxWidth="2xl" position="sticky" className="px-8">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand className="gap-3 max-w-fit">
           <Link
@@ -26,13 +38,79 @@ export const Navbar = () => {
             <Logo height={30} width={90} logo="n-title" className="mx-auto" />
           </Link>
         </NavbarBrand>
+        <NavbarItem>
+          <Button
+            startContent={
+              <FontAwesomeIcon icon={faChartSimple} />
+            }
+            disableRipple
+            className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
+            radius="sm"
+            variant="light"
+            isDisabled
+
+          >
+            Dashboard
+          </Button>
+        </NavbarItem>
         <div className="hidden lg:flex gap-4 justify-start ml-2">
           <Dropdown>
             <NavbarItem>
               <DropdownTrigger>
                 <Button
+                  startContent={
+                    <FontAwesomeIcon icon={faUser} />
+                  }
                   disableRipple
-                  className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                  className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
+                  radius="sm"
+                  variant="light"
+
+                  endContent={
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  }
+                >
+                  Utilisateurs
+                </Button>
+              </DropdownTrigger>
+            </NavbarItem>
+            <DropdownMenu
+              aria-label="ACME features"
+              className="w-[150px]"
+              itemClasses={{
+                base: "gap-4",
+              }}
+              items={siteConfig.userItems}
+            >
+
+              {
+                (item) => (
+                  <DropdownItem key={item.label} className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
+                    e.preventDefault()
+                    navigate(item.href)
+                  }}>
+                    {item.label}
+                  </DropdownItem>
+                )
+              }
+
+            </DropdownMenu>
+          </Dropdown>
+        </div>
+
+
+        
+
+        <div className="hidden lg:flex gap-4 justify-start ml-2">
+          <Dropdown>
+            <NavbarItem>
+              <DropdownTrigger>
+                <Button
+                  startContent={
+                    <FontAwesomeIcon icon={faDatabase} />
+                  }
+                  disableRipple
+                  className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
                   radius="sm"
                   variant="light"
                   endContent={
@@ -44,37 +122,103 @@ export const Navbar = () => {
               </DropdownTrigger>
             </NavbarItem>
             <DropdownMenu
-              aria-label="ACME features"
-              className="w-[240px]"
+
+              className="w-[150px]"
               itemClasses={{
                 base: "gap-4",
               }}
+              items={siteConfig.referentielsItems}
             >
-              <DropdownItem key="autoscaling">
-                Articles
-              </DropdownItem>
+              {
+                (item) => (
+                  <DropdownItem key={item.label} className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
+                    e.preventDefault()
+                    navigate(item.href)
+                  }}>
+                    {item.label}
+                  </DropdownItem>
+                )
+              }
+
+
 
             </DropdownMenu>
           </Dropdown>
         </div>
+
+        <div className="hidden lg:flex gap-4 justify-start ml-2">
+          <Dropdown>
+            <NavbarItem>
+              <DropdownTrigger>
+                <Button
+                  startContent={
+                    <FontAwesomeIcon icon={faArrowRightArrowLeft} />
+                  }
+                  disableRipple
+                  className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
+                  radius="sm"
+                  variant="light"
+
+                  endContent={
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  }
+                >
+                  Mouvements
+                </Button>
+              </DropdownTrigger>
+            </NavbarItem>
+            <DropdownMenu
+              aria-label="ACME features"
+              className="w-[150px]"
+              itemClasses={{
+                base: "gap-4",
+              }}
+              items={siteConfig.mouvementsItems}
+            >
+
+
+              {
+                (item) => (
+                  <DropdownItem key={item.label} className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
+                    e.preventDefault()
+                    navigate(item.href)
+                  }}>
+                    {item.label}
+                  </DropdownItem>
+                )
+              }
+
+            </DropdownMenu>
+          </Dropdown>
+        </div>
+
+
+
+
+
       </NavbarContent>
 
       <NavbarContent
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
+        
+
         <NavbarItem className="hidden sm:flex gap-2" >
-          Bonjour 👋🏽  Mirindra RAZAFINDRASOAVA
+          Bonjour 👋🏽  <h2 className="font-semibold text-lg">{userName}</h2>
         </NavbarItem>
         <NavbarItem className="hidden md:flex">
           <Button
-            isExternal
+
+            color="danger"
             as={Link}
-            className="text-sm font-normal text-default-600 bg-default-100"
+            size="lg"
+            className="text-sm font-normal text-lg"
             endContent={
               <FontAwesomeIcon icon={faPowerOff} />
             }
             variant="flat"
+            onClick={logout}
           >
             Se Déconnecter
           </Button>

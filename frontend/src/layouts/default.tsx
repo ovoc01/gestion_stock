@@ -1,19 +1,32 @@
 import { Link } from "@nextui-org/link";
 
 import { Navbar } from "@/components/navbar";
-
+import { Toaster } from 'sonner';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 export default function DefaultLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const navigate = useNavigate()
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if(token === null){
+      navigate('/')
+    }
+  },[])
+
   return (
-    <div className="relative flex flex-col h-screen ">
+    <>
+    
+    <div className="relative flex flex-col h-screen w-full  ">
       <Navbar />
-      <main className="container mx-auto w-4/5 px-6 flex-grow  pt-16">
+      <main className="container mx-auto w-full  flex-grow  ">
         {children}
       </main>
-      <footer className="w-full flex items-center justify-center py-3">
+      <Toaster position="top-right" richColors/>
+      <footer className="w-full flex items-center justify-center py-3 bg-foreground" >
         <Link
           isExternal
           className="flex items-center gap-1 text-current"
@@ -21,9 +34,10 @@ export default function DefaultLayout({
           
         >
           <span className="text-default-600">© Copyright</span>
-          <p className="text-warning">Colas Madagascar</p>
+          <p className="text-warning">Colas Madagascar 2024</p>
         </Link>
       </footer>
     </div>
+    </>
   );
 }

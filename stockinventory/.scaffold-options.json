@@ -1,0 +1,1 @@
+{"url":"jdbc:postgresql://localhost:5432/gestion_stock_dev","user":"postgres","pwd":"pixel","build":"maven","lang":"java","framework":"spring","groupId":"com.colasmadagascar","projectName":"stockinventory"}
