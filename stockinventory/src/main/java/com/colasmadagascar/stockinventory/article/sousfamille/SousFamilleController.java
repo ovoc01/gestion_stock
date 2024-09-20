@@ -1,5 +1,6 @@
 package com.colasmadagascar.stockinventory.article.sousfamille;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
@@ -49,7 +50,7 @@ public class SousFamilleController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createSousFamille(@RequestBody SousFamilleRequest sousFamille){
+    public ResponseEntity<Object> createSousFamille( @Valid @RequestBody SousFamilleRequest sousFamille){
         HashMap<String,Object> data = new HashMap<>();
         try{
             sousFamilleService.saveEntity(sousFamille);
@@ -63,7 +64,7 @@ public class SousFamilleController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSousFamille(@RequestBody SousFamilleRequest sousFamille){
+    public ResponseEntity<Object> updateSousFamille(@Valid  @RequestBody SousFamilleRequest sousFamille){
         HashMap<String,Object> data = new HashMap<>();
 
         try{

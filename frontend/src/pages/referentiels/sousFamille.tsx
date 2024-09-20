@@ -3,7 +3,7 @@ import { createSousFamille, deleteSousFamille, getAllFamilles, getAllSousFamille
 import { FamilleDataProps, SousFamilleDataProps } from "@/types/types";
 import { faCube } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {  Input, Select, SelectItem } from "@nextui-org/react";
+import { Input, Select, SelectItem } from "@nextui-org/react";
 import { now, getLocalTimeZone, DateValue, fromDate, toZoned } from "@internationalized/date";
 
 import { toast } from "sonner";
@@ -17,11 +17,14 @@ export default function SousFamillePage() {
 
    const [totalPage, setTotalPage] = useState<number>();
    const [label, setLabel] = useState('')
-   const [familleId, setFamilleId] = useState<number | null>(0)
+   const [familleId, setFamilleId] = useState<number | null>(null)
    const [dateCreation, setDateCreation] = useState<DateValue>(now(getLocalTimeZone()))
    const [isNewRowAdded, setIsNewRowAdded] = useState(false);
 
+   const [requestError, setRequestError] = useState<any>(null)
+
    const navigate = useNavigate();
+   
 
 
 
@@ -94,10 +97,7 @@ export default function SousFamillePage() {
 
 
    const createSousNewFamille = async () => {
-      if (label.trim() === '') {
-         toast.error('Le libellé est obligatoire')
-         return;
-      }
+
 
       await createSousFamille(familleId!, label, dateCreation!.toDate(getLocalTimeZone()))
          .then(() => {
@@ -106,6 +106,13 @@ export default function SousFamillePage() {
             setFamilleId(null)
             setDateCreation(now(getLocalTimeZone()))
             setIsNewRowAdded(!isNewRowAdded)
+
+         }).catch((error) => {
+            if (error.response) {
+               if (error.response.status === 400) {
+                  setRequestError(error.response.data)
+               }
+            }
          })
 
    };
@@ -139,7 +146,11 @@ export default function SousFamillePage() {
             setIsNewRowAdded(!isNewRowAdded)
             setRowToUpdate(null)
          }).catch((error) => {
-            toast.error('Erreur lors de la modification de la sous famille ', error);
+            if (error.response) {
+               if (error.response.status === 400) {
+                  setRequestError(error.response.data)
+               }
+            }
          })
    }
 
@@ -147,6 +158,7 @@ export default function SousFamillePage() {
       setLabel('')
       setFamilleId(null)
       setDateCreation(now(getLocalTimeZone()))
+      setRequestError(null)
    }
 
    return (
@@ -170,7 +182,6 @@ export default function SousFamillePage() {
 
          addModalContent={
             <div className="w-full flex flex-col gap-4 pb-5">
-               <Input value={label} onChange={(e) => setLabel(e.target.value)} type="text" label="Libellé" isRequired isClearable validationBehavior="aria" radius="sm" size="lg" />
                <Select
 
                   label="Listes des Familles"
@@ -179,7 +190,8 @@ export default function SousFamillePage() {
                   }}
 
                   selectedKeys={familleId ? [familleId.toString()] : []}
-
+                  isInvalid={requestError?.familleIdError !== null && requestError?.familleIdError !== undefined}
+                  errorMessage={requestError?.familleIdError}
                >
                   {familles!.map((famille) => (
                      <SelectItem key={famille.familleId} value={famille.familleId}>
@@ -187,6 +199,12 @@ export default function SousFamillePage() {
                      </SelectItem>
                   ))}
                </Select>
+
+               <Input value={label} onChange={(e) => setLabel(e.target.value)} type="text" label="Libellé" isRequired
+                  isClearable validationBehavior="aria" radius="sm" size="lg" 
+                  isInvalid={requestError?.sousFamLiError !== null && requestError?.sousFamLiError !== undefined}
+                  errorMessage={requestError?.sousFamLiError}
+                  />
 
             </div>
          }

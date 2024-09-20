@@ -30,6 +30,8 @@ export default function ArticlePage() {
    const [unites, setUnites] = useState<UniteDataProps[] | null>([])
    const [data, setData] = useState<ArticleDataProps[] | null>([])
 
+   const [requestError, setRequestError] = useState<any>(null)
+
 
    useEffect(() => {
       getAllArticles({ page, size })
@@ -66,7 +68,7 @@ export default function ArticlePage() {
 
    useEffect(() => {
       if (rowToUpdate) {
-         
+
          const row = data!.find((row: ArticleDataProps) => row.artId === rowToUpdate)
          console.log(row)
          if (row) {
@@ -133,18 +135,24 @@ export default function ArticlePage() {
       setLabel('')
       setArtRef('')
       setRowToUpdate(null)
+      setRequestError(null)
    }
 
    const onAdd = () => {
-      if (sousFamId && serviceId && uniteId && label && artRef) {
-         createArticle(artRef, label, sousFamId!, serviceId!, uniteId!)
-            .then(() => {
-               setIsNewRowAdded(!isNewRowAdded)
-               toast.success('Article ajouté avec succès')
-            })
-      } else {
-         toast.error('Veuillez remplir tous les champs')
-      }
+
+      createArticle(artRef, label, sousFamId!, serviceId!, uniteId!)
+         .then(() => {
+            setIsNewRowAdded(!isNewRowAdded)
+            toast.success('Article ajouté avec succès')
+         })
+         .catch((error) => {
+            if (error.response) {
+               if (error.response.status === 400) {
+                  setRequestError(error.response.data)
+               }
+            }
+         })
+
    };
 
    const onRowDelete = async (id: number) => {
@@ -160,22 +168,24 @@ export default function ArticlePage() {
       searchParams.set('page', page.toString());
       searchParams.set('size', size.toString());
       const updatedUrl = `${location.pathname}?${searchParams.toString()}`;
-      
+
       navigate(updatedUrl)
    }
 
-
-   const onRowUpdate = async() => {
-      if (sousFamId && serviceId && uniteId && label && artRef) {
-         updateArticle(rowToUpdate!, artRef, label, sousFamId!, serviceId!, uniteId!)
+   const onRowUpdate = async () => {
+      updateArticle(rowToUpdate!, artRef, label, sousFamId!, serviceId!, uniteId!)
          .then((response) => {
             console.log(response)
             setIsNewRowAdded(!isNewRowAdded)
             toast.success('Article modifié avec succès')
          })
-      } else {
-         toast.error('Veuillez remplir tous les champs')
-      }
+         .catch((error) => {
+            if (error.response) {
+               if (error.response.status === 400) {
+                  setRequestError(error.response.data)
+               }
+            }
+         })
 
    }
 
@@ -208,6 +218,8 @@ export default function ArticlePage() {
                   }}
 
                   selectedKeys={sousFamId ? [sousFamId.toString()] : []}
+                  isInvalid={requestError?.sousFamIdError !== null && requestError?.sousFamIdError !== undefined}
+                  errorMessage={requestError?.sousFamIdError}
                >
                   {sousFamilles!.map((sousFam) => (
                      <SelectItem key={sousFam.sousFamId} value={sousFam.sousFamId}>
@@ -222,7 +234,9 @@ export default function ArticlePage() {
                   onChange={(e) => {
                      setServiceId(parseInt(e.target.value))
                   }}
-                  selectedKeys={serviceId? [serviceId.toString()] : []}
+                  selectedKeys={serviceId ? [serviceId.toString()] : []}
+                  isInvalid={requestError?.serviceIdError !== null && requestError?.serviceIdError !== undefined}
+                  errorMessage={requestError?.serviceIdError}
                >
                   {serviceExploitants!.map((service) => (
                      <SelectItem key={service.serviceId} value={service.serviceId}>
@@ -239,6 +253,8 @@ export default function ArticlePage() {
                   }}
 
                   selectedKeys={uniteId ? [uniteId.toString()] : []}
+                  isInvalid={requestError?.uniteIdError !== null && requestError?.uniteIdError !== undefined}
+                  errorMessage={requestError?.uniteIdError}
                >
                   {unites!.map((unite) => (
                      <SelectItem key={unite.uniteId} value={unite.uniteId}>
@@ -246,8 +262,16 @@ export default function ArticlePage() {
                      </SelectItem>
                   ))}
                </Select>
-               <Input value={label} type="text" label="Libellé" validationBehavior="aria" radius="sm" size="md" onChange={(e) => setLabel(e.target.value)} />
-               <Input value={artRef} type="text" label="Reference" validationBehavior="aria" radius="sm" size="md" onChange={(e) => setArtRef(e.target.value)} />
+               <Input value={label} type="text" label="Libellé" validationBehavior="aria" radius="sm"
+                  size="md" onChange={(e) => setLabel(e.target.value)}
+                  isInvalid={requestError?.artLiError !== null && requestError?.artLiError !== undefined}
+                  errorMessage={requestError?.artLiError}
+               />
+
+               <Input value={artRef} type="text" label="Reference" validationBehavior="aria" radius="sm"
+                  size="md" onChange={(e) => setArtRef(e.target.value)}
+
+               />
             </div>
          }
       />

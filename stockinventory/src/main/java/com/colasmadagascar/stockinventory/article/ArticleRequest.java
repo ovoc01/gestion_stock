@@ -1,6 +1,7 @@
 package com.colasmadagascar.stockinventory.article;
 
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -16,7 +17,7 @@ public class ArticleRequest {
     @NotNull(message = "Un unité de mesure est requis")
     public Long uniteId;
     @NotNull(message = "Le libellé de l'article est requis")
+    @NotBlank(message = "Le libellé de l'article est requis")
     public String artLi;
-
     public String artRef;
 }

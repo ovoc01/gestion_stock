@@ -4,6 +4,8 @@ import { UniteOperationnelDataProps } from "@/types/types";
 import { faBuilding } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import Map from "@/components/map";
+
 import { Input } from "@nextui-org/input";
 
 import { useEffect, useState } from "react";
@@ -148,9 +150,9 @@ export default function UniteOperationnelPage() {
          isDeleteAuthorized
          isUpdateAuthorized
          size="2xl"
-         /* extraComponent={
+         extraComponent={
             <Map/>
-         } */
+         }
 
          addModalContent={
             <div className="w-full flex flex-col gap-4 ">

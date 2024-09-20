@@ -59,7 +59,7 @@ public class ArticleController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateArticle(@RequestBody Article article){
+    public ResponseEntity<Object> updateArticle(@Valid @RequestBody Article article){
         HashMap<String,Object> data = new HashMap<>();
 
         try{

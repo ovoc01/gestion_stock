@@ -22,6 +22,7 @@ public class Article  {
     
     Long artId;
 
+
     @Column
     String artLi;
     @Column
