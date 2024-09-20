@@ -268,7 +268,7 @@ values (
 
 insert into
     sous_famille (sous_fam_li, famille_id)
-values ('Telephone', 2)
+values ('Telephone', 2);
 
 CREATE OR REPLACE FUNCTION p_calculate_cmup_on_insert()
 RETURNS TRIGGER AS $$

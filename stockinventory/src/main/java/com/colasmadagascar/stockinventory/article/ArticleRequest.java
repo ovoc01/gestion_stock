@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class ArticleRequest {
-
     public Long artId;
     @NotNull(message = "Une service est requis")
     public Long serviceId;
