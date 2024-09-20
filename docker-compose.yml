@@ -14,6 +14,12 @@ services:
       dockerfile: stockinventory/Dockerfile
     ports:
       - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://databases:5432/gestion_stock_dev # Notice 'databases' as the hostname
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: pixel
+    depends_on:  # Ensure the database starts before the backend
+      - databases
     
 
   ml_service:
