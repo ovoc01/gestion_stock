@@ -205,7 +205,6 @@ export default function SousFamillePage() {
                   isInvalid={requestError?.sousFamLiError !== null && requestError?.sousFamLiError !== undefined}
                   errorMessage={requestError?.sousFamLiError}
                   />
-
             </div>
          }
       />

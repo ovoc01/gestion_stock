@@ -1,180 +1,142 @@
-import CrudComponent from "@/components/crudComponents"
-import { createFamille, deleteFamille, getAllFamilles, updateFamille } from "@/services/api/article.service";
-import { FamilleDataProps } from "@/types/types";
-import { faLayerGroup } from "@fortawesome/free-solid-svg-icons";
+import { SearchIcon } from "@/components/icons";
+import { title } from "@/components/primitives";
+import { getAllUtilisateurs } from "@/services/api/admin.service";
+import { UserInfoProps } from "@/types/types";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { DatePicker } from "@nextui-org/date-picker";
-import { Input} from "@nextui-org/input";
-import { now, getLocalTimeZone, DateValue,fromDate,toZoned} from "@internationalized/date";
-
-
+import { Button } from "@nextui-org/button";
+import { Input } from "@nextui-org/input";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/table";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+
 export default function UtilisateurPage() {
-   const searchParams = new URLSearchParams(location.search);
-   const page = searchParams.get('page') ? parseInt(searchParams.get('page')!) : 1;
-   const size = searchParams.get('size') ? parseInt(searchParams.get('size')!) : 5;
-   
-   const [dateCreation, setDateCreation] = useState<DateValue>(now(getLocalTimeZone()))
-   const [isNewRowAdded, setIsNewRowAdded] = useState(false);
-   const [totalPage, setTotalPage] = useState<number>();
-   const[label,setLabel] = useState('')
-   const [rowToUpdate, setRowToUpdate] = useState<number | null>(null);
-
-   
    const navigate = useNavigate();
-
-
-
-   const [data, setData] = useState<FamilleDataProps[] | null>([]);
+   const [data, setData] = useState([])
+   
+   const [totalUsers, setTotalUsers] = useState(0)
+   const [searchTerm, setSearchTerm] = useState("");
 
    useEffect(() => {
-      getAllFamilles({ page, size })
-         .then((response) => {
-            console.table(response)
-            setData(response.familles);
-            const realPage = Math.ceil(response.totalPages / size)
-            setTotalPage(realPage)
-         })
-         .catch((error) => {
-            toast.error('Erreur lors de la récupération des données ', error);
-         })
-
-   }, [page, size, isNewRowAdded]);
-
-   useEffect(()=>{
-      if(rowToUpdate){
-         const row = data!.find((row:FamilleDataProps)=>row.familleId === rowToUpdate)
-         if(row){
-            setLabel(row.familleLi.trim())
-            const calendarDate = fromDate(new Date(row.familleDtCr),"UTC")
-            const dateValue = toZoned(calendarDate,"UTC")
-            setDateCreation(dateValue)
-         }
-      
-      }
-   },[rowToUpdate])
-
+      getAllUtilisateurs().then((response) => {
+         setData(response.users)
+      })
+   }, [])
 
    const columns = [
       {
-         key: 'familleId',
-         label: 'Famille Id',
-         type: 'integer'
+         key: 'usrId',
+         label: 'ID'
       },
       {
-         key: 'famLogRef',
-         label: 'Reference',
-         type: 'string'
+         key: 'usrNom',
+         label: 'Nom'
       },
       {
-         key: 'familleLi',
-         label: 'Libellé',
-         type: 'string'
+         key: 'usrPrenom',
+         label: 'Prénom'
       },
-
+      {
+         key: 'usrLogin',
+         label: 'Nom d\'utilisateur'
+      },
+      {
+         key: 'roleLi',
+         label: 'Rôle'
+      }
    ]
 
-   const resetInput = ()=>{
-      setLabel('')
-      setRowToUpdate(null)
-      setDateCreation(now(getLocalTimeZone()))
-
-   }
 
 
 
-   const createNewFamille = async () => {
-      if (label.trim() === '') {
-         toast.error('Le libellé est obligatoire')
-         return;
-      }
-      await createFamille(label, dateCreation!.toDate(getLocalTimeZone()))
-         .then((response) => {
-            toast.success('Famille créée avec succès',response)
-            setIsNewRowAdded(!isNewRowAdded)
-         })
-         .catch((error) => {
-            toast.error('Erreur lors de la création de la famille ', error);
-         })
-      
-      }
-
-      const onRowDelete = async (id: number) => {
-         await deleteFamille(id)
-            .then((response) => {
-               console.log(response)
-               setIsNewRowAdded(!isNewRowAdded)
-               toast.success('Famille supprimée avec succès')
-            })
-            .catch((error) => {
-               toast.error(error.data.error);
-            })
-         
-      }
-
-      const onRowUpdate = async () => {
-         if (label.trim() === '') {
-            toast.error('Le libellé est obligatoire')
-            return;
-         }
-         await updateFamille(rowToUpdate!, label, dateCreation!.toDate(getLocalTimeZone()))
-            .then((response) => {
-               toast.success('Famille modifiée avec succès',response)
-               setIsNewRowAdded(!isNewRowAdded)
-            })
-            .catch((error) => {
-               toast.error('Erreur lors de la modification de la famille ', error.data.error);
-            })
-      }
-
-      const onPageChange = (page: number) => {
-         searchParams.set('page', page.toString());
-         searchParams.set('size', size.toString());
-         const updatedUrl = `${location.pathname}?${searchParams.toString()}`;
-         
-         navigate(updatedUrl)
-      }
-   
-   
+   const filteredRows = data!.filter((row) => {
+      return Object.values(row).some((value) =>
+         String(value).toLowerCase().includes(searchTerm.toLowerCase())
+      );
+   });
    return (
-      <CrudComponent
-         pageTitle="Utilisateurs"
-         columns={columns}
-         rowsData={data as Record<string, any>[]}
-         onAdd={createNewFamille}
-         onSearch={() => { }}
-         pageIcon={<FontAwesomeIcon icon={faLayerGroup} />}
-         pages={totalPage}
-         initialPage={page}
-         
-         setRowToUpdate={setRowToUpdate}
-         onRowDelete={onRowDelete}
-         onPageChange={onPageChange}
-         onRowUpdate={onRowUpdate}
-         resetInput={resetInput}
-         dataAbbreviation="usr"
 
-         addModalContent={
-            <div className="w-full flex flex-col gap-4 pb-5">
-               <Input value={label} type="text" label="Libellé" isRequired isClearable validationBehavior="aria" radius="sm" size="lg" onChange={(e) => setLabel(e.target.value)}  />
-               <DatePicker
-                  label="Date de création"
-                  hideTimeZone
-                  showMonthAndYearPickers
-
-                  value={dateCreation}
-                  defaultValue={dateCreation}
-                  radius="sm"
-                  size="lg"
-                  onChange={(e) => {
-                     console.log(e)
-                     setDateCreation(e)
-                  }}
-               />
+      <div className="flex flex-col gap-6">
+         <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+            <div className="inline-block max-w-lg text-center justify-center">
+               <h1 className={title()} style={{
+                  textTransform: 'capitalize'
+               }}></h1>
             </div>
-         }
-      />
+         </section>
+
+         <Table
+            aria-label="Tableau"
+            className="w-full"
+
+
+            topContent={
+               <div className="flex flex-col gap-4">
+                  <div className="flex justify-between gap-3 items-end">
+                     <Input
+                        isClearable
+                        classNames={{
+                           base: "w-full sm:max-w-[44%]",
+                           inputWrapper: "border-1",
+                        }}
+                        size="lg"
+                        placeholder="Rechercher..."
+                        startContent={
+                           <SearchIcon className="text-default-300" />
+                        }
+                        variant="bordered"
+
+                     />
+                     <div className="flex gap-3">
+
+
+
+                        <Button
+                           className="bg-foreground text-background px-4 py-2"
+                           size="lg"
+                           variant="flat"
+                           color="default"
+                           endContent={
+                              <FontAwesomeIcon icon={faPlus} />
+                           }
+                        >
+                           Ajouter
+                        </Button>
+                     </div>
+                  </div>
+               </div>
+            }
+            topContentPlacement="outside"
+         >
+            <TableHeader columns={columns}>
+               {(column) => (
+                  <TableColumn key={column.key}>
+                     <h1 className="text-lg">
+                        {column.label}
+                     </h1>
+                  </TableColumn>
+               )}
+
+            </TableHeader>
+            <TableBody items={filteredRows} emptyContent={"Pas d'élément à afficher"}>
+               {(item) => (
+                  <TableRow key={item[columns[0].key] } >
+                     {(columnKey) => (
+                        <TableCell className="text-lg " style={{
+                           cursor: 'pointer'
+                        }}
+                           onClick={() => {
+                              const id = getKeyValue(item, columns[0].key)
+                              navigate(`/utilisateurs/${id}`,{state:item})
+                           }}
+                        >{getKeyValue(item, columnKey)}</TableCell>
+                     )}
+                  </TableRow>
+               )}
+            </TableBody>
+         </Table>
+
+      </div>
    )
 }
