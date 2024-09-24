@@ -103,3 +103,25 @@ export type RoleDataProps = {
 export interface RowData {
    [key: string]: any; // Les données de ligne peuvent avoir n'importe quelle structure
 }
+
+export type RegistrationPayload = {
+   username: string,
+   password:string,
+   nom:string,
+   prenom:string,
+   roleId:number
+}
+
+
+export type MouvementData = {
+   cmdeLigneId: number;
+   article:string,
+   code:string,
+   reference:string,
+   emplacement:string,
+   prixUnitaire:number;
+   quantite:number,
+   unite:string,
+   dateDeMouvement:Date,
+   mvtType:number
+}

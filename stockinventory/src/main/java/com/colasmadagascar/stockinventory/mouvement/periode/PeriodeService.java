@@ -26,6 +26,7 @@ public class PeriodeService {
         if(periode.getPeriodeDtFin()!=null){
             periode.setPeriodeEtat(5);
         }
+        periode.setPeriodeEtat(0);
         return periodeRepository.save(periode);
     }
 

@@ -41,13 +41,14 @@ export const Navbar = () => {
         <NavbarItem>
           <Button
             startContent={
-              <FontAwesomeIcon icon={faChartSimple} />
+              <FontAwesomeIcon icon={faChartSimple}  />
             }
             disableRipple
             className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
             radius="sm"
             variant="light"
             isDisabled
+            color="primary"
 
           >
             Dashboard
@@ -67,6 +68,7 @@ export const Navbar = () => {
               e.preventDefault()
               navigate('/utilisateurs')
             }}
+            color="primary"
             
 
           >
@@ -92,6 +94,7 @@ export const Navbar = () => {
                   endContent={
                     <FontAwesomeIcon icon={faChevronDown} />
                   }
+                  color="primary"
                 >
                   Réferentiels
                 </Button>
@@ -104,10 +107,11 @@ export const Navbar = () => {
                 base: "gap-4",
               }}
               items={siteConfig.referentielsItems}
+              
             >
               {
                 (item) => (
-                  <DropdownItem key={item.label} className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
+                  <DropdownItem key={item.label}  className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
                     e.preventDefault()
                     navigate(item.href)
                   }}>
@@ -138,6 +142,7 @@ export const Navbar = () => {
                   endContent={
                     <FontAwesomeIcon icon={faChevronDown} />
                   }
+                  color="primary"
                 >
                   Mouvements
                 </Button>

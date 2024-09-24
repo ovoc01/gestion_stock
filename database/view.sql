@@ -35,3 +35,46 @@ from emplacement e
 join service s on s.service_id = e.service_id 
 join magasin m on m.mag_id = e.mag_id;
 
+create or replace view v_utilisateur_lib as
+select u.usr_id as usrId,
+r.role_li as roleLi,
+u.usr_login as usrLogin,
+u.usr_nom as usrNom,
+u.usr_prenom as usrPrenom,
+u.usr_dt_dern_acc as usrDtDernAcc,
+u.usr_dt_cr as usrDtCr
+from utilisateur u
+join "role" r on r.role_id = u.role_id;
+
+
+
+create or replace view v_utilisateur_lib_complet as
+select u.usr_id as usrId,
+r.role_li as roleLi,
+r.role_id as roleId,
+u.usr_login as usrLogin,
+u.usr_pwd as usrPwd,
+u.usr_nom as usrNom,
+u.usr_prenom as usrPrenom,
+u.usr_dt_dern_acc as usrDtDernAcc,
+u.usr_dt_cr as usrDtCr
+from utilisateur u
+join "role" r on r.role_id = u.role_id;
+
+
+create or replace view v_utilisateur_service as
+select s.service_id as service_id,
+s.service_li as serviceLi,
+u.usr_id as usrId
+from utilisateur u 
+join travailler_dans td on td.usr_id = u.usr_id 
+join service s on s.service_id = td.service_id ;
+
+create or replace view v_utilisateur_magasin as
+select 
+m.mag_id as magId,
+m.mag_li as magLi,
+um.depuis as depuis
+from utilisateur u 
+join utilisateur_magasin um on um.usr_id = u.usr_id
+join magasin m on m.mag_id = um.mag_id;

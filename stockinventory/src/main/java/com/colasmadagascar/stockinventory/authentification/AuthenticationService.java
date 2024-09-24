@@ -3,17 +3,14 @@ package com.colasmadagascar.stockinventory.authentification;
 
 import com.colasmadagascar.stockinventory.configuration.jwt.JwtService;
 
-import com.colasmadagascar.stockinventory.utilisateur.Utilisateur;
 import com.colasmadagascar.stockinventory.utilisateur.UtilisateurRepository;
-import com.colasmadagascar.stockinventory.utilisateur.role.Role;
-import com.colasmadagascar.stockinventory.utilisateur.role.RoleRepository;
 import com.colasmadagascar.stockinventory.utilisateur.role.RoleService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 
@@ -61,5 +58,19 @@ public class AuthenticationService {
                 .build();
     }
 
+    @Transactional
+    public void createUserData(){
 
+
+        RegisterRequest request1 = new RegisterRequest();
+        request1.setUsername("DOEJOHN4");
+        request1.setPassword("test1234!!");
+        request1.setNom("DOE");
+        request1.setPrenom("John");
+        request1.setRoleId(Long.parseLong("2"));
+        register(request1);
+
+
+        register(request1);
+    }
 }

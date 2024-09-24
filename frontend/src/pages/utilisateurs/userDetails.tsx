@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getLocalTimeZone, fromDate, DateValue } from "@internationalized/date";
 import { addUserToService, getAllServiceExploitant, getAllUsrServiceExploitant } from "@/services/api/serviceExploitant.service";
-import { getAllMagasins } from "@/services/api/batiment.service";
+import { addUtilisateurToMagasin, getAllMagasins, getAllUtilisateurMagasins } from "@/services/api/batiment.service";
 
 
 
@@ -43,6 +43,8 @@ export default function UserDetails() {
    const [magasins, setMagasins] = useState<MagasinDataProps[] | null>(null)
 
    const [usrServiceExploitant, setUsrServiceExploitant] = useState<RowData[] | null>([])
+   const [usrMagasins, setUsrMagasins] = useState<RowData[] | null>([])
+
    useEffect(() => {
       getAllRoles().then((response) => {
          setRoles(response.roles)
@@ -55,14 +57,19 @@ export default function UserDetails() {
          console.error('Erreur lors de la récupération des données ', error);
       })
 
+      getAllUtilisateurMagasins(userDetails.usrId).then((response) => {
+         const d = response.magasins as Record<string, any>[]
+         setUsrMagasins(d)
+      })
    }, [isUserDataChanged])
+
 
    const { page, size } = { page: 1, size: 5 }
 
    useEffect(() => {
 
       getAllServiceExploitant({ page, size }).then((response) => {
-         setServices(response.services)
+         setServices(response.serviceExploitants)
       }
       ).catch((error) => {
          console.error('Erreur lors de la récupération des données ', error);
@@ -75,7 +82,7 @@ export default function UserDetails() {
          console.error('Erreur lors de la récupération des données ', error);
       })
 
-   }, [acitiveModalContent, isOpen])
+   }, [acitiveModalContent])
 
 
    const toggleVisibility = () => setIsVisible(!isVisible);
@@ -107,6 +114,7 @@ export default function UserDetails() {
 
             label="Magasins"
             onChange={(e) => {
+               setMagasinId(parseInt(e.target.value))
             }}
             selectedKeys={magasinId ? [magasinId.toString()] : []}
 
@@ -128,20 +136,21 @@ export default function UserDetails() {
    const handleModalValidation = () => {
       if (acitiveModalContent === 'service') {
          addUserToService(userDetails.usrId, serviceId!)
-         .then(()=>{
-            setIsUserDataChanged(!isUserDataChanged)
-         })
             .catch((error) => {
                console.log('error', error)
             })
       } else {
-         console.log('magasinId', serviceId)
+         addUtilisateurToMagasin(userDetails.usrId, magasinId!)
+            .catch((error) => {
+               console.log('error', error)
+            })
       }
+      setIsUserDataChanged(!isUserDataChanged)
 
    }
 
    const serviceColumns = [
-      
+
       {
          key: 'serviceLi',
          label: 'SERVICE',
@@ -155,6 +164,18 @@ export default function UserDetails() {
       },
    ]
 
+   const magasinColumns = [
+      {
+         key: 'magLi',
+         label: 'MAGASIN',
+         type: 'string'
+      },
+      {
+         key: 'depuis',
+         label: 'DEPUIS',
+         type: 'string'
+      }
+   ]
 
 
    return <>
@@ -254,15 +275,15 @@ export default function UserDetails() {
                <TableHeader columns={serviceColumns}>
                   {(column) => (
                      <TableColumn key={column.key}>
-                        
-                           {column.label}
+
+                        {column.label}
                      </TableColumn>
                   )}
 
                </TableHeader>
                <TableBody items={usrServiceExploitant!} emptyContent={"Cet utilisateur n'est affecté à aucune service"}>
-               {(item) => (
-                     <TableRow key={item [serviceColumns[0].key]} >
+                  {(item) => (
+                     <TableRow key={item[serviceColumns[0].key]} >
                         {(columnKey) => (
                            <TableCell className="text-sm">{getKeyValue(item, columnKey)}</TableCell>
                         )}
@@ -278,13 +299,21 @@ export default function UserDetails() {
                </Button>
             </div>
             <Table aria-label="Example static collection table" className="pt-5" >
-               <TableHeader>
-                  <TableColumn>MAGASIN</TableColumn>
-                  <TableColumn>DEPUIS</TableColumn>
-                  <TableColumn>STATUS</TableColumn>
+               <TableHeader columns={magasinColumns}>
+                  {(column) => (
+                     <TableColumn key={column.key}>
+                        {column.label}
+                     </TableColumn>
+                  )}
                </TableHeader>
-               <TableBody emptyContent={"Cet utilisateur n'est affecté à aucun magasin"}>
-                  {[]}
+               <TableBody items={usrMagasins!} emptyContent={"Cet utilisateur n'est affecté à aucun magasin"}>
+                  {(item) => (
+                     <TableRow key={item[magasinColumns[0].key]} >
+                        {(columnKey) => (
+                           <TableCell className="text-sm">{getKeyValue(item, columnKey)}</TableCell>
+                        )}
+                     </TableRow>
+                  )}
                </TableBody>
             </Table>
          </div>

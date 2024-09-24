@@ -27,7 +27,6 @@ export default function DefaultLayout({
             isExternal
             className="flex items-center gap-1 text-current"
             href="https://colas.com"
-
           >
             <span className="text-default-600">© Copyright</span>
             <p className="text-warning">Colas Madagascar 2024</p>

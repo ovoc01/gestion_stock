@@ -82,3 +82,20 @@ export const createEmplacement = async (libelle: string, magasinId: number, serv
    })
    return response.data;
 }
+
+export const getAllUtilisateurMagasins  = async (usrId: number) => {
+   const response = await axios.get(BASE_URL + "magasins/utilisateurs/"+usrId, {
+      headers: requestHeaders
+   });
+   return response.data;
+}
+
+export const addUtilisateurToMagasin = async (usrId:number, magId:number) => {
+   console.log(usrId, magId)
+   const response = await axios.post(BASE_URL + "magasins/"+magId+"/utilisateurs/"+usrId,{
+      
+   }, {
+      headers:requestHeaders
+   });
+   return response.data;
+}

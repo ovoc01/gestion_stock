@@ -11,8 +11,10 @@ import SousFamillePage from "@/pages/referentiels/sousFamille";
 import UnitePage from "@/pages/referentiels/unite";
 import UniteOperationnelPage from "@/pages/referentiels/uniteOperationnel";
 import UtilisateurPage from "@/pages/utilisateurs";
+import Commande from "@/pages/mouvements/commande";
 import UserDetails from "@/pages/utilisateurs/userDetails";
 import { createBrowserRouter } from "react-router-dom";
+import MouvementSortie from "@/pages/mouvements/sortie";
 
 export const routes = createBrowserRouter([
    {
@@ -66,8 +68,12 @@ export const routes = createBrowserRouter([
             element: <PeriodePage />
          },
          {
-            path: 'mouvements',
-            element: <MouvementPage />
+            path: 'commandes',
+            element: <Commande />
+         },
+         {
+            path:'sortie',
+            element:<MouvementSortie/>
          }
       ]
    },

@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
-
+        System.out.println("hereee");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -59,6 +59,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
 
+
+            filterChain.doFilter(request, response);
+
         }catch (Exception e){
             // Token is expired, return JSON response
             e.printStackTrace();
@@ -71,9 +74,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             PrintWriter writer = response.getWriter();
             objectMapper.writeValue(writer, errorResponse);
             writer.flush();
-        }finally {
-            filterChain.doFilter(request, response);
         }
-
     }
 }

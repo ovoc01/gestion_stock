@@ -23,6 +23,7 @@ public class UniteOperationnelController  {
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(data);
         }
 
