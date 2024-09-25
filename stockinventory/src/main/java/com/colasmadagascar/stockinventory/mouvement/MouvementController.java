@@ -1,5 +1,6 @@
 package com.colasmadagascar.stockinventory.mouvement;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,10 +41,35 @@ public class MouvementController {
         }
     }
     @PostMapping("/sorties")
-    public ResponseEntity<Object> createSortie(@RequestBody  Mouvement mouvement) {
+    public ResponseEntity<Object> createSortie( @Valid @RequestBody  MouvementSortieRequest mouvement) {
         Map<String,Object> data = new HashMap<>();
         try{
             mouvementService.createSortie(mouvement);
+            data.put("mouvement",mouvement);
+            return ResponseEntity.ok(data);
+        }catch (Exception e){
+            data.put("error",e.getMessage());
+            return ResponseEntity.badRequest().body(data);
+        }
+    }
+
+
+    @GetMapping("/entrees")
+    public ResponseEntity<Object> getAllMouvementEntree(){
+        Map<String,Object> data = new HashMap<>();
+        try{
+            data.put("mouvements",mouvementService.getAllMouvementEntree());
+            return ResponseEntity.ok(data);
+        }catch (Exception e){
+            data.put("error",e.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(data);
+        }
+    }
+    @PostMapping("/entrees")
+    public ResponseEntity<Object> createEntree(@Valid @RequestBody  MouvementEntreeRequest mouvement) {
+        Map<String,Object> data = new HashMap<>();
+        try{
+            mouvementService.createEntree(mouvement);
             data.put("mouvement",mouvement);
             return ResponseEntity.ok(data);
         }catch (Exception e){

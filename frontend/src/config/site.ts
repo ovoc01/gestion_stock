@@ -53,7 +53,7 @@ const mouvementsItems:CSDropdownItemProps[] = [
   },
   {
     'label':'Entrée',
-    'href':'/mouvements',
+    'href':'/mouvements/entree',
     icon:faArrowRight
   },
   {

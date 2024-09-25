@@ -87,7 +87,6 @@ from
     join utilisateur_magasin um on um.usr_id = u.usr_id
     join magasin m on m.mag_id = um.mag_id;
 
-
 create or replace view v_stock_emplacement_initial as
 SELECT e.empl_id, a.art_id, p.periode_id, 0 as cmup, 0 as quantite
 FROM emplacement e
@@ -107,3 +106,12 @@ from stock_par_emplacement
 union all
 select *
 from v_stock_emplacement_initial;
+
+create or replace view v_emplacement_authorise_utilisateur
+SELECT u.usr_id, u.usr_nom, e.empl_id, e.empl_li, td.depuis, td.jusqua
+FROM
+    travailler_dans td
+    JOIN utilisateur u ON td.usr_id = u.usr_id
+    JOIN emplacement e ON e.service_id = td.service_id;
+
+

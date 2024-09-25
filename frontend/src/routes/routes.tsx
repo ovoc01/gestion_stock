@@ -15,6 +15,7 @@ import Commande from "@/pages/mouvements/commande";
 import UserDetails from "@/pages/utilisateurs/userDetails";
 import { createBrowserRouter } from "react-router-dom";
 import MouvementSortie from "@/pages/mouvements/sortie";
+import MouvementEntree from "@/pages/mouvements/entree";
 
 export const routes = createBrowserRouter([
    {
@@ -74,6 +75,10 @@ export const routes = createBrowserRouter([
          {
             path:'sortie',
             element:<MouvementSortie/>
+         },
+         {
+            path:'entree',
+            element:<MouvementEntree/>
          }
       ]
    },

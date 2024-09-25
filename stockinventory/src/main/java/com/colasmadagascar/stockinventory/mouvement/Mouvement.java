@@ -2,8 +2,7 @@ package com.colasmadagascar.stockinventory.mouvement;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Time;
 import java.util.Date;
@@ -12,6 +11,9 @@ import java.util.Date;
 @Table(name = "commande_ligne")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Mouvement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +29,5 @@ public class Mouvement {
     Long emplId;
     Long artId;
     Long periodeId;
+    String cmdeBc;
 }

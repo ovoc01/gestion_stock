@@ -38,7 +38,7 @@ BEGIN
     -- Calculate the new CMUP only once, handling potential division by zero
 
 
-    SELECT abs(spe.quantite - NEW.cmde_ligne_qte)
+    SELECT (spe.quantite - NEW.cmde_ligne_qte)
     INTO new_qte
     FROM v_stock_par_emplacement spe
     WHERE spe.art_id = NEW.art_id AND spe.empl_id = NEW.empl_id and spe.periode_id = NEW.periode_id;

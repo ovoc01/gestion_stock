@@ -5,6 +5,7 @@ import { ArticleDataProps, RowData } from "@/types/types";
 import { Input } from "@nextui-org/input";
 import { Button, Divider, getKeyValue, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 
 export default function MouvementSortie() {
@@ -16,7 +17,8 @@ export default function MouvementSortie() {
    const { page, size } = { page: 1, size: 5 }
 
    const [quantite, setQuantite] = useState<number | null>(null)
-   const [prixUnitaire, setPrixUnitaire] = useState<number | null>(null)
+   const [requestError,setRequestError] = useState<any>(null)
+
 
    const [pageNeedReload, setPageNeedReload] = useState(false)
 
@@ -87,14 +89,16 @@ export default function MouvementSortie() {
       }
    ]
 
-   const addMouvementSortie = ()=>{
-      createMouvementSortie(quantite!,prixUnitaire!,selectedArticle!,1)
-      .then((response)=>{
+   const addMouvementSortie = () => {
+      createMouvementSortie(quantite!, selectedArticle!, 1)
+         .then((response) => {
             setPageNeedReload(!pageNeedReload)
-            response
-      }).catch((error)=>{
-         console.log(error)
-      })
+            toast.success('Sortie enregistré',response)
+         }).catch((error) => {
+            console.log(error)
+            //toast.error('Erreur lors de l\'enregistrement de la sortie',error)
+            setRequestError(error.response.data)
+         })
    }
 
    return <>
@@ -113,7 +117,6 @@ export default function MouvementSortie() {
             <Divider className="my-4" />
             <h1 className="text-small text-default-400 ml-1">Details du mouvements</h1>
             <div className="flex w-full gap-4">
-
                <Select
                   variant="bordered"
                   label="Articles"
@@ -121,6 +124,10 @@ export default function MouvementSortie() {
                   onChange={(e) => {
                      setSelectedArticle(parseInt(e.target.value))
                   }}
+
+                  selectedKeys={selectedArticle ? [selectedArticle.toString()] : []}
+                  isInvalid={requestError?.articleError !== null && requestError?.articleError !== undefined}
+                  errorMessage={requestError?.articleError}
                >
                   {articles!.map((article) => (
                      <SelectItem key={article.artId} value={article.artId}>
@@ -130,20 +137,22 @@ export default function MouvementSortie() {
                </Select>
             </div>
             <div className="flex  gap-4">
-               <Input type="number" value={quantite ? quantite!.toString() :''} label="Quantite" validationBehavior="aria" radius="sm" size="md" variant="bordered" onChange={(e) => {
+               <Input type="number" value={quantite ? quantite!.toString() : ''} label="Quantite" validationBehavior="aria" radius="sm" size="md" variant="bordered" onChange={(e) => {
                   setQuantite(parseInt(e.target.value))
-               }} />
-               <Input type="number" value={prixUnitaire ? prixUnitaire!.toString():''} label="Prix unitaire" validationBehavior="aria"
-                  radius="sm" size="md" variant="bordered"
-                  onChange={(e) => {
-                     setPrixUnitaire(parseInt(e.target.value))
-                  }}
+                  
+               }} 
+               isInvalid={requestError?.quantiteError !== null && requestError?.quantiteError !== undefined}
+               errorMessage={requestError?.quantiteError}
                />
+
             </div>
             <div className="flex w-full gap-4">
-               <Input type="text"label="References" validationBehavior="aria" radius="sm" size="md" variant="bordered" onChange={(e) => {
-                  
-               }} />
+               <Input type="text" label="References" validationBehavior="aria" radius="sm" size="md" variant="bordered" onChange={(e) => {
+
+               }} 
+               isInvalid={requestError?.referenceError !== null && requestError?.referenceError !== undefined}
+               errorMessage={requestError?.referenceError}
+               />
             </div>
 
 
