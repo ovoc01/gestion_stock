@@ -3,15 +3,17 @@ import { login } from "@/services/api/auth.service";
 import { Button } from "@nextui-org/button";
 import { Checkbox } from "@nextui-org/checkbox";
 import { Input } from "@nextui-org/input";
-import {  useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function IndexPage() {
   const [isPasswordShown, setIsPasswordShown] = useState(false)
-  const [username, setUsername] = useState('RAZAFIMI5')
+  const [username, setUsername] = useState('RAZAFIM5')
   const [password, setPassword] = useState('test1234!!')
   const [usernameError, setUsernameError] = useState('')
   const [passwordError, setPasswordError] = useState('')
+
+
 
 
   const authentificate = async () => {
@@ -21,12 +23,13 @@ export default function IndexPage() {
     if (password === '') {
       setPasswordError('Le mot de passe est requis')
     }
-    await login(username, password).then((response) => {
+    login(username, password).then((response) => {
       console.table(response)
       const token = response.token;
       const user = response.userFullname;
       localStorage.setItem('token', token)
       localStorage.setItem('user', user)
+      
       navigate("/referentiels/unite-operationnels")
     }).catch((error) => {
       console.log(error)

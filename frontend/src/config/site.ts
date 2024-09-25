@@ -53,7 +53,7 @@ const mouvementsItems:CSDropdownItemProps[] = [
   },
   {
     'label':'Entrée',
-    'href':'/mouvements/entrees',
+    'href':'/mouvements/entree',
     icon:faArrowRight
   },
   {
@@ -61,13 +61,12 @@ const mouvementsItems:CSDropdownItemProps[] = [
     'href':'/mouvements/sortie',
     icon:faArrowLeft
   }
-
 ]
 
 const userItems:CSDropdownItemProps[] = [
   {
     'label':'Listes',
-    'href':'/utilisateurs',
+    'href':'/utilisateurs', 
     icon:faUsers
   },
 ]

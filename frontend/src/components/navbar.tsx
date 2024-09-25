@@ -10,7 +10,7 @@ import {
 import Logo from "@/components/logo"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightArrowLeft, faChartSimple, faChevronDown, faDatabase, faPowerOff, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightArrowLeft, faChartSimple, faChevronDown, faDatabase, faPowerOff, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { siteConfig } from "@/config/site";
 
@@ -41,63 +41,41 @@ export const Navbar = () => {
         <NavbarItem>
           <Button
             startContent={
-              <FontAwesomeIcon icon={faChartSimple} />
+              <FontAwesomeIcon icon={faChartSimple}  />
             }
             disableRipple
             className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
             radius="sm"
             variant="light"
             isDisabled
+            color="primary"
 
           >
             Dashboard
           </Button>
         </NavbarItem>
-        <div className="hidden lg:flex gap-4 justify-start ml-2">
-          <Dropdown>
-            <NavbarItem>
-              <DropdownTrigger>
-                <Button
-                  startContent={
-                    <FontAwesomeIcon icon={faUser} />
-                  }
-                  disableRipple
-                  className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
-                  radius="sm"
-                  variant="light"
 
-                  endContent={
-                    <FontAwesomeIcon icon={faChevronDown} />
-                  }
-                >
-                  Utilisateurs
-                </Button>
-              </DropdownTrigger>
-            </NavbarItem>
-            <DropdownMenu
-              aria-label="ACME features"
-              className="w-[150px]"
-              itemClasses={{
-                base: "gap-4",
-              }}
-              items={siteConfig.userItems}
-            >
+        <NavbarItem>
+          <Button
+            startContent={
+              <FontAwesomeIcon icon={faUsers} />
+            }
+            disableRipple
+            className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
+            radius="sm"
+            variant="light"
+            onClick={(e) => {
+              e.preventDefault()
+              navigate('/utilisateurs')
+            }}
+            color="primary"
+            
 
-              {
-                (item) => (
-                  <DropdownItem key={item.label} className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
-                    e.preventDefault()
-                    navigate(item.href)
-                  }}>
-                    {item.label}
-                  </DropdownItem>
-                )
-              }
-
-            </DropdownMenu>
-          </Dropdown>
-        </div>
-
+          >
+            Gérer les Utilisateurs
+          </Button>
+        </NavbarItem>
+        
 
         
 
@@ -116,6 +94,7 @@ export const Navbar = () => {
                   endContent={
                     <FontAwesomeIcon icon={faChevronDown} />
                   }
+                  color="primary"
                 >
                   Réferentiels
                 </Button>
@@ -128,10 +107,11 @@ export const Navbar = () => {
                 base: "gap-4",
               }}
               items={siteConfig.referentielsItems}
+              
             >
               {
                 (item) => (
-                  <DropdownItem key={item.label} className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
+                  <DropdownItem key={item.label}  className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
                     e.preventDefault()
                     navigate(item.href)
                   }}>
@@ -162,6 +142,7 @@ export const Navbar = () => {
                   endContent={
                     <FontAwesomeIcon icon={faChevronDown} />
                   }
+                  color="primary"
                 >
                   Mouvements
                 </Button>

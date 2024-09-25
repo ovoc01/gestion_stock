@@ -45,6 +45,7 @@ CREATE TABLE unite (
 CREATE TABLE stock_par_emplacement (
     stock_par_empl_id SERIAL PRIMARY KEY,
     empl_id INT,
+    periode_id INT REFERENCES periode (periode_id),
     art_id int REFERENCES article (art_id),
     quantite DOUBLE Precision,
     cmup DOUBLE Precision
@@ -109,11 +110,10 @@ CREATE TABLE periode (
 CREATE TABLE commande (
     cmde_id SERIAL PRIMARY KEY,
     cmde_num INT,
-    cmde_dt_cr TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    cmde_hr_cr TIME WITH TIME ZONE,
+    cmde_dt_cr date default now(),
+    cmde_hr_cr TIME WITH TIME ZONE default now(),
     cmde_total DOUBLE Precision,
-    service_id INT,
-    periode_id INT,
+    empl_id INT REFERENCES emplacement (empl_id),
     unop_id INT
 );
 
@@ -130,7 +130,8 @@ CREATE TABLE commande_ligne (
     cmde_id INT REFERENCES commande (cmde_id),
     empl_id INT,
     art_id INT REFERENCES article (art_id),
-    fournisseur_id INT
+    fournisseur_id INT,
+    periode_id INT REFERENCES periode (periode_id)
 );
 
 -- Table: utilisateur
@@ -141,8 +142,9 @@ CREATE TABLE utilisateur (
     usr_pwd varchar,
     usr_nom varchar,
     usr_prenom varchar,
-    usr_dt_dern_acc TIMESTAMP WITH TIME ZONE,
-    usr_dt_cr TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    etat int,
+    usr_dt_cr TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    usr_dt_dern_acc TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Table: service
@@ -181,8 +183,22 @@ CREATE TABLE fournisseur (
     fournisseur_li varchar UNIQUE
 );
 
+create table utilisateur_magasin (
+    usr_id integer references utilisateur (usr_id),
+    mag_id integer references magasin (mag_id),
+    depuis date default now(),
+    jusqua date,
+    CONSTRAINT pk_utilisateur_magasin PRIMARY KEY (usr_id, mag_id)
+);
+
 -- Table: travailler_dans
-CREATE TABLE travailler_dans (usr_id INT, service_id INT);
+CREATE TABLE travailler_dans (
+    usr_id INT,
+    service_id INT,
+    depuis date default now(),
+    jusqua date,
+    CONSTRAINT pk_travailler_dans PRIMARY KEY (usr_id, service_id)
+);
 
 -- Contraintes de clés étrangères pour les tables
 ALTER TABLE article
@@ -207,12 +223,6 @@ ALTER TABLE etat_stock
 ADD CONSTRAINT fk_etat_stock_periode FOREIGN KEY (periode_id) REFERENCES periode (periode_id);
 
 ALTER TABLE commande
-ADD CONSTRAINT fk_commande_service FOREIGN KEY (service_id) REFERENCES service (service_id);
-
-ALTER TABLE commande
-ADD CONSTRAINT fk_commande_periode FOREIGN KEY (periode_id) REFERENCES periode (periode_id);
-
-ALTER TABLE commande
 ADD CONSTRAINT fk_commande_unop FOREIGN KEY (unop_id) REFERENCES unite_operationnel (unop_id);
 
 ALTER TABLE commande_ligne
@@ -229,6 +239,9 @@ ADD CONSTRAINT fk_travailler_dans_utilisateur FOREIGN KEY (usr_id) REFERENCES ut
 
 ALTER TABLE travailler_dans
 ADD CONSTRAINT fk_travailler_dans_service FOREIGN KEY (service_id) REFERENCES service (service_id);
+
+ALTER TABLE stock_par_emplacement
+ADD CONSTRAINT stock_par_emplacement_art_id_empl_id_key UNIQUE (art_id, empl_id);
 
 insert into role (role_li) values ('Administrateur');
 
@@ -270,36 +283,101 @@ insert into
     sous_famille (sous_fam_li, famille_id)
 values ('Telephone', 2);
 
-CREATE OR REPLACE FUNCTION p_calculate_cmup_on_insert()
-RETURNS TRIGGER AS $$
+insert into
+    magasin (mag_li, mag_com)
+values (
+        'Magasin PK13',
+        'Magasin Principal'
+    );
+
+insert into magasin (mag_li) values ('Magasin PK14');
+
+insert into magasin (mag_li) values ('Magasin RN13');
+
+insert into magasin (mag_li) values ('Magasin RN1');
+
+--view
+create or replace view v_stock_emplacement_initial as
+SELECT e.empl_id, a.art_id, p.periode_id, 0 as cmup, 0 as quantite
+FROM emplacement e
+    CROSS JOIN article a
+    cross join periode p
+where
+    periode_etat = 0;
+
+create or replace view v_stock_par_emplacement as
+select
+    empl_id,
+    art_id,
+    periode_id,
+    cmup,
+    quantite
+from stock_par_emplacement
+union all
+select *
+from v_stock_emplacement_initial;
+
+--procedure
+
+CREATE OR REPLACE FUNCTION p_traiter_entree() RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
+$$
 DECLARE
-  new_cmup double precision; -- Adjust data type and precision if needed 
-	new_qte double precision;
+    new_cmup double precision;
+    new_qte double precision;
 BEGIN
-  -- Calculate the new CMUP only once
-  SELECT (
-    (spe.quantite * spe.cmup) + (NEW.cmde_ligne_qte * NEW.cmde_ligne_pu)
-  ) / (spe.quantite + NEW.cmde_ligne_qte)
-  INTO new_cmup
-  FROM stock_par_emplacement spe
-  WHERE spe.art_id = NEW.art_id AND spe.empl_id = NEW.empl_id;
+    -- Calculate the new CMUP only once, handling potential division by zero
+    SELECT
+            (spe.quantite * spe.cmup + NEW.cmde_ligne_qte * NEW.cmde_ligne_pu) / (spe.quantite + NEW.cmde_ligne_qte)
+    INTO new_cmup
+    FROM v_stock_par_emplacement spe
+    WHERE spe.art_id = NEW.art_id AND spe.empl_id = NEW.empl_id and spe.periode_id = NEW.periode_id;
 
-	select ( spe.quantite + NEW.cmde_ligne_qte)
-	into new_qte
-	FROM stock_par_emplacement spe
-  WHERE spe.art_id = NEW.art_id AND spe.empl_id = NEW.empl_id;
+    SELECT (spe.quantite + NEW.cmde_ligne_qte)
+    INTO new_qte
+    FROM v_stock_par_emplacement spe
+    WHERE spe.art_id = NEW.art_id AND spe.empl_id = NEW.empl_id and spe.periode_id = NEW.periode_id;
 
-  -- Update stock_par_emplacement with the calculated CMUP
-  UPDATE stock_par_emplacement
-  SET cmup = new_cmup,
-	quantite = new_qte
-  WHERE art_id = NEW.art_id AND empl_id = NEW.empl_id;
 
-  -- Update cmde_ligne with the calculated CMUP
-  UPDATE commande_ligne
-  SET art_cmup = new_cmup
-  WHERE cmde_ligne_id = NEW.cmde_ligne_id;
-
-  RETURN NULL; 
+    INSERT INTO stock_par_emplacement (art_id, empl_id,periode_id,cmup, quantite)
+    VALUES (NEW.art_id, NEW.empl_id, new.periode_id,new_cmup, new_qte)
+    ON CONFLICT (art_id, empl_id) DO UPDATE
+        SET cmup = new_cmup,
+            quantite = new_qte;
+    RETURN NULL;
 END;
-$$ LANGUAGE plpgsql;
+$$;
+
+CREATE OR REPLACE FUNCTION p_traiter_sortie() RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
+$$
+DECLARE
+    new_qte double precision;
+BEGIN
+    -- Calculate the new CMUP only once, handling potential division by zero
+
+
+    SELECT abs(spe.quantite - NEW.cmde_ligne_qte)
+    INTO new_qte
+    FROM v_stock_par_emplacement spe
+    WHERE spe.art_id = NEW.art_id AND spe.empl_id = NEW.empl_id and spe.periode_id = NEW.periode_id;
+
+    -- Update cmde_ligne with the calculated CMUP
+    INSERT INTO stock_par_emplacement (art_id, empl_id,periode_id, quantite)
+    VALUES (NEW.art_id, NEW.empl_id, new.periode_id,new_qte)
+    ON CONFLICT (art_id, empl_id,periode_id) DO UPDATE
+        SET quantite = new_qte;
+    RETURN NULL;
+END;
+$$;
+
+--trigger
+CREATE TRIGGER trigger_traiter_entree
+AFTER INSERT ON commande_ligne FOR EACH ROW when (New.mvt_type = 0)
+EXECUTE PROCEDURE p_traiter_entree ();
+
+CREATE TRIGGER trigger_traiter_sortie
+AFTER INSERT ON commande_ligne FOR EACH ROW when (New.mvt_type > 0)
+EXECUTE PROCEDURE p_traiter_sortie ();

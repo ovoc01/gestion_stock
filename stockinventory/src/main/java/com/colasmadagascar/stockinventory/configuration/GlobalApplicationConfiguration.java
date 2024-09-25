@@ -1,6 +1,8 @@
 package com.colasmadagascar.stockinventory.configuration;
 
 
+import com.colasmadagascar.stockinventory.mouvement.periode.Periode;
+import com.colasmadagascar.stockinventory.mouvement.periode.PeriodeRepository;
 import com.colasmadagascar.stockinventory.utilisateur.UtilisateurRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class GlobalApplicationConfiguration {
     private final UtilisateurRepository utilisateurRepository;
+    private  final PeriodeRepository periodeRepository;
 
     @Bean
     public UserDetailsService userDetailsService(){
@@ -26,7 +29,6 @@ public class GlobalApplicationConfiguration {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                 UserDetails userDetails =  utilisateurRepository.findByUsrLogin(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
-                System.out.println(userDetails.getAuthorities());
                 return userDetails;
             }
         };
@@ -47,5 +49,10 @@ public class GlobalApplicationConfiguration {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
         return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public Periode activePeriode(){
+        return periodeRepository.getCurrentActivePeriode();
     }
 }

@@ -29,6 +29,7 @@ import { levenshteinDistance } from "@/utils";
 import { exportArticle, exportPDF } from "@/services/api/exportData.service";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import './crudComponents.css'
+import { RowData } from "@/types/types";
 
 interface Column {
    key: string;
@@ -36,9 +37,7 @@ interface Column {
    type?: string; // Vous pouvez ajouter d'autres propriétés de colonne si nécessaire
 }
 
-interface RowData {
-   [key: string]: any; // Les données de ligne peuvent avoir n'importe quelle structure
-}
+
 
 interface CrudComponentProps {
    setRowToUpdate?: (id: number) => void;

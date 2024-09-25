@@ -31,3 +31,58 @@ export const updatePeriode = async (periodeId:number,periodeLi:string,dateCreati
    })
    return response.data;
 }
+
+export const getAllCommandes = async () => {
+   const response = await axios.get(BASE_URL + 'mouvements/commandes',{
+      headers:requestHeaders
+   })
+   return response.data;
+}
+
+export const createCommande = async (emplId:number,unopId:number) => {
+   const response = await axios.post(BASE_URL + 'mouvements/commandes',{
+      'emplId':emplId,
+      'unopId':unopId
+   },{
+      headers:requestHeaders
+   })
+   return response.data;
+}
+
+export const getAllSorties = async ()=>{
+   const response = await axios.get(BASE_URL + 'mouvements/sorties',{
+      headers:requestHeaders
+   })
+   return response.data;
+}
+
+export const createMouvementSortie = async (quantite:number,artId:number,cmdeId:number) =>{
+   const response = await axios.post(BASE_URL + 'mouvements/sorties',{
+         'quantite':quantite,
+         'article':artId,
+         'commande':3
+   },{
+      headers:requestHeaders
+   })
+   return response.data;
+}
+
+export const getAllEntrees = async ()=>{
+   const response = await axios.get(BASE_URL + 'mouvements/entrees',{
+      headers:requestHeaders
+   })
+   return response.data;
+}
+
+export const createMouvementEntree = async (quantite:number,pu:number,artId:number,emplId:number,justif:string) =>{
+   const response = await axios.post(BASE_URL + 'mouvements/entrees',{
+         'quantite':quantite,
+         'prixUnitaire':pu,
+         'article':artId,
+         'emplacement':emplId,
+         'justif':justif
+   },{
+      headers:requestHeaders
+   })
+   return response.data;
+}

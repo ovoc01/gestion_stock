@@ -8,48 +8,46 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 
-public class MagasinService  {
-   @Autowired
-   MagasinRepository magasinRepository;
+public class MagasinService {
+    @Autowired
+    MagasinRepository magasinRepository;
 
-   
-   public List<Magasin> getAllEntities() {
+    public List<Magasin> getAllEntities() {
         return magasinRepository.findAll();
     }
 
-    public List<Magasin> getAllEntities(int size,int page){
-        Pageable pageable = PageRequest.of(page-1, size, Sort.by("magId").ascending());
-       return magasinRepository.findAll(pageable).toList();
+    public List<Magasin> getAllEntities(int size, int page) {
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("magId").ascending());
+        return magasinRepository.findAll(pageable).toList();
     }
 
-    public long count (){
-       return magasinRepository.count();
+    public long count() {
+        return magasinRepository.count();
     }
-
 
     public Optional<Magasin> getEntityById(Long id) {
         return magasinRepository.findById(id);
     }
 
-
-
     public Magasin saveEntity(Magasin magasin) {
         return magasinRepository.save(magasin);
     }
 
-
     public Magasin updateEntity(MagasinUpdateRequest magasinUpdateRequest) {
-       var magasin = Magasin
-               .builder()
-               .magId(magasinUpdateRequest.getMagId())
-               .magLi(magasinUpdateRequest.getMagLi())
-               .magDtCr(magasinUpdateRequest.getMagDtCr())
-               .magDernMdf(LocalDateTime.now())
-               .build();
+        var magasin = Magasin
+                .builder()
+                .magId(magasinUpdateRequest.getMagId())
+                .magLi(magasinUpdateRequest.getMagLi())
+                .magDtCr(magasinUpdateRequest.getMagDtCr())
+                .magDernMdf(LocalDateTime.now())
+                .build();
 
         return magasinRepository.save(magasin);
     }
@@ -59,5 +57,13 @@ public class MagasinService  {
     }
 
 
+    @Transactional
+    public void addUtilisateurToMagasin(Long usrId, Long magId) {
+        magasinRepository.addUtilisateurToMagasin(magId, usrId);
+    }
+
+    public List<UtilisateurMagasinDTO> getUtilisateurMagasins(Long usrId) {
+        return magasinRepository.getUtilisateurMagasin(usrId);
+    }
 
 }

@@ -6,15 +6,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-
 @Service
 public class RoleService {
 
     RoleRepository roleRepository;
     private final Map<Long, Role> roleCache = new HashMap<>();
 
-    @Autowired
+    
     public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
         loadRoles();

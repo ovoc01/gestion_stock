@@ -6,26 +6,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
+public class UtilisateurService {
+    @Autowired
+    UtilisateurRepository utilisateurRepository;
 
-public class UtilisateurService  {
-   @Autowired
-   UtilisateurRepository utilisateurRepository;
-
-   
-   public List<Utilisateur> getAllEntities() {
+    public List<Utilisateur> getAllEntities() {
         return utilisateurRepository.findAll();
     }
-
 
     public Optional<Utilisateur> getEntityById(Long id) {
         return utilisateurRepository.findById(id);
     }
 
-
     public Utilisateur saveEntity(Utilisateur utilisateur) {
         return utilisateurRepository.save(utilisateur);
     }
-
 
     public Utilisateur updateEntity(Utilisateur utilisateur) {
         return utilisateurRepository.save(utilisateur);
@@ -35,6 +30,8 @@ public class UtilisateurService  {
         utilisateurRepository.deleteById(id);
     }
 
-
+    public List<UtilisateurDTO> getAllUtilisateur() {
+        return utilisateurRepository.findAllBy();
+    }
 
 }

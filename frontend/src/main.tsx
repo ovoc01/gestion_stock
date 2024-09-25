@@ -8,10 +8,14 @@ import "@/styles/globals.css";
 
 import { routes } from "./routes/routes.tsx";
 import { NextUIProvider } from "@nextui-org/system";
+import { AuthProvider } from "./providers/AuthProvider.tsx";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <NextUIProvider>
-      <RouterProvider router={routes} />
+      <AuthProvider>
+        <RouterProvider router={routes} />
+      </AuthProvider>
     </NextUIProvider>
   </React.StrictMode>,
 );
