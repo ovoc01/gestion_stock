@@ -1,6 +1,7 @@
 package com.colasmadagascar.stockinventory.article.sousfamille;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.sql.Timestamp;
 
@@ -20,6 +21,10 @@ public class SousFamille  {
     Timestamp sousFamDtCr;
     @Column
     Timestamp sousFamDernMdf;
+
+    @Getter
+    @Column(name = "sous_fam_log_ref")
+    String reference;
 
     
 

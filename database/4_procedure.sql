@@ -51,3 +51,22 @@ BEGIN
     RETURN NULL;
 END;
 $$;
+
+CREATE OR REPLACE FUNCTION fun_get_valorisation(
+    mag_id bigint = NULL,
+    empl_id bigint = NULL,
+    search_code VARCHAR(255) = NULL
+)
+    RETURNS double precision
+AS $$
+BEGIN
+    RETURN (
+        SELECT COALESCE(SUM(quantite * cmup), 0.0) AS valeur
+        FROM v_stock_par_emplacement_final_lib
+        WHERE (mag_id IS NULL OR magid = mag_id)
+          AND (empl_id IS NULL OR emplid = empl_id)
+          AND (search_code IS NULL OR code_article LIKE search_code)
+    );
+END;
+$$ LANGUAGE plpgsql;
+

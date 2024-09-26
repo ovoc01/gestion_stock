@@ -60,7 +60,7 @@ export const createMouvementSortie = async (quantite:number,artId:number,cmdeId:
    const response = await axios.post(BASE_URL + 'mouvements/sorties',{
          'quantite':quantite,
          'article':artId,
-         'commande':3
+         'commande':cmdeId
    },{
       headers:requestHeaders
    })

@@ -4,6 +4,7 @@ export type CSDropdownItemProps = {
    label: string;
    href: string;
    icon?: IconProp
+   isDibbled?: boolean;
 };
 
 
@@ -72,7 +73,9 @@ export type UniteOperationnelDataProps = {
    unopLi: string;
    unopNumBu: string;
    unopLiNumAff: string;
-   unopMdmId: string;
+   unopMatrnId: string;
+   unopLng?: number;
+   unopLtd?: number;
 }
 
 export type EmplacementDataProps = {
@@ -124,4 +127,13 @@ export type MouvementData = {
    unite:string,
    dateDeMouvement:Date,
    mvtType:number
+}
+
+export type CommandeData = {
+   cmdeId: number;
+   emplId:number;
+   unopId:number;
+   emplacement:string;
+   uniteOperationnel:string;
+   lib_commande:string
 }

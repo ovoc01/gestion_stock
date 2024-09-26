@@ -14,6 +14,7 @@ CREATE TABLE sous_famille (
     sous_fam_li varchar(250),
     sous_fam_dt_cr TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     sous_fam_dern_mdf TIMESTAMP WITH TIME ZONE,
+    sous_fam_log_ref char(10),
     famille_id INT REFERENCES famille (famille_id)
 );
 -- Table: article

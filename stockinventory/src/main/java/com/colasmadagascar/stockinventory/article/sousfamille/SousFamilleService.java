@@ -2,17 +2,23 @@ package com.colasmadagascar.stockinventory.article.sousfamille;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.colasmadagascar.stockinventory.article.famille.Famille;
+import com.colasmadagascar.stockinventory.article.famille.FamilleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.colasmadagascar.stockinventory.utils.Utils.createFamilleLogRef;
 @Service
-
+@RequiredArgsConstructor
 public class SousFamilleService  {
-   @Autowired
-   SousFamilleRepository sousFamilleRepository;
+
+   final SousFamilleRepository sousFamilleRepository;
+   final FamilleRepository familleRepository;
 
    
    public List<SousFamilleDTO> getAllEntities(int page,int size) {
@@ -26,8 +32,8 @@ public class SousFamilleService  {
 
     @Transactional
     public void saveEntity(SousFamilleRequest request){
-
-       sousFamilleRepository.createSousFamille(request.getSousFamLi(),request.getFamilleId());
+        Famille famille = familleRepository.findById(request.getFamilleId()).get();
+       sousFamilleRepository.createSousFamille(request.getSousFamLi(),request.getFamilleId(),famille.getFamLogRef()+createFamilleLogRef(request.getSousFamLi()));
     }
 
     @Transactional

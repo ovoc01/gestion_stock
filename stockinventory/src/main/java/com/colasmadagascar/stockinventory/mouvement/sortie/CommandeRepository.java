@@ -23,5 +23,8 @@ public interface CommandeRepository extends JpaRepository<Commande,Long> {
     @Query(nativeQuery = true, value = "select * from v_stock_par_emplacement")
     List<Stock> getEtatStock();
 
+    @Query(nativeQuery = true,value = "select * from v_commande_lib")
+    List<CommandeDTO> getAllCommande();
+
 
 }

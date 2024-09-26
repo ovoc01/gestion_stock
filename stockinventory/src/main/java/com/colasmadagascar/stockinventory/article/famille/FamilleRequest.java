@@ -11,5 +11,4 @@ public class FamilleRequest {
     @NotNull(message = "Libellé du famille ne doit pas être null")
     @NotBlank(message ="Libellé du famille ne doit pas être vide" )
     private String familleLi;
-
 }

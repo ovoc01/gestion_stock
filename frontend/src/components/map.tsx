@@ -1,5 +1,21 @@
-import { useState } from "react";
+import { latLngBounds } from "leaflet";
+import { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from "react-leaflet";
+
+export interface MapMarker {
+   position: { lat: number; lng: number };
+   popupContent?: React.ReactNode; // Allow custom content in the popup
+}
+
+type MapProps = {
+   center: { lat: number; lng: number };
+   zoom?: number; // Initial zoom level
+   markers?: MapMarker[]; // Array of markers 
+   mousePosition?: boolean; // Show/hide mouse position display
+   maxMarkers?: number; // Maximum number of markers to display
+   setMarkers?: (markers: MapMarker[]) => void; // Callback to update markers
+   setNewMarker?: (marker: MapMarker) => void;
+}
 
 function MousePositionDisplay() {
    const [position, setPosition] = useState<{ lat: number; lng: number } | null>(null);
@@ -19,19 +35,68 @@ function MousePositionDisplay() {
    );
 }
 
-export default function Map() {
+function AddMarker({ markers, setMarkers, setNewMarker }: { markers: MapMarker[], setMarkers: (markers: MapMarker[]) => void, setNewMarker: (marker: MapMarker) => void }) {
+   const [marker, setMarker] = useState<MapMarker | null>(null);
+   useMapEvents({
+      click: (e) => {
+         if (markers) {
+            if (markers.length >= 1) {
+               markers.pop()
+            }
+            setNewMarker({ position: e.latlng })
+            setMarker({ position: e.latlng })
+         }
+      },
 
-   return <MapContainer center={[-18.870134, 47.5205636]} zoom={15} scrollWheelZoom className="min-w-80 h-[400px] rounded-sm">
+
+
+   });
+
+   return (
+
+      marker && (
+         <Marker position={marker?.position!}>
+            {marker?.popupContent && <Popup>{marker.popupContent}</Popup>}
+         </Marker>
+      )
+
+   )
+}
+
+
+
+
+export default function Map({ center, zoom = 15, markers = [], mousePosition = true, setMarkers, setNewMarker }: MapProps) {
+   const mapRef = useRef<L.Map | null>(null);
+
+   useEffect(() => {
+      if (mapRef.current && markers.length > 0) {
+         // Create a LatLngBounds object from your markers
+         const bounds = latLngBounds(markers.map(marker => marker.position));
+
+         // Fit the map to the calculated bounds
+         mapRef.current.fitBounds(bounds);
+      }
+   }, [markers]);
+
+
+
+   return <MapContainer ref={mapRef} center={[center.lat, center.lng]} zoom={zoom}
+      scrollWheelZoom className="min-w-80 h-[400px] rounded-sm"
+
+   >
       <TileLayer
-         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={[-18.870134, 47.5205636]}>
-         <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-         </Popup>
-      </Marker>
-      <MousePositionDisplay />
+      {markers!.map((marker, index) => (
+         <Marker key={index} position={marker.position}>
+            {marker.popupContent && <Popup>{marker.popupContent}</Popup>}
+         </Marker>
+      ))}
+
+      {mousePosition && <MousePositionDisplay />}
+      {<AddMarker markers={markers} setMarkers={setMarkers!} setNewMarker={setNewMarker!} />}
 
    </MapContainer>
 }
+

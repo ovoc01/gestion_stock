@@ -93,7 +93,8 @@ FROM emplacement e
     CROSS JOIN article a
     cross join periode p
 where
-    periode_etat = 0;
+    periode_etat = 0
+    and e.service_id = a.service_id;
 
 create or replace view v_stock_par_emplacement as
 select
@@ -114,4 +115,52 @@ FROM
     JOIN utilisateur u ON td.usr_id = u.usr_id
     JOIN emplacement e ON e.service_id = td.service_id;
 
+create or replace view v_stock_par_emplacement_final as
+SELECT
+    empl_id,
+    art_id,
+    periode_id,
+    MAX(cmup) as cmup,
+    SUM(quantite) as quantite
+FROM v_stock_par_emplacement
+GROUP BY
+    empl_id,
+    art_id,
+    periode_id;
 
+create or replace view v_stock_par_emplacement_final_lib as
+SELECT
+    m.mag_id AS magid,
+    m.mag_li AS magasin,
+    e.empl_id AS emplid,
+    e.empl_li AS emplacement,
+    p.periode_id AS periodeid,
+    p.periode_li AS periode,
+    sf.famille_id AS familleid,
+    sf.sous_fam_id AS sousfamilleid,
+    sf.sous_fam_li AS sous_famille,
+    a.art_id as artid,
+    a.art_li AS article,
+    a.art_cd AS code_article,
+    sum(vtpef.quantite) AS quantite,
+    max(vtpef.cmup) AS cmup
+FROM
+    v_stock_par_emplacement_final vtpef
+    JOIN periode p ON vtpef.periode_id = p.periode_id
+    JOIN article a ON vtpef.art_id = a.art_id
+    JOIN emplacement e ON vtpef.empl_id = e.empl_id
+    JOIN magasin m ON m.mag_id = e.mag_id
+    JOIN sous_famille sf ON sf.sous_fam_id = a.sous_famille_id
+GROUP BY
+    a.art_li,
+    p.periode_li,
+    e.empl_li,
+    m.mag_li,
+    a.art_cd,
+    sf.sous_fam_li,
+    e.empl_id,
+    m.mag_id,
+    p.periode_id,
+    sf.sous_fam_id,
+    sf.famille_id,
+    a.art_id;

@@ -23,6 +23,7 @@ public class UniteOperationnelService {
     }
 
     public UniteOperationnel saveEntity(UniteOperationnel uniteOperationnel) {
+        System.out.println(uniteOperationnel.getUnopId());
         return uniteOperationnelRepository.save(uniteOperationnel);
     }
 

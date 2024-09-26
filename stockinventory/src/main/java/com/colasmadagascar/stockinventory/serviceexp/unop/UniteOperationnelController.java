@@ -1,5 +1,6 @@
 package com.colasmadagascar.stockinventory.serviceexp.unop;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ public class UniteOperationnelController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createUniteOperationnel(@RequestBody UniteOperationnel uniteOperationnel){
+    public ResponseEntity<Object> createUniteOperationnel(@RequestBody @Valid UniteOperationnel uniteOperationnel){
         HashMap<String,Object> data = new HashMap<>();
         try{
             uniteOperationnelService.saveEntity(uniteOperationnel);
@@ -53,13 +54,14 @@ public class UniteOperationnelController  {
             return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){
             data.put("error",e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(data);
         }
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUniteOperationnel(@RequestBody UniteOperationnel uniteOperationnel){
+    public ResponseEntity<Object> updateUniteOperationnel(@RequestBody @Valid UniteOperationnel uniteOperationnel){
         HashMap<String,Object> data = new HashMap<>();
 
         try{

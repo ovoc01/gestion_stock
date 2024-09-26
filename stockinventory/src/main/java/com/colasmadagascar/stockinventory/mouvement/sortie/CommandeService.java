@@ -18,8 +18,8 @@ public class CommandeService {
         this.periodeRepository = periodeRepository;
     }
 
-    public List<Commande> getAllCommande (){
-        return commandeRepository.findAll();
+    public List<CommandeDTO> getAllCommande (){
+        return commandeRepository.getAllCommande();
     }
 
     public Commande getCommandeById(Long id) {

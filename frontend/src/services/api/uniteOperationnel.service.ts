@@ -9,13 +9,15 @@ export const getAllUniteOperationnel = async ({page,size}:PaginationProps) => {
    return response.data
 }
 
-export const createUniteOperationnel = async (numbu:string,buli:string,numAffaire:string,mdmId:string,label:string) => {
+export const createUniteOperationnel = async (numbu:string,buli:string,numAffaire:string,mdmId:string,label:string,{lng,lat}:{lng:number,lat:number}) => {
    const response = await axios.post(`${BASE_URL}unite-operationnels`,{
       'unopNumBu':numbu,
       'unopLiBu':buli,
       'unopLiNumAff':numAffaire,
-      'unopMtrnId':mdmId,
-      'unopLi':label
+      'unopMatrnId':mdmId,
+      'unopLi':label,
+      'unopLng':lng,
+      'unopLtd':lat,
    },{
       headers:requestHeaders
    })
@@ -29,14 +31,16 @@ export const deleteUniteOperationnel = async (unopId:number) => {
    return response.data
 }
 
-export const updateUniteOperationnel = async (unopId:number,numbu:string,buli:string,numAffaire:string,mdmId:string,label:string) => {
+export const updateUniteOperationnel = async (unopId:number,numbu:string,buli:string,numAffaire:string,mdmId:string,label:string,{lng,lat}:{lng:number,lat:number}) => {
    const response = await axios.put(`${BASE_URL}unite-operationnels/${unopId}`,{
       'unopId':unopId,
       'unopNumBu':numbu,
       'unopLiBu':buli,
       'unopLiNumAff':numAffaire,
-      'unopMtrnId':mdmId,
-      'unopLi':label
+      'unopMatrnId':mdmId,
+      'unopLi':label,
+      'unopLng':lng,
+      'unopLtd':lat,
    },{
       headers:requestHeaders
    })

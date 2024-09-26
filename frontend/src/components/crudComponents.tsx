@@ -64,7 +64,8 @@ interface CrudComponentProps {
    updateIcon?: IconProp,
    deleteIcon?: IconProp,
    size?: "2xl" | "xs" | "sm" | "md" | "lg" | "xl" | "3xl" | "4xl" | "5xl" | "full" | undefined
-   extraComponent?: React.ReactNode
+   extraComponent?: React.ReactNode,
+   modalClassName?: string
 }
 
 const ExportButton = () => {
@@ -184,7 +185,8 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
    updateIcon,
    deleteIcon,
    size,
-   extraComponent
+   extraComponent,
+   modalClassName
 }) => {
 
    const [searchTerm, setSearchTerm] = useState("");
@@ -326,19 +328,22 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
             onOpenChange()
             resetInput!()
          }}
-            className="min-w-80 z-40 "
+            className={[modalClassName, "min-w-80 z-40"].join(" ")}
 
             size={size ? size : "2xl"}
 
          >
+
             <ModalContent>
                {(onClose) => (
                   <>
-                     <ModalHeader className="flex flex-col gap-1 text-xl" >
+
+                     <ModalHeader className="flex flex-col justify-center items-center gap-1 text-2xl" >
                         Ajouter {pageTitle}
 
                      </ModalHeader>
-                     <ModalBody >
+                     <ModalBody className="flex flex-col">
+                        
                         {addModalContent}
                      </ModalBody>
                      <h2 className="text-danger flex flex-col gap-1 ml-8" >

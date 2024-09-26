@@ -201,7 +201,7 @@ export const Navbar = () => {
 
               {
                 (item) => (
-                  <DropdownItem key={item.label} className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
+                  <DropdownItem isDisabled={item.isDibbled} key={item.label} className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
                     e.preventDefault()
                     navigate(item.href)
                   }}>

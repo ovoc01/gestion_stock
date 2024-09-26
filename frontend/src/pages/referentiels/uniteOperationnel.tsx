@@ -1,19 +1,23 @@
 import CrudComponent from "@/components/crudComponents"
 import { createUniteOperationnel, deleteUniteOperationnel, getAllUniteOperationnel, updateUniteOperationnel } from "@/services/api/uniteOperationnel.service";
 import { UniteOperationnelDataProps } from "@/types/types";
-import { faBuilding } from "@fortawesome/free-solid-svg-icons";
+import { faBuilding} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Map from "@/components/map";
+import Map, { MapMarker } from "@/components/map";
 
 import { Input } from "@nextui-org/input";
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Checkbox, Divider } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 export default function UniteOperationnelPage() {
    const searchParams = new URLSearchParams(location.search);
    const page = searchParams.get('page') ? parseInt(searchParams.get('page')!) : 1;
    const size = searchParams.get('size') ? parseInt(searchParams.get('size')!) : 5;
+
+   const navigate = useNavigate()
 
    const [label, setLabel] = useState('')
    const [numbu, setNumbu] = useState<string | null>('')
@@ -24,20 +28,35 @@ export default function UniteOperationnelPage() {
    const [totalPage, setTotalPage] = useState<number>();
    const [isNewRowAdded, setIsNewRowAdded] = useState(false);
    const [rowToUpdate, setRowToUpdate] = useState<number | null>(null);
+   const [isDefaultEmplacement, setIsDefaultEmplacement] = useState(true);
+
+   const [unopPosition, setUnopPosition] = useState<{ lat: number; lng: number } | null>({ lat: -18.870134, lng: 47.5205636 });
 
    const [data, setData] = useState<UniteOperationnelDataProps[] | null>([]);
+   const [markers, setMarkers] = useState<MapMarker[]>([]);
+
+   const [marker, setMarker] = useState<MapMarker | null>(null);
+
+   const [resquestError, setRequestError] = useState<any>(null);
 
    useEffect(() => {
-      const fetchData = async () => {
-         await getAllUniteOperationnel({ page, size })
-            .then((response) => {
-               setData(response.uniteOperationnels)
-               setTotalPage(Math.ceil(response.totalPages / size))
-            })
-      }
 
-      fetchData();
+      getAllUniteOperationnel({ page, size })
+         .then((response) => {
+            setData(response.uniteOperationnels)
 
+            for(let i = 0; i < response.uniteOperationnels.length; i++) {
+               setMarkers(prev => [...prev, { position: { lat: response.uniteOperationnels[i].unopLtd, lng: response.uniteOperationnels[i].unopLng } }])
+            }
+
+
+            setTotalPage(Math.ceil(response.totalPages / size))
+         }).finally(() => {
+
+         })
+
+
+      
    }, [isNewRowAdded, page, size]);
 
    useEffect(() => {
@@ -49,7 +68,8 @@ export default function UniteOperationnelPage() {
             setNumbu(row.unopNumBu)
             setBuli(row.unopLiNumAff)
             setNumAffaire(row.unopLiNumAff)
-            setMdmId(row.unopMdmId)
+            setMdmId(row.unopMatrnId)
+            setMarker({ position: { lat: row.unopLtd!, lng: row.unopLng! } })
          }
       }
    }, [rowToUpdate])
@@ -86,15 +106,17 @@ export default function UniteOperationnelPage() {
 
 
    const createNewUnOp = () => {
-      if (label === '' || numbu === '' || buli === '' || numAffaire === '' || mdmId === '') {
-         return
-      }
-      createUniteOperationnel(numbu!, buli!, numAffaire!, mdmId!, label!)
+
+      const { lng, lat } = marker ? marker.position : { lng: unopPosition?.lng, lat: unopPosition?.lat }
+      createUniteOperationnel(numbu!, buli!, numAffaire!, mdmId!, label!, { lng: lng!, lat: lat! })
          .then(() => {
             setIsNewRowAdded(!isNewRowAdded)
             toast.message('Unité operationnel ajoutée')
          }).catch((error) => {
-            toast.error(error)
+            setRequestError(error.response.data)
+            setTimeout(() => {
+               setRequestError(null)
+            }, 10000)
          })
    };
 
@@ -119,10 +141,9 @@ export default function UniteOperationnelPage() {
    }
 
    const onRowUpdate = () => {
-      if (label === '' || numbu === '' || buli === '' || numAffaire === '' || mdmId === '') {
-         return
-      }
-      updateUniteOperationnel(rowToUpdate!, numbu!, buli!, numAffaire!, mdmId!, label!)
+      const { lng, lat } = marker ? marker.position : { lng: unopPosition?.lng, lat: unopPosition?.lat }
+      
+      updateUniteOperationnel(rowToUpdate!, numbu!, buli!, numAffaire!, mdmId!, label!, { lng: lng!, lat: lat! })
          .then(() => {
             setIsNewRowAdded(!isNewRowAdded)
             toast.message('Unité operationnel modifiée')
@@ -132,12 +153,20 @@ export default function UniteOperationnelPage() {
             toast.error('Erreur lors de la modification de l\'unité operationnel', error)
          })
    }
+   const onPageChange = (page: number) => {
+      searchParams.set('page', page.toString());
+      searchParams.set('size', size.toString());
+      const updatedUrl = `${location.pathname}?${searchParams.toString()}`;
+
+      navigate(updatedUrl)
+   }
 
    return (
       <CrudComponent
          pageTitle="Unité operationnel"
          columns={columns}
          rowsData={data as Record<string, any>[]}
+         onPageChange={onPageChange}
          onAdd={createNewUnOp}
          onSearch={() => { }}
          pageIcon={<FontAwesomeIcon icon={faBuilding} />}
@@ -150,17 +179,63 @@ export default function UniteOperationnelPage() {
          isDeleteAuthorized
          isUpdateAuthorized
          size="2xl"
+         modalClassName="max-w-[1200px]"
          extraComponent={
-            <Map/>
+            <Map center={unopPosition!} markers={markers} />
          }
 
          addModalContent={
-            <div className="w-full flex flex-col gap-4 ">
-               <Input value={label} type="text" label="Nom unité operationnel" isRequired variant="bordered" onChange={(e) => setLabel(e.target.value)} />
-               <Input value={numbu!} type="text" label="Numero bu" isRequired variant="bordered" onChange={(e) => setNumbu(e.target.value)} />
-               <Input value={buli!} type="text" label="Libéllé bu" isRequired variant="bordered" onChange={(e) => setBuli(e.target.value)} />
-               <Input value={numAffaire!} type="text" label="Numero affaire" isRequired variant="bordered" onChange={(e) => setNumAffaire(e.target.value)} />
-               <Input value={mdmId!} type="text" label="Mdm id" isRequired variant="bordered" onChange={(e) => setMdmId(e.target.value)} />
+            <div className="flex items-center  gap-4">
+               <div className="w-2/6 flex flex-col gap-1 ">
+
+
+                  <h1 className="text-small text-default-400 ml-1">Informations du unité operationnel</h1>
+                  <div className="flex gap-4">
+                     <Input value={label} type="text" label="Nom unité operationnel"
+                        isRequired variant="bordered" onChange={(e) => setLabel(e.target.value)}
+                        isInvalid={resquestError?.unopLiError !== null && resquestError?.unopLiError !== undefined}
+                        errorMessage={resquestError?.unopLiError}
+                     />
+                     <Input value={numAffaire!} type="text" label="Numero affaire"
+                        isRequired variant="bordered" onChange={(e) => setNumAffaire(e.target.value)}
+                        isInvalid={resquestError?.unopLiNumAffError !== null && resquestError?.unopLiNumAffError !== undefined}
+                        errorMessage={resquestError?.unopLiNumAffError}
+                     />
+
+                  </div>
+                  <Divider className="my-4" />
+                  <h1 className="text-small text-default-400 ml-1">Informations BU</h1>
+                  <div className="flex gap-4">
+                     <Input value={numbu!} type="text" label="Numero bu"
+                        isRequired variant="bordered" onChange={(e) => setNumbu(e.target.value)}
+                        isInvalid={resquestError?.unopNumBuError !== null && resquestError?.unopNumBuError !== undefined}
+                        errorMessage={resquestError?.unopNumBuError}
+                     />
+                     <Input value={buli!} type="text" label="Libéllé bu"
+                        isRequired variant="bordered" onChange={(e) => setBuli(e.target.value)}
+                        isInvalid={resquestError?.unopLiBuError !== null && resquestError?.unopLiBuError !== undefined}
+                        errorMessage={resquestError?.unopLiBuError}
+                     />
+                  </div>
+
+                  <h1 className="text-small text-default-400 ml-1">Mdm id</h1>
+                  <Input value={mdmId!} type="text" label="Mdm id"
+                     isRequired variant="bordered" onChange={(e) => setMdmId(e.target.value)}
+                     isInvalid={resquestError?.unopMatrnIdError !== null && resquestError?.unopMatrnIdError !== undefined}
+                     errorMessage={resquestError?.unopMatrnIdError}
+                  />
+
+                  <Divider className="my-2" />
+                  <h1 className="text-small text-default-400 ml-1">Coordonnée</h1>
+                  <div className="flex gap-4">
+                     <Input isDisabled value={marker ? marker!.position.lng.toString() : ''} type="text" label="Longitude" isRequired variant="bordered" onChange={(e) => setNumbu(e.target.value)} />
+                     <Input isDisabled value={marker ? marker!.position.lat.toString() : ''} type="text" label="Latitude" isRequired variant="bordered" onChange={(e) => setBuli(e.target.value)} />
+                  </div>
+                  <Checkbox radius="sm" className="my-2" isSelected={isDefaultEmplacement} onClick={() => setIsDefaultEmplacement(!isDefaultEmplacement)}>Emplacement par défaut <span className="text-sm">(Centre Anosibe)</span> </Checkbox>
+               </div>
+               <div className="w-4/6">
+                  <Map center={unopPosition!} markers={markers} setMarkers={setMarkers} setNewMarker={setMarker} />
+               </div>
             </div>
          }
       />

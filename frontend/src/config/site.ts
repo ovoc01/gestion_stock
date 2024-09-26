@@ -80,7 +80,8 @@ const stockItems:CSDropdownItemProps[] = [
   {
     'label':'Prévision de stock',
     'href':'/stocks/previsions',
-    icon:faBrain
+    icon:faBrain,
+    isDibbled:true
   }
 ]
 

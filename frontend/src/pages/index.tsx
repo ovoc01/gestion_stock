@@ -55,7 +55,7 @@ export default function IndexPage() {
           <Input value={username} type="text" label="Nom d'utilisateur" errorMessage={usernameError} isRequired onChange={(e) => { setUsername(e.target.value) }} />
           <Input value={password} type={isPasswordShown ? 'text' : 'password'} label="Mot de passe" isRequired onChange={(e) => { setPassword(e.target.value) }} errorMessage={passwordError} />
           <div className="flex flex-col justify-start w-full gap-3 ">
-            <Checkbox onClick={() => setIsPasswordShown(!isPasswordShown)} >
+            <Checkbox radius="sm" onClick={() => setIsPasswordShown(!isPasswordShown)} >
               Afficher mot de passe
             </Checkbox>
           </div>

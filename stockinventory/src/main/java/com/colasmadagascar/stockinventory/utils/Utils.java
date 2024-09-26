@@ -1,9 +1,12 @@
 package com.colasmadagascar.stockinventory.utils;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.Locale;
 
 public class Utils {
@@ -38,5 +41,19 @@ public class Utils {
             sb.append(word.toUpperCase().charAt(0)).append(word.toUpperCase().charAt(1));
         }
         return sb.toString();
+    }
+
+    public static String generateSKU(String article,String famille,String sousFamille,String service) {
+       StringBuilder stringBuilder = new StringBuilder();
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String formattedDate = currentDate.format(formatter);
+       stringBuilder.append(createFamilleLogRef(service)).append("-")
+               .append(createFamilleLogRef(famille)).append("/")
+               .append(createFamilleLogRef(sousFamille)).append("-")
+               .append(createFamilleLogRef(article)).append("-")
+               .append(formattedDate);
+
+       return stringBuilder.toString();
     }
 }

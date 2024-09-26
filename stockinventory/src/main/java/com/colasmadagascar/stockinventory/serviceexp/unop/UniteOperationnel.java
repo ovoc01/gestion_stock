@@ -6,30 +6,46 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Entity
-@Table(name="unite_operationnel")
-
-public class UniteOperationnel  {
+@Table(name = "unite_operationnel")
+@Data
+public class UniteOperationnel {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     Long unopId;
 
     @Column
+    @NotBlank(message = "Le nom du unité operationnel est requis")
+    @NotNull(message = "Le nom du unité operationnel est requis")
     String unopLi;
+
+
+    @NotNull(message = "Le numero bu du unité operationnel est requis")
     @Column
     Integer unopNumBu;
+
+
+    @NotBlank(message = "Le nom bu du unité operationnel est requis")
+    @NotNull(message = "Le nom bu du unité operationnel est requis")
     @Column
     String unopLiBu;
     @Column
+    @NotBlank(message = "Le numero affaire du unité operationnel est requis")
+    @NotNull(message = "Le numero affaire du unité operationnel est requis")
     String unopLiNumAff;
     @Column
     String unopRef;
     @Column
+    @NotBlank(message = "Le Mdm Id du unité operationnel est requis")
+    @NotNull(message = "Le Mdm Id du unité operationnel est requis")
     String unopMatrnId;
     @Column
     Double unopLng;
@@ -39,108 +55,5 @@ public class UniteOperationnel  {
     Timestamp unopDtCr;
     @Column
     Timestamp unopDernMdf;
-
-    
-
-    
-    public void setUnopId(Long unopId){
-        this.unopId = unopId;
-    }
-
-    public Long getUnopId(){
-        return this.unopId;
-    }
-
-
-    public void setUnopLi(String unopLi){
-        this.unopLi = unopLi;
-    }
-
-    public String getUnopLi(){
-        return this.unopLi;
-    }
-
-
-    public void setUnopNumBu(Integer unopNumBu){
-        this.unopNumBu = unopNumBu;
-    }
-
-    public Integer getUnopNumBu(){
-        return this.unopNumBu;
-    }
-
-
-    public void setUnopLiBu(String unopLiBu){
-        this.unopLiBu = unopLiBu;
-    }
-
-    public String getUnopLiBu(){
-        return this.unopLiBu;
-    }
-
-
-    public void setUnopLiNumAff(String unopLiNumAff){
-        this.unopLiNumAff = unopLiNumAff;
-    }
-
-    public String getUnopLiNumAff(){
-        return this.unopLiNumAff;
-    }
-
-
-    public void setUnopRef(String unopRef){
-        this.unopRef = unopRef;
-    }
-
-    public String getUnopRef(){
-        return this.unopRef;
-    }
-
-
-    public void setUnopMatrnId(String unopMatrnId){
-        this.unopMatrnId = unopMatrnId;
-    }
-
-    public String getUnopMatrnId(){
-        return this.unopMatrnId;
-    }
-
-
-    public void setUnopLng(Double unopLng){
-        this.unopLng = unopLng;
-    }
-
-    public Double getUnopLng(){
-        return this.unopLng;
-    }
-
-
-    public void setUnopLtd(Double unopLtd){
-        this.unopLtd = unopLtd;
-    }
-
-    public Double getUnopLtd(){
-        return this.unopLtd;
-    }
-
-
-    public void setUnopDtCr(Timestamp unopDtCr){
-        this.unopDtCr = unopDtCr;
-    }
-
-    public Timestamp getUnopDtCr(){
-        return this.unopDtCr;
-    }
-
-
-    public void setUnopDernMdf(Timestamp unopDernMdf){
-        this.unopDernMdf = unopDernMdf;
-    }
-
-    public Timestamp getUnopDernMdf(){
-        return this.unopDernMdf;
-    }
-
-
 
 }
