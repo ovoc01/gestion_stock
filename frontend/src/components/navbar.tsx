@@ -10,7 +10,7 @@ import {
 import Logo from "@/components/logo"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightArrowLeft, faChartSimple, faChevronDown, faDatabase, faPowerOff, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightArrowLeft, faChartSimple, faChevronDown, faDatabase, faPowerOff, faScaleBalanced, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { siteConfig } from "@/config/site";
 
@@ -41,7 +41,7 @@ export const Navbar = () => {
         <NavbarItem>
           <Button
             startContent={
-              <FontAwesomeIcon icon={faChartSimple}  />
+              <FontAwesomeIcon icon={faChartSimple} />
             }
             disableRipple
             className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
@@ -69,15 +69,12 @@ export const Navbar = () => {
               navigate('/utilisateurs')
             }}
             color="primary"
-            
+
 
           >
             Gérer les Utilisateurs
           </Button>
         </NavbarItem>
-        
-
-        
 
         <div className="hidden lg:flex gap-4 justify-start ml-2">
           <Dropdown>
@@ -102,16 +99,16 @@ export const Navbar = () => {
             </NavbarItem>
             <DropdownMenu
 
-              className="w-[150px]"
+              className="w-[160px]"
               itemClasses={{
                 base: "gap-4",
               }}
               items={siteConfig.referentielsItems}
-              
+
             >
               {
                 (item) => (
-                  <DropdownItem key={item.label}  className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
+                  <DropdownItem key={item.label} className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
                     e.preventDefault()
                     navigate(item.href)
                   }}>
@@ -125,7 +122,6 @@ export const Navbar = () => {
             </DropdownMenu>
           </Dropdown>
         </div>
-
         <div className="hidden lg:flex gap-4 justify-start ml-2">
           <Dropdown>
             <NavbarItem>
@@ -150,7 +146,7 @@ export const Navbar = () => {
             </NavbarItem>
             <DropdownMenu
               aria-label="ACME features"
-              className="w-[150px]"
+              className="w-[160px]"
               itemClasses={{
                 base: "gap-4",
               }}
@@ -173,8 +169,50 @@ export const Navbar = () => {
           </Dropdown>
         </div>
 
+        <div className="hidden lg:flex gap-4 justify-start ml-2">
+          <Dropdown>
+            <NavbarItem>
+              <DropdownTrigger>
+                <Button
+                  startContent={
+                    <FontAwesomeIcon icon={faScaleBalanced} />
+                  }
+                  disableRipple
+                  className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
+                  radius="sm"
+                  variant="light"
+                  endContent={
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  }
+                  color="primary"
+                >
+                  Stock
+                </Button>
+              </DropdownTrigger>
+            </NavbarItem>
+            <DropdownMenu
+              aria-label="ACME features"
+              className="w-[160px]"
+              itemClasses={{
+                base: "gap-4",
+              }}
+              items={siteConfig.stockItems}
+            >
 
+              {
+                (item) => (
+                  <DropdownItem key={item.label} className="text-lg" startContent={<FontAwesomeIcon icon={item.icon!} />} onClick={(e) => {
+                    e.preventDefault()
+                    navigate(item.href)
+                  }}>
+                    {item.label}
+                  </DropdownItem>
+                )
+              }
 
+            </DropdownMenu>
+          </Dropdown>
+        </div>
 
 
       </NavbarContent>
@@ -183,7 +221,7 @@ export const Navbar = () => {
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-        
+
 
         <NavbarItem className="hidden sm:flex gap-2" >
           Bonjour 👋🏽  <h2 className="font-semibold text-lg">{userName}</h2>

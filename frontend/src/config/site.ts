@@ -1,4 +1,4 @@
-import {  faArrowLeft, faArrowRight, faBuilding, faBuildingShield, faCalendarCheck, faCube, faLayerGroup, faMapLocationDot, faNewspaper, faRuler, faUsers, faWarehouse } from "@fortawesome/free-solid-svg-icons";
+import {  faArrowLeft, faArrowRight, faBrain, faBuilding, faBuildingShield, faCalendarCheck, faCube, faLayerGroup, faMapLocationDot, faMoneyBillTransfer, faNewspaper, faRobot, faRuler, faUsers, faWarehouse } from "@fortawesome/free-solid-svg-icons";
 import { CSDropdownItemProps } from "@/types/types";
 export type SiteConfig = typeof siteConfig;
 
@@ -71,8 +71,22 @@ const userItems:CSDropdownItemProps[] = [
   },
 ]
 
+const stockItems:CSDropdownItemProps[] = [
+  {
+    'label':'Valorisation de stock',
+    'href':'/stocks',
+    icon:faMoneyBillTransfer
+  },
+  {
+    'label':'Prévision de stock',
+    'href':'/stocks/previsions',
+    icon:faBrain
+  }
+]
+
 export const siteConfig = {
   referentielsItems: referentielsItems,
   mouvementsItems: mouvementsItems,
-  userItems:userItems
+  userItems:userItems,
+  stockItems:stockItems
 };

@@ -16,6 +16,7 @@ import UserDetails from "@/pages/utilisateurs/userDetails";
 import { createBrowserRouter } from "react-router-dom";
 import MouvementSortie from "@/pages/mouvements/sortie";
 import MouvementEntree from "@/pages/mouvements/entree";
+import ValorisationStock from "@/pages/stock";
 
 export const routes = createBrowserRouter([
    {
@@ -93,6 +94,16 @@ export const routes = createBrowserRouter([
          {
             path: ':id',
             element:<UserDetails/>
+         }
+      ]
+   },
+   {
+      path:'/stocks/',
+      element:<Layout/>,
+      children:[
+         {
+            path:'',
+            element:<ValorisationStock/>
          }
       ]
    }
