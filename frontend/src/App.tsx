@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 
 import IndexPage from "@/pages/index";
-import UniteOperationnelPage from "./pages/referentiels/uniteOperationnel";
-import FamillePage from "./pages/referentiels/famille";
-import ServiceExploitantPage from "./pages/referentiels/serviceExploitant";
+import UniteOperationnelPage from "./pages/referentiels/unop";
+import FamillePage from "./pages/referentiels/article/famille";
+import ServiceExploitantPage from "./pages/referentiels/service";
 
 function App() {
   return (

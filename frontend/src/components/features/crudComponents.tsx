@@ -20,8 +20,8 @@ import {
    DropdownTrigger,
 } from "@nextui-org/react";
 import { useCallback, useState } from "react";
-import { SearchIcon } from "@/components/icons";
-import { title } from "./primitives";
+import { SearchIcon } from "@/components/ui/icons";
+import { title } from "../primitives";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faShare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";

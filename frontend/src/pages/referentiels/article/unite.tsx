@@ -1,4 +1,4 @@
-import CrudComponent from "@/components/crudComponents"
+import CrudComponent from "@/components/features/crudComponents"
 import { createUnite, deleteUnite, getAllUnite, updateUnite } from "@/services/api/article.service";
 import { UniteDataProps } from "@/types/types";
 import { faRuler } from "@fortawesome/free-solid-svg-icons";

@@ -1,4 +1,4 @@
-import CrudComponent from "@/components/crudComponents"
+import CrudComponent from "@/components/features/crudComponents"
 import { createArticle, deleteArticle, getAllArticles, getAllSousFamilles, getAllUnite, updateArticle } from "@/services/api/article.service";
 import { getAllServiceExploitant } from "@/services/api/serviceExploitant.service";
 import { ArticleDataProps, ServiceExploitantDataProps, SousFamilleDataProps, UniteDataProps } from "@/types/types";

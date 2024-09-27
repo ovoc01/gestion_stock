@@ -1,4 +1,4 @@
-import { SearchIcon } from "@/components/icons";
+import { SearchIcon } from "@/components/ui/icons";
 import { title } from "@/components/primitives";
 import { getAllRoles, getAllUtilisateurs } from "@/services/api/admin.service";
 import { registerUser } from "@/services/api/auth.service";

@@ -1,6 +1,6 @@
 import { Link } from "@nextui-org/link";
 
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/features/navbar";
 import { Toaster } from 'sonner';
 
 

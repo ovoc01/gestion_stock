@@ -15,6 +15,7 @@ type MapProps = {
    maxMarkers?: number; // Maximum number of markers to display
    setMarkers?: (markers: MapMarker[]) => void; // Callback to update markers
    setNewMarker?: (marker: MapMarker) => void;
+   className?: string;
 }
 
 function MousePositionDisplay() {
@@ -66,7 +67,7 @@ function AddMarker({ markers, setMarkers, setNewMarker }: { markers: MapMarker[]
 
 
 
-export default function Map({ center, zoom = 15, markers = [], mousePosition = true, setMarkers, setNewMarker }: MapProps) {
+export default function Map({ center, zoom = 15, markers = [], mousePosition = true, setMarkers, setNewMarker,className }: MapProps) {
    const mapRef = useRef<L.Map | null>(null);
 
    useEffect(() => {
@@ -82,7 +83,7 @@ export default function Map({ center, zoom = 15, markers = [], mousePosition = t
 
 
    return <MapContainer ref={mapRef} center={[center.lat, center.lng]} zoom={zoom}
-      scrollWheelZoom className="min-w-80 h-[400px] rounded-sm"
+      scrollWheelZoom className={["min-w-80 h-[400px] rounded-sm",className].join(' ')}
 
    >
       <TileLayer

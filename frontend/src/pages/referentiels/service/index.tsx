@@ -1,4 +1,4 @@
-import CrudComponent from "@/components/crudComponents"
+import CrudComponent from "@/components/features/crudComponents"
 import { createServiceExploitant, getAllServiceExploitant } from "@/services/api/serviceExploitant.service";
 import { ServiceExploitantDataProps } from "@/types/types";
 import { faBuildingShield } from "@fortawesome/free-solid-svg-icons";

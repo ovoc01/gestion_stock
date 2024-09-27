@@ -1,15 +1,14 @@
 import IndexPage from "@/pages";
-import MouvementPage from "@/pages/mouvements";
 import PeriodePage from "@/pages/mouvements/periode";
-import ArticlePage from "@/pages/referentiels/article";
-import EmplacementPage from "@/pages/referentiels/emplacement";
-import FamillePage from "@/pages/referentiels/famille";
+import ArticlePage from "@/pages/referentiels/article/index";
+import EmplacementPage from "@/pages/referentiels/magasin/emplacement";
+import FamillePage from "@/pages/referentiels/article/famille";
 import Layout from "@/pages/referentiels/layout";
-import MagasinPage from "@/pages/referentiels/magasin";
-import ServiceExploitantPage from "@/pages/referentiels/serviceExploitant";
-import SousFamillePage from "@/pages/referentiels/sousFamille";
-import UnitePage from "@/pages/referentiels/unite";
-import UniteOperationnelPage from "@/pages/referentiels/uniteOperationnel";
+import MagasinPage from "@/pages/referentiels/magasin/index";
+import ServiceExploitantPage from "@/pages/referentiels/service/index";
+import SousFamillePage from "@/pages/referentiels/article/sousFamille";
+import UnitePage from "@/pages/referentiels/article/unite";
+import UniteOperationnelPage from "@/pages/referentiels/unop/index";
 import UtilisateurPage from "@/pages/utilisateurs";
 import Commande from "@/pages/mouvements/commande";
 import UserDetails from "@/pages/utilisateurs/userDetails";
@@ -17,6 +16,7 @@ import { createBrowserRouter } from "react-router-dom";
 import MouvementSortie from "@/pages/mouvements/sortie";
 import MouvementEntree from "@/pages/mouvements/entree";
 import ValorisationStock from "@/pages/stock";
+import DetailsMagasin from "@/pages/referentiels/magasin/details";
 
 export const routes = createBrowserRouter([
    {
@@ -104,6 +104,16 @@ export const routes = createBrowserRouter([
          {
             path:'',
             element:<ValorisationStock/>
+         }
+      ]
+   },
+   {
+      path:'/details',
+      element:<Layout/>,
+      children:[
+         {
+            path:'',
+            element:<DetailsMagasin/>
          }
       ]
    }

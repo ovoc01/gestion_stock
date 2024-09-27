@@ -1,4 +1,4 @@
-import Logo from "@/components/logo";
+import Logo from "@/components/ui/logo";
 import { login } from "@/services/api/auth.service";
 import { Button } from "@nextui-org/button";
 import { Checkbox } from "@nextui-org/checkbox";

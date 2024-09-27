@@ -7,10 +7,10 @@ import {
   NavbarItem,
 } from "@nextui-org/navbar";
 
-import Logo from "@/components/logo"
+import Logo from "@/components/ui/logo"
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightArrowLeft, faChartSimple, faChevronDown, faDatabase, faPowerOff, faScaleBalanced, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightArrowLeft, faChartSimple, faChevronDown, faDatabase, faPowerOff, faScaleBalanced, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { siteConfig } from "@/config/site";
 

@@ -1,4 +1,4 @@
-import CrudComponent from "@/components/crudComponents"
+import CrudComponent from "@/components/features/crudComponents"
 import { createEmplacement, deleteEmplacement, getAllEmplacements, getAllMagasins, updateEmplacement } from "@/services/api/batiment.service";
 import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

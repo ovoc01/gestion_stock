@@ -1,10 +1,10 @@
-import CrudComponent from "@/components/crudComponents"
+import CrudComponent from "@/components/features/crudComponents"
 import { createUniteOperationnel, deleteUniteOperationnel, getAllUniteOperationnel, updateUniteOperationnel } from "@/services/api/uniteOperationnel.service";
 import { UniteOperationnelDataProps } from "@/types/types";
 import { faBuilding} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Map, { MapMarker } from "@/components/map";
+import Map, { MapMarker } from "@/components/features/map";
 
 import { Input } from "@nextui-org/input";
 

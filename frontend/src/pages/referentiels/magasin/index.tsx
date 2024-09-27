@@ -1,4 +1,4 @@
-import CrudComponent from "@/components/crudComponents"
+import CrudComponent from "@/components/features/crudComponents"
 import { createMagasin, deleteMagasin, getAllMagasins, updateMagasin } from "@/services/api/batiment.service";
 import { faWarehouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,6 +29,7 @@ export default function MagasinPage() {
    const searchParams = new URLSearchParams(location.search);
    const page = searchParams.get('page') ? parseInt(searchParams.get('page')!) : 1;
    const size = searchParams.get('size') ? parseInt(searchParams.get('size')!) : 5;
+   const idMagasin = searchParams.get('idMagasin') ? parseInt(searchParams.get('idMagasin')!) : null;
 
    const [rowToUpdate, setRowToUpdate] = useState<number | null>(null);
 
@@ -151,6 +152,7 @@ export default function MagasinPage() {
       setRequestError(null)
    }
    return (
+      
       <CrudComponent
          pageTitle="Magasin"
          columns={columns}
