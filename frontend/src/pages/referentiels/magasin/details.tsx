@@ -1,4 +1,5 @@
 import Map, { MapMarker } from "@/components/features/map";
+import { Button } from "@nextui-org/button";
 import { useState } from "react";
 
 export default function DetailsMagasin() {
@@ -11,6 +12,7 @@ export default function DetailsMagasin() {
             <div className="about flex flex-col gap-4 ">
                <div className="flex justify-between items-center">
                   <h1 className="text-5xl font-bold ">Magasin PK 13</h1>
+                  <Button  size="md" className=" rounded-md bg-primary text-white">Ajouter Emplacement</Button>
                   <h1 className="text-xl flex flex-col text-center">Valorisation:
                      <span className="text-3xl text-secondary italic font-semibold">3,000,000 Ar</span>
                   </h1>

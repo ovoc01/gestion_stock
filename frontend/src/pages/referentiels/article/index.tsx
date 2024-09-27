@@ -1,6 +1,6 @@
-import CrudComponent from "@/components/features/crudComponents"
+import CrudComponent from "@/components/features/crud-components"
 import { createArticle, deleteArticle, getAllArticles, getAllSousFamilles, getAllUnite, updateArticle } from "@/services/api/article.service";
-import { getAllServiceExploitant } from "@/services/api/serviceExploitant.service";
+import { getAllServiceExploitant } from "@/services/api/service-exploitant.service";
 import { ArticleDataProps, ServiceExploitantDataProps, SousFamilleDataProps, UniteDataProps } from "@/types/types";
 import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

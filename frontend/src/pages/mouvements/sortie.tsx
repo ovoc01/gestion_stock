@@ -1,4 +1,3 @@
-
 import { getAllArticles } from "@/services/api/article.service";
 import { createMouvementSortie, getAllCommandes, getAllSorties } from "@/services/api/mouvement.service";
 import { ArticleDataProps, CommandeData, RowData } from "@/types/types";

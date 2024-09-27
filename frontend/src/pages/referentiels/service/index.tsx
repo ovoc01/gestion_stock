@@ -1,5 +1,5 @@
-import CrudComponent from "@/components/features/crudComponents"
-import { createServiceExploitant, getAllServiceExploitant } from "@/services/api/serviceExploitant.service";
+import CrudComponent from "@/components/features/crud-components"
+import { createServiceExploitant, getAllServiceExploitant } from "@/services/api/service-exploitant.service";
 import { ServiceExploitantDataProps } from "@/types/types";
 import { faBuildingShield } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -7,7 +7,7 @@ import { Button, DatePicker, Divider, getKeyValue, Modal, ModalBody, ModalConten
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getLocalTimeZone, fromDate, DateValue } from "@internationalized/date";
-import { addUserToService, getAllServiceExploitant, getAllUsrServiceExploitant } from "@/services/api/serviceExploitant.service";
+import { addUserToService, getAllServiceExploitant, getAllUsrServiceExploitant } from "@/services/api/service-exploitant.service";
 import { addUtilisateurToMagasin, getAllMagasins, getAllUtilisateurMagasins } from "@/services/api/batiment.service";
 
 

@@ -1,7 +1,7 @@
 
 import { getAllEmplacements } from "@/services/api/batiment.service";
 import { createCommande } from "@/services/api/mouvement.service";
-import { getAllUniteOperationnel } from "@/services/api/uniteOperationnel.service";
+import { getAllUniteOperationnel } from "@/services/api/unite-operationnel.service";
 import { EmplacementDataProps, UniteOperationnelDataProps } from "@/types/types";
 import { Button, getKeyValue, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import { useEffect, useState } from "react";

@@ -1,4 +1,4 @@
-import CrudComponent from "@/components/features/crudComponents"
+import CrudComponent from "@/components/features/crud-components"
 import { createMagasin, deleteMagasin, getAllMagasins, updateMagasin } from "@/services/api/batiment.service";
 import { faWarehouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

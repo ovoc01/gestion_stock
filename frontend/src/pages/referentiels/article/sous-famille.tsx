@@ -1,4 +1,4 @@
-import CrudComponent from "@/components/features/crudComponents"
+import CrudComponent from "@/components/features/crud-components"
 import { createSousFamille, deleteSousFamille, getAllFamilles, getAllSousFamilles, updateSousFamille } from "@/services/api/article.service";
 import { FamilleDataProps, SousFamilleDataProps } from "@/types/types";
 import { faCube } from "@fortawesome/free-solid-svg-icons";

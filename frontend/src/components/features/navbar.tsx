@@ -27,13 +27,13 @@ export const Navbar = () => {
 
 
   return (
-    <NextUINavbar maxWidth="2xl" position="sticky" className="px-8">
+    <NextUINavbar maxWidth="2xl" position="sticky" className="px-8 flex items-center">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand className="gap-3 max-w-fit">
           <Link
             className="flex justify-start items-center gap-1"
             color="foreground"
-            href="/"
+            href="/dashboards"
           >
             <Logo height={30} width={90} logo="n-title" className="mx-auto" />
           </Link>
@@ -47,9 +47,12 @@ export const Navbar = () => {
             className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
             radius="sm"
             variant="light"
-            isDisabled
+            
             color="primary"
+            onPress={(e) => {
 
+              navigate('/dashboards')
+            }}
           >
             Dashboard
           </Button>
@@ -223,7 +226,7 @@ export const Navbar = () => {
       >
 
 
-        <NavbarItem className="hidden sm:flex gap-2" >
+        <NavbarItem className="hidden sm:flex gap-2 flex items-center " >
           Bonjour 👋🏽  <h2 className="font-semibold text-lg">{userName}</h2>
         </NavbarItem>
         <NavbarItem className="hidden md:flex">

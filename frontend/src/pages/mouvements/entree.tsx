@@ -1,5 +1,5 @@
 
-import CrudComponent from "@/components/features/crudComponents";
+import CrudComponent from "@/components/features/crud-components";
 import { getAllArticles } from "@/services/api/article.service";
 import { getAllEmplacements } from "@/services/api/batiment.service";
 import { createMouvementEntree, getAllEntrees} from "@/services/api/mouvement.service";

@@ -26,7 +26,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faShare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { levenshteinDistance } from "@/utils";
-import { exportArticle, exportPDF } from "@/services/api/exportData.service";
+import { exportArticle, exportPDF } from "@/services/api/export-data.service";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import './crudComponents.css'
 import { RowData } from "@/types/types";

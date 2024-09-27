@@ -6,17 +6,18 @@ import FamillePage from "@/pages/referentiels/article/famille";
 import Layout from "@/pages/referentiels/layout";
 import MagasinPage from "@/pages/referentiels/magasin/index";
 import ServiceExploitantPage from "@/pages/referentiels/service/index";
-import SousFamillePage from "@/pages/referentiels/article/sousFamille";
+import SousFamillePage from "@/pages/referentiels/article/sous-famille";
 import UnitePage from "@/pages/referentiels/article/unite";
 import UniteOperationnelPage from "@/pages/referentiels/unop/index";
 import UtilisateurPage from "@/pages/utilisateurs";
 import Commande from "@/pages/mouvements/commande";
-import UserDetails from "@/pages/utilisateurs/userDetails";
+import UserDetails from "@/pages/utilisateurs/user-details";
 import { createBrowserRouter } from "react-router-dom";
 import MouvementSortie from "@/pages/mouvements/sortie";
 import MouvementEntree from "@/pages/mouvements/entree";
 import ValorisationStock from "@/pages/stock";
 import DetailsMagasin from "@/pages/referentiels/magasin/details";
+import DashboardPage from "@/pages/dashboard";
 
 export const routes = createBrowserRouter([
    {
@@ -114,6 +115,16 @@ export const routes = createBrowserRouter([
          {
             path:'',
             element:<DetailsMagasin/>
+         }
+      ]
+   },
+   {
+      path:'/dashboards',
+      element:<Layout/>,
+      children:[
+         {
+            path:'',
+            element:<DashboardPage/>
          }
       ]
    }

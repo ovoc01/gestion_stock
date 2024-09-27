@@ -13,9 +13,6 @@ export default function IndexPage() {
   const [usernameError, setUsernameError] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
-
-
-
   const authentificate = async () => {
     if (username.trim() === '') {
       setUsernameError('Le nom d\'utilisateur est requis')
@@ -29,8 +26,8 @@ export default function IndexPage() {
       const user = response.userFullname;
       localStorage.setItem('token', token)
       localStorage.setItem('user', user)
-      
-      navigate("/referentiels/unite-operationnels")
+
+      navigate("/dashboards")
     }).catch((error) => {
       console.log(error)
       setPasswordError('Nom d\'utilisateur ou mot de passe incorrect')
@@ -38,9 +35,6 @@ export default function IndexPage() {
 
   }
   const navigate = useNavigate()
-
-
-
 
   return (
     <div className="flex h-screen justify-center items-center ">

@@ -3,7 +3,7 @@ import { title } from "@/components/primitives";
 import { getAllRoles, getAllUtilisateurs } from "@/services/api/admin.service";
 import { registerUser } from "@/services/api/auth.service";
 import { getAllMagasins } from "@/services/api/batiment.service";
-import { getAllServiceExploitant } from "@/services/api/serviceExploitant.service";
+import { getAllServiceExploitant } from "@/services/api/service-exploitant.service";
 import { MagasinDataProps, RegistrationPayload, RoleDataProps, ServiceExploitantDataProps } from "@/types/types";
 import { faEye, faEyeSlash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -1,4 +1,4 @@
-import CrudComponent from "@/components/features/crudComponents"
+import CrudComponent from "@/components/features/crud-components"
 import { createEmplacement, deleteEmplacement, getAllEmplacements, getAllMagasins, updateEmplacement } from "@/services/api/batiment.service";
 import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { EmplacementDataProps, MagasinDataProps, ServiceExploitantDataProps } from "@/types/types";
-import { getAllServiceExploitant } from "@/services/api/serviceExploitant.service";
+import { getAllServiceExploitant } from "@/services/api/service-exploitant.service";
 import { Input, Select, SelectItem } from "@nextui-org/react";
 export default function EmplacementPage() {
    const searchParams = new URLSearchParams(location.search);

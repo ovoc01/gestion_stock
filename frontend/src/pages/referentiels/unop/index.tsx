@@ -1,5 +1,5 @@
-import CrudComponent from "@/components/features/crudComponents"
-import { createUniteOperationnel, deleteUniteOperationnel, getAllUniteOperationnel, updateUniteOperationnel } from "@/services/api/uniteOperationnel.service";
+import CrudComponent from "@/components/features/crud-components"
+import { createUniteOperationnel, deleteUniteOperationnel, getAllUniteOperationnel, updateUniteOperationnel } from "@/services/api/unite-operationnel.service";
 import { UniteOperationnelDataProps } from "@/types/types";
 import { faBuilding} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
