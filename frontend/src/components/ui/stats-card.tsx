@@ -1,23 +1,30 @@
-import { faUserGear } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function StatsCard() {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+
+type StatsCardProps = {
+   title:string,
+   icon?:IconProp,
+   percentage?:string,
+   number:number,
+}
+export default function StatsCard({title,percentage,number,icon}:StatsCardProps) {
    return (
-      <div className="border-solid border-1  flex flex-col justify-around border-gray-300  rounded-lg shadow-md w-[300px] h-[140px] p-8">
+      <div className="border-solid border-1  flex flex-col justify-around border-gray-300  rounded-lg shadow-md w-[250px] h-[140px] p-8 cursor-pointer">
          <div className="flex justify-between font-semibold text-2xl items-center ">
             <span className=" ">
-               Utilisateurs Active
+               {title}
             </span>
             <span className="">
-               <FontAwesomeIcon icon={faUserGear}/>
+               <FontAwesomeIcon icon={icon!}/>
             </span>
          </div>
          <div className="flex justify-between items-center ">
-            <span className="text-5xl font-bold text-primary">
-               250
+            <span className="text-5xl  text-primary italic">
+               {number}
             </span>
             <span className=" text-md text-primary mt-5 italic">
-               +6,5%
+               {percentage}
             </span>
          </div>
       </div>

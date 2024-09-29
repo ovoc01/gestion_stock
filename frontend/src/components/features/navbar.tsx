@@ -49,7 +49,7 @@ export const Navbar = () => {
             variant="light"
             
             color="primary"
-            onPress={(e) => {
+            onPress={() => {
 
               navigate('/dashboards')
             }}
