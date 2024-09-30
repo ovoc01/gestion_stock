@@ -10,6 +10,7 @@ import { now, getLocalTimeZone, DateValue, fromDate, toZoned } from "@internatio
 import { DatePicker } from "@nextui-org/date-picker";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MagasinDataProps } from "@/types/types";
+import DetailsMagasin from "./details";
 
 export default function MagasinPage() {
    const [label, setLabel] = useState('')
@@ -33,23 +34,25 @@ export default function MagasinPage() {
 
    const [rowToUpdate, setRowToUpdate] = useState<number | null>(null);
 
-
    useEffect(() => {
-      getAllMagasins({ page, size })
-         .then((response) => {
-            console.table(response)
-            setData(response.magasins);
-            const realPage = Math.ceil(response.totalPages / size)
-            setTotalPage(realPage)
-         })
-         .catch((error) => {
-            toast.error('Erreur lors de la récupération des données ', error);
-         })
+      if(idMagasin===null){
+         getAllMagasins({ page, size })
+            .then((response) => {
+               console.table(response)
+               setData(response.magasins);
+               const realPage = Math.ceil(response.totalPages / size)
+               setTotalPage(realPage)
+            })
+            .catch((error) => {
+               toast.error('Erreur lors de la récupération des données ', error);
+            })
+      }
 
    }, [isNewRowAdded, page, size]);
 
    useEffect(() => {
-      if (rowToUpdate) {
+
+      if (rowToUpdate && idMagasin===null) {
 
          const row = data!.find((row: MagasinDataProps) => row.magId === rowToUpdate);
          if (row) {
@@ -60,7 +63,8 @@ export default function MagasinPage() {
             setCommentaire(row.magCom ? row.magCom : '')
          }
       }
-   }, [rowToUpdate])
+   }, [rowToUpdate])     
+   
 
 
    const columns = [
@@ -93,7 +97,7 @@ export default function MagasinPage() {
 
 
    const createNewFamille = async () => {
-      
+
       console.log(dateCreation)
       await createMagasin(label, dateCreation!.toDate(getLocalTimeZone()), commentaire)
          .then((response) => {
@@ -101,9 +105,9 @@ export default function MagasinPage() {
             setIsNewRowAdded(!isNewRowAdded)
             setLabel('')
             setCommentaire('')
-         }).catch((error)=>{
-            if(error.response){
-               if(error.response.status  === 400){
+         }).catch((error) => {
+            if (error.response) {
+               if (error.response.status === 400) {
                   setRequestError(error.response.data)
                }
             }
@@ -119,7 +123,7 @@ export default function MagasinPage() {
    }
 
    const onRowUpdate = async () => {
-      
+
       await updateMagasin(rowToUpdate!, label, dateCreation!.toDate(getLocalTimeZone()), commentaire)
          .then((response) => {
             toast.success(response.message)
@@ -127,9 +131,9 @@ export default function MagasinPage() {
             setRowToUpdate(null)
             setLabel('')
             setCommentaire('')
-         }).catch((error)=>{
-            if(error.response){
-               if(error.response.status  === 400){
+         }).catch((error) => {
+            if (error.response) {
+               if (error.response.status === 400) {
                   setRequestError(error.response.data)
                }
             }
@@ -145,59 +149,69 @@ export default function MagasinPage() {
    }
 
 
-   const resetInput = ()=>{
+   const resetInput = () => {
       setLabel('')
       setCommentaire('')
       setRowToUpdate(null)
       setRequestError(null)
    }
-   return (
-      
+
+   const viewDetails = (id: number) => {
+      navigate(`/referentiels/magasins?idMagasin=${id}`)
+   }
+
+
+   const Index = () => (
       <CrudComponent
-         pageTitle="Magasin"
-         columns={columns}
-         rowsData={data as Record<string, any>[]}
-         isDeleteAuthorized
-         isUpdateAuthorized
-         pageIcon={<FontAwesomeIcon icon={faWarehouse} />}
-         initialPage={page}
-         pages={totalPage}
-         resetInput={resetInput}
+            pageTitle="Magasin"
+            columns={columns}
+            rowsData={data as Record<string, any>[]}
+            isDeleteAuthorized
+            isUpdateAuthorized
+            pageIcon={<FontAwesomeIcon icon={faWarehouse} />}
+            initialPage={page}
+            pages={totalPage}
+            resetInput={resetInput}
 
-         onSearch={() => { }}
-         onPageChange={onPageChange}
-         onAdd={createNewFamille}
-         onRowDelete={onRowDelete}
-         setRowToUpdate={setRowToUpdate}
-         onRowUpdate={onRowUpdate}
-         dataAbbreviation="mag"
+            onSearch={() => { }}
+            onPageChange={onPageChange}
+            onAdd={createNewFamille}
+            onRowDelete={onRowDelete}
+            setRowToUpdate={setRowToUpdate}
+            onRowUpdate={onRowUpdate}
+            dataAbbreviation="mag"
+            onRowClick={viewDetails}
 
-         addModalContent={
-            <div className="w-full flex flex-col justify-center gap-4 align-center min-h-[170px] pb-5">
-               <Input value={label}  type="text" label="Libellé" isRequired isClearable validationBehavior="aria" radius="sm" size="lg" 
-               onChange={(e) => onLabelChange(e)} isInvalid={requestError?.magLiError !==null && requestError?.magLiError !==undefined } errorMessage={requestError?.magLiError} />
-               <DatePicker
-                  label="Date de création"
-                  hideTimeZone
-                  showMonthAndYearPickers
-                  value={dateCreation}
-                  defaultValue={dateCreation}
-                  radius="sm"
-                  size="lg"
-                  onChange={(e) => {
-                     console.log(e)
-                     setDateCreation(e)
-                  }}
-               />
-               <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                  <Textarea
-                     value={commentaire}
-                     label="Commentaire"
-                     onChange={(e) => setCommentaire(e.target.value)}
+            addModalContent={
+               <div className="w-full flex flex-col justify-center gap-4 align-center min-h-[170px] pb-5">
+                  <Input value={label} type="text" label="Libellé" isRequired isClearable validationBehavior="aria" radius="sm" size="lg"
+                     onChange={(e) => onLabelChange(e)} isInvalid={requestError?.magLiError !== null && requestError?.magLiError !== undefined} errorMessage={requestError?.magLiError} />
+                  <DatePicker
+                     label="Date de création"
+                     hideTimeZone
+                     showMonthAndYearPickers
+                     value={dateCreation}
+                     defaultValue={dateCreation}
+                     radius="sm"
+                     size="lg"
+                     onChange={(e) => {
+                        console.log(e)
+                        setDateCreation(e)
+                     }}
                   />
+                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                     <Textarea
+                        value={commentaire}
+                        label="Commentaire"
+                        onChange={(e) => setCommentaire(e.target.value)}
+                     />
+                  </div>
                </div>
-            </div>
-         }
-      />
+            }
+         />
    )
+      
+
+   const RenderPage = (idMagasin === null || idMagasin === undefined) ? <Index /> : <DetailsMagasin/>
+   return RenderPage;
 }

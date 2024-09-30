@@ -137,3 +137,25 @@ export type CommandeData = {
    uniteOperationnel:string;
    lib_commande:string
 }
+
+type MagasinInfo = {
+   dateCreation:Date,
+   niceDate:string
+   telephone:string,
+   utilisateurs:string,
+   nombreEmplacement:number,
+   magasin:string
+}
+
+type StockDetails = {
+   quantite:number,
+   article:string,
+   emplacement:string,
+   code_article:string,
+   prixTotal:number,
+   cmup:number
+}
+export type MagasinDetails = {
+   info:MagasinInfo
+   stocks:StockDetails[]
+}

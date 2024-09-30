@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL, requestHeaders } from "../shared/shared";
+import { BASE_URL, requestHeaders } from "../../shared/shared";
 import { RegistrationPayload } from "@/types/types";
 
 export const login = async (username: string, password: string) => {

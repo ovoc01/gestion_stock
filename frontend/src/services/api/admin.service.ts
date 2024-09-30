@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL, requestHeaders } from "../shared/shared";
+import { BASE_URL, requestHeaders } from "../../shared/shared";
 
 export const getAllUtilisateurs = async () => {
    const response = await axios.get(BASE_URL+"admin/utilisateurs",{
@@ -10,6 +10,13 @@ export const getAllUtilisateurs = async () => {
 
 export const getAllRoles = async () => {
    const response = await axios.get(BASE_URL+"admin/utilisateurs/roles",{
+      headers:requestHeaders
+   });
+   return response.data;
+}
+
+export const getUtilisateursActiveNumber = async ()  =>{
+   const response = await axios.get(BASE_URL+"admin/utilisateurs/counts",{
       headers:requestHeaders
    });
    return response.data;

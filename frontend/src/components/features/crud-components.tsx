@@ -18,6 +18,7 @@ import {
    DropdownItem,
    DropdownMenu,
    DropdownTrigger,
+   getKeyValue,
 } from "@nextui-org/react";
 import { useCallback, useState } from "react";
 import { SearchIcon } from "@/components/ui/icons";
@@ -66,6 +67,7 @@ interface CrudComponentProps {
    size?: "2xl" | "xs" | "sm" | "md" | "lg" | "xl" | "3xl" | "4xl" | "5xl" | "full" | undefined
    extraComponent?: React.ReactNode,
    modalClassName?: string
+   onRowClick?: (id: number) => void
 }
 
 const ExportButton = () => {
@@ -186,7 +188,8 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
    deleteIcon,
    size,
    extraComponent,
-   modalClassName
+   modalClassName,
+   onRowClick
 }) => {
 
    const [searchTerm, setSearchTerm] = useState("");
@@ -343,7 +346,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
 
                      </ModalHeader>
                      <ModalBody className="flex flex-col">
-                        
+
                         {addModalContent}
                      </ModalBody>
                      <h2 className="text-danger flex flex-col gap-1 ml-8" >
@@ -460,7 +463,13 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                   {(item) => (
                      <TableRow key={item[columns[0].key]} >
                         {(columnKey) => (
-                           <TableCell className="text-lg">{renderCell(item, columnKey)}</TableCell>
+                           <TableCell className={["text-lg",onRowClick===undefined ? '':'cursor-pointer'].join(' ')}
+                              onClick={() => {
+                                 const id = getKeyValue(item, columns[0].key)
+                                 onRowClick!(id)
+                              }}
+                              
+                           >{renderCell(item, columnKey)}</TableCell>
                         )}
                      </TableRow>
                   )}

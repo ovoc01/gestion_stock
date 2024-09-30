@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL,PaginationProps,requestHeaders } from "../shared/shared";
+import { BASE_URL,PaginationProps,requestHeaders } from "../../shared/shared";
 
 
 export const getAllUniteOperationnel = async ({page,size}:PaginationProps) => {
