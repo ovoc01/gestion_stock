@@ -1,6 +1,7 @@
 import Map, { MapMarker } from "@/components/features/map";
 import { getMagasinDetails } from "@/services/api/batiment.service";
 import { MagasinDetails } from "@/types/types";
+import { formatCurrency } from "@/utils/formatter";
 import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
 
@@ -85,8 +86,8 @@ export default function DetailsMagasin() {
                               <td className="font-light text-center ">{stock.article}</td>
                               <td className="font-light text-center ">{stock.code_article}</td>
                               <td className="font-light text-center">{stock.quantite}</td>
-                              <td className=" text-center text-primary italic">{stock.quantite}</td>
-                              <td className="font-bold text-lg text-center text-primary">{stock.prixTotal}</td>
+                              <td className=" text-center text-primary italic">{formatCurrency(stock.cmup)}</td>
+                              <td className="font-bold text-lg text-center text-primary">{formatCurrency(stock.prixTotal)}</td>
                            </tr>
                         ))
                      }

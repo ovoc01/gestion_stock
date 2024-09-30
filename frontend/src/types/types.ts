@@ -158,4 +158,5 @@ type StockDetails = {
 export type MagasinDetails = {
    info:MagasinInfo
    stocks:StockDetails[]
+   valorisations:number
 }
