@@ -1,5 +1,9 @@
 package com.colasmadagascar.stockinventory.utils;
 
+import org.springframework.cglib.core.Local;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -55,5 +59,10 @@ public class Utils {
                .append(formattedDate);
 
        return stringBuilder.toString();
+    }
+
+    public static String formatTimestamp(LocalDateTime localDateTime){
+       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH);
+        return formatter.format(localDateTime);
     }
 }

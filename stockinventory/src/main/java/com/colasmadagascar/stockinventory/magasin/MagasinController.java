@@ -1,11 +1,12 @@
 package com.colasmadagascar.stockinventory.magasin;
 
+import com.colasmadagascar.stockinventory.magasin.dto.MagasinDetailsDTO;
+import com.colasmadagascar.stockinventory.magasin.dto.UtilisateurMagasinDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.HttpStatus;
 import java.util.List;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,9 +41,8 @@ public class MagasinController  {
         HashMap<String,Object> data = new HashMap<>();
 
         try{
-            Magasin magasin = magasinService.getEntityById(id).get();
+            MagasinDetailsDTO magasin = magasinService.getEntityById(id);
             data.put("magasin",magasin);
-
             return new ResponseEntity<>(data, HttpStatus.OK);
         }catch(Exception e){
             data.put("error",e.getMessage());

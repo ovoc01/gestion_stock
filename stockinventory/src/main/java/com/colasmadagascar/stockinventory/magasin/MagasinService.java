@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.colasmadagascar.stockinventory.magasin.dto.MagasinDetailsDTO;
+import com.colasmadagascar.stockinventory.magasin.dto.UtilisateurMagasinDTO;
+import com.colasmadagascar.stockinventory.utils.Utils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,8 +35,14 @@ public class MagasinService {
         return magasinRepository.count();
     }
 
-    public Optional<Magasin> getEntityById(Long id) {
-        return magasinRepository.findById(id);
+    public MagasinDetailsDTO getEntityById(Long id) {
+        MagasinInfo info = magasinRepository.getMagasinDetailsInfo(id);
+        MagasinDetailsDTO dto = new MagasinDetailsDTO();
+        System.out.println(Utils.formatTimestamp(info.getDateCreation()));
+        dto.setInfo(info);
+        dto.setStocks(magasinRepository.getStockParEmplacement(id));
+        dto.setValorisations(magasinRepository.getValorisationMagasin(id));
+        return dto;
     }
 
     public Magasin saveEntity(Magasin magasin) {

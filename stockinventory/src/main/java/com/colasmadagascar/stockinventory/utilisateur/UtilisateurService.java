@@ -34,4 +34,8 @@ public class UtilisateurService {
         return utilisateurRepository.findAllBy();
     }
 
+    public long count(){
+        return utilisateurRepository.count();
+    }
+
 }
