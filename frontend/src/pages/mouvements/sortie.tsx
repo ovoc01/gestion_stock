@@ -219,7 +219,6 @@ export default function MouvementSortie() {
             </TableBody>
          </Table>
 
-
       </div>
    </>
 }

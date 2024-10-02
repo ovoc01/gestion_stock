@@ -13,15 +13,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightArrowLeft, faChartSimple, faChevronDown, faDatabase, faPowerOff, faScaleBalanced, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { siteConfig } from "@/config/site";
+import { useAuth } from "@/hooks/useAuth";
 
 
 
 export const Navbar = () => {
+  const provider = useAuth()
+  const user = provider.userClaims
   const navigate = useNavigate();
-  const userName = localStorage.getItem('user')
+
   const logout = () => {
     localStorage.removeItem('token')
-    localStorage.removeItem('user')
+    //localStorage.removeItem('user')
     navigate('/')
   }
 
@@ -47,7 +50,7 @@ export const Navbar = () => {
             className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
             radius="sm"
             variant="light"
-            
+
             color="primary"
             onPress={() => {
 
@@ -58,26 +61,27 @@ export const Navbar = () => {
           </Button>
         </NavbarItem>
 
-        <NavbarItem>
-          <Button
-            startContent={
-              <FontAwesomeIcon icon={faUsers} />
-            }
-            disableRipple
-            className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
-            radius="sm"
-            variant="light"
-            onClick={(e) => {
-              e.preventDefault()
-              navigate('/utilisateurs')
-            }}
-            color="primary"
+        {
+          user?.role === 'Administrateur' ? (<NavbarItem>
+            <Button
+              startContent={
+                <FontAwesomeIcon icon={faUsers} />
+              }
+              disableRipple
+              className="p-0 bg-transparent data-[hover=true]:bg-transparent text-lg"
+              radius="sm"
+              variant="light"
+              onClick={(e) => {
+                e.preventDefault()
+                navigate('/utilisateurs')
+              }}
+              color="primary"
+            >
+              Gérer les Utilisateurs
+            </Button>
+          </NavbarItem>) : (<></>)
+        }
 
-
-          >
-            Gérer les Utilisateurs
-          </Button>
-        </NavbarItem>
 
         <div className="hidden lg:flex gap-4 justify-start ml-2">
           <Dropdown>
@@ -226,8 +230,8 @@ export const Navbar = () => {
       >
 
 
-        <NavbarItem className="hidden sm:flex gap-2 flex items-center " >
-          Bonjour 👋🏽  <h2 className="font-semibold text-lg">{userName}</h2>
+        <NavbarItem className=" sm:flex gap-2 flex items-center " >
+          Bonjour 👋🏽  <h2 className="font-semibold text-lg">{user?.username}</h2>
         </NavbarItem>
         <NavbarItem className="hidden md:flex">
           <Button
@@ -235,7 +239,7 @@ export const Navbar = () => {
             color="danger"
             as={Link}
             size="lg"
-            className="text-sm font-normal text-lg"
+            className="font-normal text-lg"
             endContent={
               <FontAwesomeIcon icon={faPowerOff} />
             }

@@ -130,7 +130,7 @@ export default function MouvementEntree() {
          columns={columns}
          rowsData={data as Record<string, any>[]}
          initialPage={page}
-         pages={50}
+        
          resetInput={resetInput}
          onAdd={handleEntreeCreation}
          onSearch={() => {}}

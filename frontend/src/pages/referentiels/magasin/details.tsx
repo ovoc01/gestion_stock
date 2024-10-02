@@ -31,7 +31,7 @@ export default function DetailsMagasin() {
                   <h1 className="text-5xl font-bold ">{magasin?.info.magasin}</h1>
                   <Button size="md" className=" rounded-md bg-primary text-white">Ajouter Emplacement</Button>
                   <h1 className="text-xl flex flex-col text-center">Valorisation:
-                     <span className="text-3xl text-secondary italic font-semibold">3,000,000 Ar</span>
+                     <span className="text-3xl text-secondary italic font-semibold">{formatCurrency(magasin?.valorisations!)}</span>
                   </h1>
                </div>
                <h1 className="text-3xl font-light text-gray-500 mt-4">À propos</h1>

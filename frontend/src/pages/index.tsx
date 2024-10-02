@@ -21,11 +21,10 @@ export default function IndexPage() {
       setPasswordError('Le mot de passe est requis')
     }
     login(username, password).then((response) => {
-      console.table(response)
+
       const token = response.token;
-      const user = response.userFullname;
+
       localStorage.setItem('token', token)
-      localStorage.setItem('user', user)
 
       navigate("/dashboards")
     }).catch((error) => {

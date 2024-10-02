@@ -102,7 +102,7 @@ export default function UtilisateurPage() {
    });
 
 
-   const handleUserRegistration = () => {
+   const handleUserRegistration = (onClose: () => void) => {
       const userRegsitrationPayload: RegistrationPayload = {
          username: usrLogin,
          password: usrPassword,
@@ -114,14 +114,20 @@ export default function UtilisateurPage() {
          .then(() => {
             setPageNeedReload(!pageNeedReload)
             toast.success('Nouveau utilisateur enregistré')
+            
+            onClose()
 
          }).catch((error) => {
             console.log(error)
             if (error.response) {
                setRequestError(error.response.data)
+               setTimeout(() => {
+                  setRequestError(null)
+               }, 4000)
             }
          })
    }
+
    return (
       <>
          <Modal ref={modalRef} isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true} size="3xl">
@@ -245,7 +251,7 @@ export default function UtilisateurPage() {
                         <Button color="danger" variant="light" onPress={onClose}>
                            Annulez
                         </Button>
-                        <Button color="primary" onPress={handleUserRegistration}>
+                        <Button color="primary" onPress={() => { handleUserRegistration(onClose) }}>
                            Enregistrez
                         </Button>
                      </ModalFooter>

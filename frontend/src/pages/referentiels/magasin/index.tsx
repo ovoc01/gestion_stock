@@ -180,7 +180,7 @@ export default function MagasinPage() {
             setRowToUpdate={setRowToUpdate}
             onRowUpdate={onRowUpdate}
             dataAbbreviation="mag"
-            onRowClick={viewDetails}
+            //onRowClick={viewDetails}
 
             addModalContent={
                <div className="w-full flex flex-col justify-center gap-4 align-center min-h-[170px] pb-5">

@@ -20,8 +20,6 @@ export default function DashboardPage() {
       })
    }, [])
 
-
-
    const Index = () => {
       return <div className="w-full flex  h-[100%]  gap-8 py-8">
          <div className=" p-8 border-solid flex flex-col gap-6 h-full w-4/6">

@@ -122,7 +122,7 @@ const ExportButton = () => {
    )
 }
 
-const DeleteModal = ({ isOpen, onOpenChange, liValue, idValue, onRowDelete }: { isOpen: boolean, onOpenChange: (isOpen: boolean) => void, liValue: string | null, idValue: number | null, onRowDelete: (id: number) => void }) => {
+const DeleteModal = ({ isOpen, onOpenChange, liValue, idValue, onRowDelete }: { isOpen: boolean, onOpenChange: (isOpen: boolean) => void, liValue: string | null, idValue: number | null, onRowDelete: (onClose:()=>void,id: number) => void }) => {
    return (
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
          <ModalContent>
@@ -148,7 +148,7 @@ const DeleteModal = ({ isOpen, onOpenChange, liValue, idValue, onRowDelete }: { 
                         className="bg-foreground text-background"
                         onPress={() => {
                            // Supprimer l'élément
-                           onRowDelete(idValue!)
+                           onRowDelete(onClose,idValue!)
                         }}
                      >
                         Valider
@@ -312,7 +312,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
 
    }, [])
 
-   const onModalPressed = () => {
+   const onModalPressed = (onClose: () => void) => {
       if (isUpdateBtnPressed) {
          console.log('update')
          onRowUpdate!()
@@ -321,9 +321,17 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
       else {
          onAdd!()
       }
+      setTimeout(() => {
+         onClose()
+      }, 400)
    }
 
-
+   const onDeleteModalDispose = (onClose: () => void, id: number) => {
+      onRowDelete!(id)
+      setTimeout(() => {
+         onClose()
+      }, 400)
+   }
 
    return (
       <>
@@ -363,7 +371,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                            radius="sm"
                            className="bg-foreground text-background"
                            onPress={() => {
-                              onModalPressed()
+                              onModalPressed(onClose)
                            }}
                         >
                            Valider
@@ -375,7 +383,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
             </ModalContent>
 
          </Modal>
-         <DeleteModal isOpen={deleteIsOpen} onOpenChange={deleteOnOpenChange} liValue={liValueToDelete} idValue={idValueDelete} onRowDelete={onRowDelete!} />
+         <DeleteModal isOpen={deleteIsOpen} onOpenChange={deleteOnOpenChange} liValue={liValueToDelete} idValue={idValueDelete} onRowDelete={onDeleteModalDispose} />
 
          <div className="flex flex-col gap-6">
             <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
@@ -463,12 +471,12 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                   {(item) => (
                      <TableRow key={item[columns[0].key]} >
                         {(columnKey) => (
-                           <TableCell className={["text-lg",onRowClick===undefined ? '':'cursor-pointer'].join(' ')}
+                           <TableCell className={["text-lg", onRowClick === undefined ? '' : 'cursor-pointer'].join(' ')}
                               onClick={() => {
                                  const id = getKeyValue(item, columns[0].key)
                                  onRowClick!(id)
                               }}
-                              
+
                            >{renderCell(item, columnKey)}</TableCell>
                         )}
                      </TableRow>

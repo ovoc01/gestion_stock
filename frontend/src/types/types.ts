@@ -160,3 +160,9 @@ export type MagasinDetails = {
    stocks:StockDetails[]
    valorisations:number
 }
+
+
+export type UserClaims = {
+   username:string,
+   role:string,
+}
