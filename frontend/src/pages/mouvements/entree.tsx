@@ -1,11 +1,11 @@
 
-import CrudComponent from "@/components/crudComponents";
+import CrudComponent from "@/components/features/crud-components";
 import { getAllArticles } from "@/services/api/article.service";
 import { getAllEmplacements } from "@/services/api/batiment.service";
-import { createMouvementEntree, createMouvementSortie, getAllEntrees, getAllSorties } from "@/services/api/mouvement.service";
+import { createMouvementEntree, getAllEntrees} from "@/services/api/mouvement.service";
 import { ArticleDataProps, EmplacementDataProps, RowData } from "@/types/types";
 import { Input } from "@nextui-org/input";
-import { Button, Divider, getKeyValue, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import {Divider, Select, SelectItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -130,7 +130,7 @@ export default function MouvementEntree() {
          columns={columns}
          rowsData={data as Record<string, any>[]}
          initialPage={page}
-         pages={50}
+        
          resetInput={resetInput}
          onAdd={handleEntreeCreation}
          onSearch={() => {}}

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL, requestHeaders } from "../shared/shared";
+import { BASE_URL, requestHeaders } from "../../shared/shared";
 
 export const exportArticle = async () => {
    const response = await axios.get(BASE_URL + 'data/articles-csv', {

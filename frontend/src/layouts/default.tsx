@@ -1,7 +1,9 @@
 import { Link } from "@nextui-org/link";
 
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/features/navbar";
 import { Toaster } from 'sonner';
+import { useAuth } from "@/hooks/useAuth";
+import UserSessionExpired from "@/pages/error/user-session-expired";
 
 
 export default function DefaultLayout({
@@ -9,17 +11,21 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode;
 }) {
-  
 
-  
+  const provider = useAuth()
+  const isAuthenticated = provider.isAuthenticated
+
+
   return (
     <>
 
       <div className="relative flex flex-col h-screen w-full  ">
         <Navbar />
         <main className="container mx-auto w-full  flex-grow  ">
+          {
+            isAuthenticated ? (children) : (<UserSessionExpired />)
+          }
 
-          {children}
         </main>
         <Toaster position="top-right" richColors />
         <footer className="w-full flex items-center justify-center py-3 bg-foreground" >

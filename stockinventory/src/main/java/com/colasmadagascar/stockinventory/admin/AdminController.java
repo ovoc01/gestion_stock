@@ -56,6 +56,20 @@ public class AdminController {
       }
    }
 
+   @GetMapping("/utilisateurs/counts")
+   public ResponseEntity<Object> countUtilisateurActive() {
+      HashMap<String, Object> response = new HashMap<>();
+      try {
+         response.put("utilisateurs", utilisateurService.count());
+         System.out.println(utilisateurService.count());
+         return ResponseEntity.ok(response);
+      } catch (Exception e) {
+         response.put("error", e.getMessage());
+         e.printStackTrace();
+         return ResponseEntity.badRequest().body(response);
+      }
+   }
+
    
    @GetMapping("/utilisateurs/{id}")
    public ResponseEntity<Object> getUtilisateurById(Long id) {

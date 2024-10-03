@@ -4,6 +4,7 @@ export type CSDropdownItemProps = {
    label: string;
    href: string;
    icon?: IconProp
+   isDibbled?: boolean;
 };
 
 
@@ -73,6 +74,10 @@ export type UniteOperationnelDataProps = {
    unopNumBu: string;
    unopLiNumAff: string;
    unopMdmId: string;
+   unopLng?: number;
+   unopLtd?: number;
+   unopUe:string;
+   unopUeLi:string
 }
 
 export type EmplacementDataProps = {
@@ -124,4 +129,42 @@ export type MouvementData = {
    unite:string,
    dateDeMouvement:Date,
    mvtType:number
+}
+
+export type CommandeData = {
+   cmdeId: number;
+   emplId:number;
+   unopId:number;
+   emplacement:string;
+   uniteOperationnel:string;
+   lib_commande:string
+}
+
+type MagasinInfo = {
+   dateCreation:Date,
+   niceDate:string
+   telephone:string,
+   utilisateurs:string,
+   nombreEmplacement:number,
+   magasin:string
+}
+
+type StockDetails = {
+   quantite:number,
+   article:string,
+   emplacement:string,
+   code_article:string,
+   prixTotal:number,
+   cmup:number
+}
+export type MagasinDetails = {
+   info:MagasinInfo
+   stocks:StockDetails[]
+   valorisations:number
+}
+
+
+export type UserClaims = {
+   username:string,
+   role:string,
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL, PaginationProps, requestHeaders } from "../shared/shared";
+import { BASE_URL, PaginationProps, requestHeaders } from "../../shared/shared";
 
 
 export const getAllPeriodes = async ({page,size}:PaginationProps) => {
@@ -60,7 +60,7 @@ export const createMouvementSortie = async (quantite:number,artId:number,cmdeId:
    const response = await axios.post(BASE_URL + 'mouvements/sorties',{
          'quantite':quantite,
          'article':artId,
-         'commande':3
+         'commande':cmdeId
    },{
       headers:requestHeaders
    })

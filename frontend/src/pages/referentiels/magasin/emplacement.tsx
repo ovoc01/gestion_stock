@@ -1,4 +1,4 @@
-import CrudComponent from "@/components/crudComponents"
+import CrudComponent from "@/components/features/crud-components"
 import { createEmplacement, deleteEmplacement, getAllEmplacements, getAllMagasins, updateEmplacement } from "@/services/api/batiment.service";
 import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,8 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { EmplacementDataProps, MagasinDataProps, ServiceExploitantDataProps } from "@/types/types";
-import { getAllServiceExploitant } from "@/services/api/serviceExploitant.service";
+import { getAllServiceExploitant } from "@/services/api/service-exploitant.service";
 import { Input, Select, SelectItem } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 export default function EmplacementPage() {
    const searchParams = new URLSearchParams(location.search);
    const page = searchParams.get('page') ? parseInt(searchParams.get('page')!) : 1;
@@ -23,16 +24,24 @@ export default function EmplacementPage() {
    const [serviceExploitants, setServiceExploitants] = useState<ServiceExploitantDataProps[] | null>([])
    const [magasins, setMagasins] = useState<MagasinDataProps[] | null>([])
    const [data, setData] = useState<EmplacementDataProps[] | null>([]);
+   const [totalPage, setTotalPage] = useState<number>();
+   
+   const [shouldCloseModal,setShouldCloseModal] = useState(false)
 
+
+   const navigate = useNavigate()
 
    useEffect(() => {
       getAllServiceExploitant({ page, size })
          .then((response) => {
             setServiceExploitants(response.serviceExploitants)
+            setTotalPage(Math.ceil(response.totalPages / size))
          })
          .catch((error) => {
             toast.error('Erreur lors de la récupération des données ', error);
          })
+
+         
 
       getAllMagasins({ page, size })
          .then((response) => {
@@ -101,10 +110,12 @@ export default function EmplacementPage() {
 
 
    const createNewEmplacement = () => {
+      setShouldCloseModal(false)
       createEmplacement(label, magId!, serviceId!)
          .then((response) => {
             toast.success('Emplacement ajouté avec succès', response)
             setIsNewRowAdded(!isNewRowAdded)
+            setShouldCloseModal(true)
          })
          .catch((error) => {
             if (error.response) {
@@ -112,25 +123,31 @@ export default function EmplacementPage() {
                   setRequestError(error.response.data)
                }
             }
+            console.log("vody")
+            throw error
          })
    };
 
    const onRowDelete = (emplId: number) => {
+      setShouldCloseModal(false)
       deleteEmplacement(emplId)
          .then((response) => {
             toast.success('Emplacement supprimé avec succès', response)
             setIsNewRowAdded(!isNewRowAdded)
+            setShouldCloseModal(true)
          }).catch((error) => {
             toast.error('Erreur lors de la suppression de l\'emplacement', error)
          })
    }
 
-   const onRowUpdate = () => {
-      updateEmplacement(rowToUpdate!, label, magId!, serviceId!)
+   const onRowUpdate = async () => {
+      setShouldCloseModal(false)
+      await updateEmplacement(rowToUpdate!, label, magId!, serviceId!)
          .then((response) => {
             toast.success('Emplacement modifié avec succès', response)
             setIsNewRowAdded(!isNewRowAdded)
             setRowToUpdate(null)
+            setShouldCloseModal(true)
          }).catch((error) => {
             if (error.response) {
                if (error.response.status === 400) {
@@ -138,6 +155,14 @@ export default function EmplacementPage() {
                }
             }
          })
+   }
+
+   const onPageChange = (page: number) => {
+      searchParams.set('page', page.toString());
+      searchParams.set('size', size.toString());
+      const updatedUrl = `${location.pathname}?${searchParams.toString()}`;
+
+      navigate(updatedUrl)
    }
 
    return (
@@ -147,13 +172,18 @@ export default function EmplacementPage() {
          rowsData={data as Record<string, any>[]}
          onAdd={createNewEmplacement}
          onSearch={() => { }}
+         onPageChange={onPageChange}
          pageIcon={<FontAwesomeIcon icon={faMapLocationDot} />}
          dataAbbreviation="empl"
          onRowDelete={onRowDelete}
          onRowUpdate={onRowUpdate}
          setRowToUpdate={setRowToUpdate}
+         shouldCloseModal={shouldCloseModal}
+         pages={totalPage}
          resetInput={() => {
             setLabel('')
+            setServiceId(null)
+            setMagId(null)
             setRowToUpdate(null)
             setRequestError(null)
          }}

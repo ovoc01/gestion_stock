@@ -1,4 +1,4 @@
-package com.colasmadagascar.stockinventory.magasin;
+package com.colasmadagascar.stockinventory.magasin.dto;
 
 public interface UtilisateurMagasinDTO {
    public Long getMagId();

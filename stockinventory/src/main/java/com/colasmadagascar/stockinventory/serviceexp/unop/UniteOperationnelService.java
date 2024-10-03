@@ -22,12 +22,39 @@ public class UniteOperationnelService {
         return uniteOperationnelRepository.findById(id);
     }
 
-    public UniteOperationnel saveEntity(UniteOperationnel uniteOperationnel) {
-        return uniteOperationnelRepository.save(uniteOperationnel);
+    public UniteOperationnel saveEntity(UniteOperationnelRequest request) {
+        UniteOperationnel unop = UniteOperationnel
+                .builder()
+                .unopLi(request.unopLi)
+                .unopUe(request.unopUe)
+                .unopUeLi(request.unopUeLi)
+                .unopLiNumAff(request.unopLiNumAff)
+                .unopNumBu(request.unopNumBu)
+                .unopLng(request.unopLng)
+                .unopLtd(request.unopLtd)
+                .unopMdmId(request.getUnopMdmId())
+
+                .build();
+
+        return uniteOperationnelRepository.save(unop);
     }
 
-    public UniteOperationnel updateEntity(UniteOperationnel uniteOperationnel) {
-        return uniteOperationnelRepository.save(uniteOperationnel);
+
+    public UniteOperationnel updateEntity(UniteOperationnelUpdateRequest request) {
+        UniteOperationnel unop = UniteOperationnel
+                .builder()
+                .unopLi(request.unopLi)
+                .unopUe(request.unopUe)
+                .unopUeLi(request.unopUeLi)
+                .unopLiNumAff(request.unopLiNumAff)
+                .unopNumBu(request.unopNumBu)
+                .unopLng(request.unopLng)
+                .unopLtd(request.unopLtd)
+                
+                .unopId(request.unopId)
+                .unopMdmId(request.getUnopMdmId())
+                .build();
+        return uniteOperationnelRepository.save(unop);
     }
 
     public void deleteEntityById(Long id) {

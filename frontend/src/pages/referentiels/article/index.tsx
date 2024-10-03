@@ -1,11 +1,11 @@
-import CrudComponent from "@/components/crudComponents"
+import CrudComponent from "@/components/features/crud-components"
 import { createArticle, deleteArticle, getAllArticles, getAllSousFamilles, getAllUnite, updateArticle } from "@/services/api/article.service";
-import { getAllServiceExploitant } from "@/services/api/serviceExploitant.service";
+import { getAllServiceExploitant } from "@/services/api/service-exploitant.service";
 import { ArticleDataProps, ServiceExploitantDataProps, SousFamilleDataProps, UniteDataProps } from "@/types/types";
 import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Input } from "@nextui-org/input";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Divider, Select, SelectItem } from "@nextui-org/react";
 
 
 import { useEffect, useState } from "react";
@@ -106,22 +106,6 @@ export default function ArticlePage() {
          key: 'sousFamLi',
          label: 'Sous Famille'
       },
-      {
-         key: 'artPu',
-         label: 'Prix unitaire'
-      },
-      {
-         key: 'artQte',
-         label: 'Quantité en Stock'
-      },
-      {
-         key: 'artCmp',
-         label: 'CMUP'
-      },
-      {
-         key: 'artDtCr',
-         label: 'Date de création',
-      }
 
    ]
 
@@ -208,6 +192,52 @@ export default function ArticlePage() {
 
          addModalContent={
             <div className="w-full flex flex-col gap-4 pb-5">
+               <h1 className="text-small text-default-400 ml-1">Service exploitant</h1>
+               <Select
+                  variant="bordered"
+
+                  label="Services exploitants"
+                  onChange={(e) => {
+                     setServiceId(parseInt(e.target.value))
+                  }}
+                  selectedKeys={serviceId ? [serviceId.toString()] : []}
+                  isInvalid={requestError?.serviceIdError !== null && requestError?.serviceIdError !== undefined}
+                  errorMessage={requestError?.serviceIdError}
+               >
+                  {serviceExploitants!.map((service) => (
+                     <SelectItem key={service.serviceId} value={service.serviceId}>
+                        {service.serviceLi}
+                     </SelectItem>
+                  ))}
+               </Select>
+               <Divider className="my-2" />
+               <h1 className="text-small text-default-400 ml-1">Information du nouvelle article</h1>
+               <div className="flex gap-4">
+                  <Input value={label} type="text" label="Libellé" validationBehavior="aria" radius="sm"
+                     size="md" onChange={(e) => setLabel(e.target.value)}
+                     isInvalid={requestError?.artLiError !== null && requestError?.artLiError !== undefined}
+                     errorMessage={requestError?.artLiError}
+                     variant="bordered"
+                  />
+                  <Select
+                     variant="bordered"
+
+                     label="Unites"
+                     onChange={(e) => {
+                        setUniteId(parseInt(e.target.value))
+                     }}
+
+                     selectedKeys={uniteId ? [uniteId.toString()] : []}
+                     isInvalid={requestError?.uniteIdError !== null && requestError?.uniteIdError !== undefined}
+                     errorMessage={requestError?.uniteIdError}
+                  >
+                     {unites!.map((unite) => (
+                        <SelectItem key={unite.uniteId} value={unite.uniteId}>
+                           {unite.uniteLi}
+                        </SelectItem>
+                     ))}
+                  </Select>
+               </div>
                <Select
                   variant="bordered"
 
@@ -227,46 +257,9 @@ export default function ArticlePage() {
                      </SelectItem>
                   ))}
                </Select>
-               <Select
-                  variant="bordered"
 
-                  label="Services exploitants"
-                  onChange={(e) => {
-                     setServiceId(parseInt(e.target.value))
-                  }}
-                  selectedKeys={serviceId ? [serviceId.toString()] : []}
-                  isInvalid={requestError?.serviceIdError !== null && requestError?.serviceIdError !== undefined}
-                  errorMessage={requestError?.serviceIdError}
-               >
-                  {serviceExploitants!.map((service) => (
-                     <SelectItem key={service.serviceId} value={service.serviceId}>
-                        {service.serviceLi}
-                     </SelectItem>
-                  ))}
-               </Select>
-               <Select
-                  variant="bordered"
 
-                  label="Unites"
-                  onChange={(e) => {
-                     setUniteId(parseInt(e.target.value))
-                  }}
 
-                  selectedKeys={uniteId ? [uniteId.toString()] : []}
-                  isInvalid={requestError?.uniteIdError !== null && requestError?.uniteIdError !== undefined}
-                  errorMessage={requestError?.uniteIdError}
-               >
-                  {unites!.map((unite) => (
-                     <SelectItem key={unite.uniteId} value={unite.uniteId}>
-                        {unite.uniteLi}
-                     </SelectItem>
-                  ))}
-               </Select>
-               <Input value={label} type="text" label="Libellé" validationBehavior="aria" radius="sm"
-                  size="md" onChange={(e) => setLabel(e.target.value)}
-                  isInvalid={requestError?.artLiError !== null && requestError?.artLiError !== undefined}
-                  errorMessage={requestError?.artLiError}
-               />
 
                <Input value={artRef} type="text" label="Reference" validationBehavior="aria" radius="sm"
                   size="md" onChange={(e) => setArtRef(e.target.value)}

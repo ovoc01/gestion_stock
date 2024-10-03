@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 
 public interface EmplacementRepository extends JpaRepository<Emplacement,Long> {
@@ -14,6 +16,8 @@ public interface EmplacementRepository extends JpaRepository<Emplacement,Long> {
    @Query(nativeQuery = true, value = "INSERT INTO emplacement (empl_li, service_id, mag_id) VALUES (?1, ?2, ?3)")
    @Modifying
    void createEmplacement(String emplLi, Long serviceId, Long magId);
+
+   Optional<Emplacement> getEmplacementByEmplLi(String li);
 
    @Query(nativeQuery = true, value = "SELECT * FROM v_emplacement_lib")
    Page<EmplacementDTO> findAllEmplacementDTO(Pageable pageable);

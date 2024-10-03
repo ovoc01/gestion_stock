@@ -61,7 +61,7 @@ public class EmplacementController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateEmplacement(@Valid @RequestBody EmplacementRequest emplacement){
+    public ResponseEntity<Object> updateEmplacement(@Valid @RequestBody EmplacementUpdateRequest emplacement){
         HashMap<String,Object> data = new HashMap<>();
 
         try{

@@ -1,6 +1,7 @@
 package com.colasmadagascar.stockinventory.authentification;
 
 
+import com.colasmadagascar.stockinventory.article.unite.UniteService;
 import com.colasmadagascar.stockinventory.configuration.jwt.JwtService;
 
 import com.colasmadagascar.stockinventory.utilisateur.UtilisateurRepository;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class AuthenticationService {
     private final RoleService roleService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UniteService uniteService;
 
 
     public void register(RegisterRequest request) {
@@ -51,7 +54,10 @@ public class AuthenticationService {
                 )
         );
         var user = utilisateurRepository.findByUsrLogin(request.getUsername()).orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        HashMap<String,Object> extraClaims = new HashMap<>();
+        extraClaims.put("username",user.getFullName());
+        extraClaims.put("role",user.getRole().getAuthority());
+        var jwtToken = jwtService.generateToken(extraClaims,user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .userFullname(user.getFullName())

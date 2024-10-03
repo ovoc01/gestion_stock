@@ -40,6 +40,4 @@ public class Magasin {
     LocalDateTime magDtCr;
     @Column
     LocalDateTime magDernMdf;
-
-
 }

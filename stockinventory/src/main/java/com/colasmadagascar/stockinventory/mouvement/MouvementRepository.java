@@ -28,9 +28,15 @@ public interface MouvementRepository extends JpaRepository<Mouvement,Long> {
     @Modifying
     List<MouvementDTO> getAllEntree();
 
-    @Query(nativeQuery = true,value = "select * from v_stock_par_emplacement")
+    @Query(nativeQuery = true,value = "select * from v_stock_par_emplacement_final")
     List<Stock> getEtatStock();
 
-    @Query(nativeQuery = true, value = "select * from v_stock_par_emplacement where empl_id=?1 and art_id=?2 and periode_id=?3 order by quantite limit 1")
+    @Query(nativeQuery = true, value = "select * from v_stock_par_emplacement_final where empl_id=?1 and art_id=?2 and periode_id=?3 order by quantite limit 1")
     Stock findExistanceStock(Long emplId, Long unopId, Long periodeId);
+
+
+
+    @Query(nativeQuery = true,value = "select fun_get_valorisation(?1,?2,?3)")
+    Double getValorisation(Long magId, Long emplId, String code);
+
 }
