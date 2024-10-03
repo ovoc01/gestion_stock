@@ -8,7 +8,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
-public class UniteOperationRequest {
+public class UniteOperationnelRequest {
     @Column
     @NotBlank(message = "Le nom du unité operationnel est requis")
     @NotNull(message = "Le nom du unité operationnel est requis")
@@ -20,10 +20,7 @@ public class UniteOperationRequest {
     String unopNumBu;
 
 
-    @NotBlank(message = "Le nom bu du unité operationnel est requis")
-    @NotNull(message = "Le nom bu du unité operationnel est requis")
-    @Column
-    String unopLiBu;
+
     @Column
     @NotBlank(message = "Le numero affaire du unité operationnel est requis")
     @NotNull(message = "Le numero affaire du unité operationnel est requis")

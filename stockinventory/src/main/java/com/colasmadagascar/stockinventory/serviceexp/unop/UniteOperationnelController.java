@@ -46,7 +46,7 @@ public class UniteOperationnelController  {
 
 
     @PostMapping
-    public ResponseEntity<Object> createUniteOperationnel(@RequestBody @Valid UniteOperationnel uniteOperationnel){
+    public ResponseEntity<Object> createUniteOperationnel(@RequestBody @Valid UniteOperationnelRequest uniteOperationnel){
         HashMap<String,Object> data = new HashMap<>();
         try{
             uniteOperationnelService.saveEntity(uniteOperationnel);
@@ -61,11 +61,11 @@ public class UniteOperationnelController  {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUniteOperationnel(@RequestBody @Valid UniteOperationnel uniteOperationnel){
+    public ResponseEntity<Object> updateUniteOperationnel(@RequestBody @Valid UniteOperationnelUpdateRequest uniteOperationnel){
         HashMap<String,Object> data = new HashMap<>();
 
         try{
-            uniteOperationnelService.saveEntity(uniteOperationnel);
+            uniteOperationnelService.updateEntity(uniteOperationnel);
             data.put("message","UniteOperationnel updated successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
         }catch(Exception e){

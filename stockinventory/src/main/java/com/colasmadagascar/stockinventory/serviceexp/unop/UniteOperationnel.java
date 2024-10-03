@@ -8,13 +8,16 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "unite_operationnel")
 @Data
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class UniteOperationnel {
 
     @Id
@@ -23,34 +26,35 @@ public class UniteOperationnel {
     Long unopId;
 
     @Column
-    @NotBlank(message = "Le nom du unité operationnel est requis")
-    @NotNull(message = "Le nom du unité operationnel est requis")
+
     String unopLi;
 
 
-    @NotNull(message = "Le numero bu du unité operationnel est requis")
     @Column
-    Integer unopNumBu;
+    String unopNumBu;
 
 
-    @NotBlank(message = "Le nom bu du unité operationnel est requis")
-    @NotNull(message = "Le nom bu du unité operationnel est requis")
     @Column
-    String unopLiBu;
-    @Column
-    @NotBlank(message = "Le numero affaire du unité operationnel est requis")
-    @NotNull(message = "Le numero affaire du unité operationnel est requis")
     String unopLiNumAff;
+
     @Column
     String unopRef;
+
     @Column
-    @NotBlank(message = "Le Mdm Id du unité operationnel est requis")
-    @NotNull(message = "Le Mdm Id du unité operationnel est requis")
-    String unopMatrnId;
+    String unopMdmId;
+
+    @Column
+    String unopUe;
+
+    @Column
+    String unopUeLi;
+
     @Column
     Double unopLng;
+
     @Column
     Double unopLtd;
+
     @Column
     Timestamp unopDtCr;
     @Column

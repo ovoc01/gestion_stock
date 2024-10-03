@@ -52,7 +52,7 @@ public class EmplacementService {
     }
 
     @Transactional
-    public void updateEmplacement(EmplacementRequest request) {
+    public void updateEmplacement(EmplacementUpdateRequest request) {
         emplacementRepository.updateEmplacement(request.getEmplId(), request.getEmplLi(), request.getServiceId(), request.getMagId());
     }
     
