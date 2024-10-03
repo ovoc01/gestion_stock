@@ -12,7 +12,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { MagasinDataProps } from "@/types/types";
 import DetailsMagasin from "./details";
 
-export default function MagasinPage() {
+const Index = () => {
    const [label, setLabel] = useState('')
    const [dateCreation, setDateCreation] = useState<DateValue>(now(getLocalTimeZone()))
    const [commentaire, setCommentaire] = useState('')
@@ -33,9 +33,10 @@ export default function MagasinPage() {
    const idMagasin = searchParams.get('idMagasin') ? parseInt(searchParams.get('idMagasin')!) : null;
 
    const [rowToUpdate, setRowToUpdate] = useState<number | null>(null);
+   const [shouldCloseModal, setShouldCloseModal] = useState(false)
 
    useEffect(() => {
-      if(idMagasin===null){
+      if (idMagasin === null) {
          getAllMagasins({ page, size })
             .then((response) => {
                console.table(response)
@@ -52,7 +53,7 @@ export default function MagasinPage() {
 
    useEffect(() => {
 
-      if (rowToUpdate && idMagasin===null) {
+      if (rowToUpdate && idMagasin === null) {
 
          const row = data!.find((row: MagasinDataProps) => row.magId === rowToUpdate);
          if (row) {
@@ -63,8 +64,8 @@ export default function MagasinPage() {
             setCommentaire(row.magCom ? row.magCom : '')
          }
       }
-   }, [rowToUpdate])     
-   
+   }, [rowToUpdate])
+
 
 
    const columns = [
@@ -96,15 +97,15 @@ export default function MagasinPage() {
    }
 
 
-   const createNewFamille = async () => {
-
+   const createNewFamille = () => {
+      setShouldCloseModal(false)
       console.log(dateCreation)
-      await createMagasin(label, dateCreation!.toDate(getLocalTimeZone()), commentaire)
+      createMagasin(label, dateCreation!.toDate(getLocalTimeZone()), commentaire)
          .then((response) => {
             toast.success(response.message)
             setIsNewRowAdded(!isNewRowAdded)
-            setLabel('')
-            setCommentaire('')
+            setShouldCloseModal(true)
+
          }).catch((error) => {
             if (error.response) {
                if (error.response.status === 400) {
@@ -115,10 +116,12 @@ export default function MagasinPage() {
    };
 
    const onRowDelete = async (id: number) => {
+      setShouldCloseModal(false)
       await deleteMagasin(id)
          .then((response) => {
             toast.success(response.message)
             setIsNewRowAdded(!isNewRowAdded)
+            setShouldCloseModal(true)
          })
    }
 
@@ -161,57 +164,70 @@ export default function MagasinPage() {
    }
 
 
-   const Index = () => (
-      <CrudComponent
-            pageTitle="Magasin"
-            columns={columns}
-            rowsData={data as Record<string, any>[]}
-            isDeleteAuthorized
-            isUpdateAuthorized
-            pageIcon={<FontAwesomeIcon icon={faWarehouse} />}
-            initialPage={page}
-            pages={totalPage}
-            resetInput={resetInput}
+   return <CrudComponent
+      pageTitle="Magasin"
+      columns={columns}
+      rowsData={data as Record<string, any>[]}
+      isDeleteAuthorized
+      isUpdateAuthorized
+      pageIcon={<FontAwesomeIcon icon={faWarehouse} />}
+      initialPage={page}
+      pages={totalPage}
+      resetInput={resetInput}
+      shouldCloseModal={shouldCloseModal}
 
-            onSearch={() => { }}
-            onPageChange={onPageChange}
-            onAdd={createNewFamille}
-            onRowDelete={onRowDelete}
-            setRowToUpdate={setRowToUpdate}
-            onRowUpdate={onRowUpdate}
-            dataAbbreviation="mag"
-            //onRowClick={viewDetails}
+      onSearch={() => { }}
+      onPageChange={onPageChange}
+      onAdd={createNewFamille}
+      onRowDelete={onRowDelete}
+      setRowToUpdate={setRowToUpdate}
+      onRowUpdate={onRowUpdate}
+      dataAbbreviation="mag"
+      onRowClick={viewDetails}
 
-            addModalContent={
-               <div className="w-full flex flex-col justify-center gap-4 align-center min-h-[170px] pb-5">
-                  <Input value={label} type="text" label="Libellé" isRequired isClearable validationBehavior="aria" radius="sm" size="lg"
-                     onChange={(e) => onLabelChange(e)} isInvalid={requestError?.magLiError !== null && requestError?.magLiError !== undefined} errorMessage={requestError?.magLiError} />
-                  <DatePicker
-                     label="Date de création"
-                     hideTimeZone
-                     showMonthAndYearPickers
-                     value={dateCreation}
-                     defaultValue={dateCreation}
-                     radius="sm"
-                     size="lg"
-                     onChange={(e) => {
-                        console.log(e)
-                        setDateCreation(e)
-                     }}
-                  />
-                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                     <Textarea
-                        value={commentaire}
-                        label="Commentaire"
-                        onChange={(e) => setCommentaire(e.target.value)}
-                     />
-                  </div>
-               </div>
-            }
-         />
-   )
-      
+      addModalContent={
+         <div className="w-full flex flex-col justify-center gap-4 align-center min-h-[170px] pb-5">
+            <Input value={label} type="text" label="Libellé" isRequired isClearable validationBehavior="aria" radius="sm" size="lg"
+               onChange={(e) => onLabelChange(e)} isInvalid={requestError?.magLiError !== null && requestError?.magLiError !== undefined} errorMessage={requestError?.magLiError} />
+            <DatePicker
+               label="Date de création"
+               hideTimeZone
+               showMonthAndYearPickers
+               value={dateCreation}
+               defaultValue={dateCreation}
+               radius="sm"
+               size="lg"
+               onChange={(e) => {
+                  console.log(e)
+                  setDateCreation(e)
+               }}
+            />
+            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+               <Textarea
+                  value={commentaire}
+                  label="Commentaire"
+                  onChange={(e) => setCommentaire(e.target.value)}
+               />
+            </div>
+         </div>
+      }
+   />
+}
 
-   const RenderPage = (idMagasin === null || idMagasin === undefined) ? <Index /> : <DetailsMagasin/>
+
+
+export default function MagasinPage() {
+   const searchParams = new URLSearchParams(location.search);
+   const idMagasin = searchParams.get('idMagasin') ? parseInt(searchParams.get('idMagasin')!) : null;
+   useEffect(() => {
+
+   }, [idMagasin])
+
+
+
+
+
+
+   const RenderPage = (idMagasin === null || idMagasin === undefined) ? <Index /> : <DetailsMagasin />
    return RenderPage;
 }

@@ -73,9 +73,11 @@ export type UniteOperationnelDataProps = {
    unopLi: string;
    unopNumBu: string;
    unopLiNumAff: string;
-   unopMatrnId: string;
+   unopMdmId: string;
    unopLng?: number;
    unopLtd?: number;
+   unopUe:string;
+   unopUeLi:string
 }
 
 export type EmplacementDataProps = {

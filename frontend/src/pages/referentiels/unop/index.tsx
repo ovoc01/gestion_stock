@@ -1,7 +1,7 @@
 import CrudComponent from "@/components/features/crud-components"
 import { createUniteOperationnel, deleteUniteOperationnel, getAllUniteOperationnel, updateUniteOperationnel } from "@/services/api/unite-operationnel.service";
 import { UniteOperationnelDataProps } from "@/types/types";
-import { faBuilding} from "@fortawesome/free-solid-svg-icons";
+import { faBuilding } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Map, { MapMarker } from "@/components/features/map";
@@ -23,6 +23,8 @@ export default function UniteOperationnelPage() {
    const [numbu, setNumbu] = useState<string | null>('')
    const [buli, setBuli] = useState<string | null>('')
    const [numAffaire, setNumAffaire] = useState<string | null>('')
+   const [ue, setUE] = useState<string | null>('')
+   const [ueLi, setUELi] = useState<string | null>('')
    const [mdmId, setMdmId] = useState<string | null>('')
 
    const [totalPage, setTotalPage] = useState<number>();
@@ -38,6 +40,7 @@ export default function UniteOperationnelPage() {
    const [marker, setMarker] = useState<MapMarker | null>(null);
 
    const [resquestError, setRequestError] = useState<any>(null);
+   const [shouldCloseModal, setShouldCloseModal] = useState(false)
 
    useEffect(() => {
 
@@ -45,7 +48,7 @@ export default function UniteOperationnelPage() {
          .then((response) => {
             setData(response.uniteOperationnels)
 
-            for(let i = 0; i < response.uniteOperationnels.length; i++) {
+            for (let i = 0; i < response.uniteOperationnels.length; i++) {
                setMarkers(prev => [...prev, { position: { lat: response.uniteOperationnels[i].unopLtd, lng: response.uniteOperationnels[i].unopLng } }])
             }
 
@@ -56,7 +59,7 @@ export default function UniteOperationnelPage() {
          })
 
 
-      
+
    }, [isNewRowAdded, page, size]);
 
    useEffect(() => {
@@ -68,7 +71,9 @@ export default function UniteOperationnelPage() {
             setNumbu(row.unopNumBu)
             setBuli(row.unopLiNumAff)
             setNumAffaire(row.unopLiNumAff)
-            setMdmId(row.unopMatrnId)
+            setMdmId(row.unopMdmId)
+            setUE(row.unopUe)
+            setUELi(row.unopUeLi)
             setMarker({ position: { lat: row.unopLtd!, lng: row.unopLng! } })
          }
       }
@@ -106,12 +111,13 @@ export default function UniteOperationnelPage() {
 
 
    const createNewUnOp = () => {
-
+      setShouldCloseModal(false)
       const { lng, lat } = marker ? marker.position : { lng: unopPosition?.lng, lat: unopPosition?.lat }
-      createUniteOperationnel(numbu!, buli!, numAffaire!, mdmId!, label!, { lng: lng!, lat: lat! })
+      createUniteOperationnel(numbu!, buli!, numAffaire!, mdmId!, label!, { lng: lng!, lat: lat! }, ue!, ueLi!)
          .then(() => {
             setIsNewRowAdded(!isNewRowAdded)
             toast.message('Unité operationnel ajoutée')
+            setShouldCloseModal(true)
          }).catch((error) => {
             setRequestError(error.response.data)
             setTimeout(() => {
@@ -126,32 +132,40 @@ export default function UniteOperationnelPage() {
       setBuli('')
       setNumAffaire('')
       setMdmId('')
+      setUE('')
+      setUELi('')
       setRowToUpdate(null)
    }
 
    const onRowDelete = (unopId: number) => {
+      setShouldCloseModal(false)
       deleteUniteOperationnel(unopId)
          .then(() => {
             toast.message('Unité operationnel supprimée')
             setIsNewRowAdded(!isNewRowAdded)
+            setShouldCloseModal(true)
          })
          .catch((error) => {
             toast.error('Erreur lors de la suppression de l\'unité operationnel', error)
          })
    }
 
-   const onRowUpdate = () => {
+   const onRowUpdate = async () => {
       const { lng, lat } = marker ? marker.position : { lng: unopPosition?.lng, lat: unopPosition?.lat }
-      
-      updateUniteOperationnel(rowToUpdate!, numbu!, buli!, numAffaire!, mdmId!, label!, { lng: lng!, lat: lat! })
+      setShouldCloseModal(false)
+
+      await updateUniteOperationnel(rowToUpdate!, numbu!, buli!, numAffaire!, mdmId!, label!, { lng: lng!, lat: lat! }, ue!, ueLi!)
          .then(() => {
             setIsNewRowAdded(!isNewRowAdded)
             toast.message('Unité operationnel modifiée')
             setRowToUpdate(null)
+            setShouldCloseModal(true)
          })
          .catch((error) => {
-            toast.error('Erreur lors de la modification de l\'unité operationnel', error)
+            setRequestError(error.response.data)
+            throw error
          })
+
    }
    const onPageChange = (page: number) => {
       searchParams.set('page', page.toString());
@@ -178,6 +192,7 @@ export default function UniteOperationnelPage() {
          pages={totalPage}
          isDeleteAuthorized
          isUpdateAuthorized
+         shouldCloseModal={shouldCloseModal}
          size="2xl"
          modalClassName="max-w-[1200px]"
          extraComponent={
@@ -211,18 +226,27 @@ export default function UniteOperationnelPage() {
                         isInvalid={resquestError?.unopNumBuError !== null && resquestError?.unopNumBuError !== undefined}
                         errorMessage={resquestError?.unopNumBuError}
                      />
-                     <Input value={buli!} type="text" label="Libéllé bu"
-                        isRequired variant="bordered" onChange={(e) => setBuli(e.target.value)}
-                        isInvalid={resquestError?.unopLiBuError !== null && resquestError?.unopLiBuError !== undefined}
-                        errorMessage={resquestError?.unopLiBuError}
+
+                  </div>
+                  <h1 className="text-small text-default-400 ml-1">Informations UE</h1>
+                  <div className="flex gap-4">
+                     <Input value={ue!} type="text" label="UE"
+                        isRequired variant="bordered" onChange={(e) => setUE(e.target.value)}
+                        isInvalid={resquestError?.unopUeError !== null && resquestError?.unopUeError !== undefined}
+                        errorMessage={resquestError?.unopUeError}
+                     />
+                     <Input value={ueLi!} type="text" label="Libéllé UE"
+                        isRequired variant="bordered" onChange={(e) => setUELi(e.target.value)}
+                        isInvalid={resquestError?.unopUeLiError !== null && resquestError?.unopUeLiError !== undefined}
+                        errorMessage={resquestError?.unopUeLiError}
                      />
                   </div>
 
                   <h1 className="text-small text-default-400 ml-1">Mdm id</h1>
                   <Input value={mdmId!} type="text" label="Mdm id"
                      isRequired variant="bordered" onChange={(e) => setMdmId(e.target.value)}
-                     isInvalid={resquestError?.unopMatrnIdError !== null && resquestError?.unopMatrnIdError !== undefined}
-                     errorMessage={resquestError?.unopMatrnIdError}
+                     isInvalid={resquestError?.unopMdmIdError !== null && resquestError?.unopMdmIdError !== undefined}
+                     errorMessage={resquestError?.unopMdmIdError}
                   />
 
                   <Divider className="my-2" />
