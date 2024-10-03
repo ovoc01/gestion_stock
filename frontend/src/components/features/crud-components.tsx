@@ -28,7 +28,7 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 import { title } from "../primitives";
 
-import { levenshteinDistance } from "@/utils";
+import { levenshteinDistance } from "@/utils/index";
 import { exportArticle, exportPDF } from "@/services/api/export-data.service";
 import { SearchIcon } from "@/components/ui/icons";
 import "./crudComponents.css";
