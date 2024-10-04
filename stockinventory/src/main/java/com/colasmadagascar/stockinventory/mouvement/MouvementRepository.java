@@ -1,6 +1,7 @@
 package com.colasmadagascar.stockinventory.mouvement;
 
 import com.colasmadagascar.stockinventory.mouvement.stock.Stock;
+import com.colasmadagascar.stockinventory.mouvement.stock.StockDetailProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -39,4 +40,10 @@ public interface MouvementRepository extends JpaRepository<Mouvement,Long> {
     @Query(nativeQuery = true,value = "select fun_get_valorisation(?1,?2,?3)")
     Double getValorisation(Long magId, Long emplId, String code);
 
+    @Query(nativeQuery = true,value = "select * from fun_get_valorisation_details(?1,?2,?3)")
+    List<StockDetailProjection> getValorisationDetails(Long magId, Long emplId, String code);
+
+    @Query(nativeQuery = true,value = "select * from v_mouvement_lib where mvttype > 0 and cmdeid=?1")
+    @Modifying
+    List<MouvementDTO> getAllSortieByCommande(Long id);
 }

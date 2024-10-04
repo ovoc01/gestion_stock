@@ -1,5 +1,6 @@
 package com.colasmadagascar.stockinventory.article;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import com.colasmadagascar.stockinventory.article.sousfamille.SousFamille;
 import com.colasmadagascar.stockinventory.article.sousfamille.SousFamilleDTO;
 import com.colasmadagascar.stockinventory.article.sousfamille.SousFamilleRepository;
 import com.colasmadagascar.stockinventory.article.sousfamille.SousFamilleService;
+import com.colasmadagascar.stockinventory.dataexport.DataExportService;
 import com.colasmadagascar.stockinventory.serviceexp.ServiceExploitant;
 import com.colasmadagascar.stockinventory.serviceexp.ServiceExploitantRepository;
 import org.springframework.stereotype.Service;
@@ -23,12 +25,14 @@ public class ArticleService {
     ArticleRepository articleRepository;
     SousFamilleService sousFamilleService;
     final ServiceExploitantRepository serviceExploitantRepository;
+    final DataExportService dataExportService;
 
-    public ArticleService(ArticleRepository articleRepository, SousFamilleService sousFamilleService, SousFamilleRepository sousFamilleRepository, ServiceExploitantRepository serviceExploitantRepository) {
+    public ArticleService(ArticleRepository articleRepository, SousFamilleService sousFamilleService, SousFamilleRepository sousFamilleRepository, ServiceExploitantRepository serviceExploitantRepository, DataExportService dataExportService) {
         this.sousFamilleService = sousFamilleService;
         this.articleRepository = articleRepository;
         this.sousFamilleRepository = sousFamilleRepository;
         this.serviceExploitantRepository = serviceExploitantRepository;
+        this.dataExportService = dataExportService;
     }
 
 
@@ -90,4 +94,9 @@ public class ArticleService {
     }
 
 
+    public ByteArrayInputStream exportToExcel() throws Exception {
+        String[] columns = {"Article ID","Libelle", "Reference", "Code", "Service","Sous Famille","Unite "};
+        List<ArticleDTO> entities = articleRepository.findAllArticles(); // Or use a custom query
+        return dataExportService.exportToExcel(columns,entities, ArticleDTO.class);
+    }
 }

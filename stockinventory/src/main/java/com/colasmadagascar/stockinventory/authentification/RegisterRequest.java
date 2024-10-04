@@ -1,8 +1,11 @@
 package com.colasmadagascar.stockinventory.authentification;
 
+import com.colasmadagascar.stockinventory.magasin.Magasin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class RegisterRequest {
@@ -25,4 +28,7 @@ public class RegisterRequest {
 
     @NotNull(message = "Le role ne doit pas être null")
     Long roleId;
+
+    Long[] magAffect;
+    Long[] servAffect;
 }

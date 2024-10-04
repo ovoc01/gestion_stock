@@ -71,6 +71,14 @@ public class MagasinService {
         magasinRepository.addUtilisateurToMagasin(magId, usrId);
     }
 
+    @Transactional
+    public void addUtilisateurToMagasin(Long usrId,Long[] magIds){
+        if(magIds == null) return;
+        for (Long id:magIds){
+            magasinRepository.addUtilisateurToMagasin(id, usrId);
+        }
+    }
+
     public List<UtilisateurMagasinDTO> getUtilisateurMagasins(Long usrId) {
         return magasinRepository.getUtilisateurMagasin(usrId);
     }

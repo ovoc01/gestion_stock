@@ -1,20 +1,30 @@
 package com.colasmadagascar.stockinventory.serviceexp;
 
+import com.colasmadagascar.stockinventory.dataexport.DataExportService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.ByteArrayInputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.HttpStatus;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/service-exploitants")
-
+@RequiredArgsConstructor
 public class ServiceController {
-    @Autowired
-    ServiceExploitantService serviceService;
+
+    final ServiceExploitantService serviceService;
+    private final DataExportService dataExportService;
 
     @GetMapping
     public ResponseEntity<Object> getAllService(

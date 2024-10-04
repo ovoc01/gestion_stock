@@ -38,6 +38,7 @@ public class GlobalApplicationConfiguration {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
+        passwordEncoder();
         return authProvider;
     }
 

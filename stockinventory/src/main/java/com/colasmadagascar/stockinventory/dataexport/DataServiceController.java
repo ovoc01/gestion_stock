@@ -19,15 +19,7 @@ public class DataServiceController {
         this.dataExportService = dataExportService;
     }
 
-    @GetMapping("/articles-xlsx")
-    public ResponseEntity<InputStreamResource> exportExcel() throws Exception{
-        ByteArrayInputStream resource = dataExportService.exportToExcel();
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.xlsx")
-                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-                .body(new InputStreamResource(resource));
-    }
 
     @GetMapping("/articles-csv")
     public ResponseEntity<InputStreamResource> exportToCSV() throws Exception {

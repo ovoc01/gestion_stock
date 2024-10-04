@@ -4,6 +4,9 @@ package com.colasmadagascar.stockinventory.authentification;
 import com.colasmadagascar.stockinventory.article.unite.UniteService;
 import com.colasmadagascar.stockinventory.configuration.jwt.JwtService;
 
+import com.colasmadagascar.stockinventory.magasin.MagasinService;
+import com.colasmadagascar.stockinventory.serviceexp.ServiceExploitantService;
+import com.colasmadagascar.stockinventory.utilisateur.Utilisateur;
 import com.colasmadagascar.stockinventory.utilisateur.UtilisateurRepository;
 import com.colasmadagascar.stockinventory.utilisateur.role.RoleService;
 import jakarta.transaction.Transactional;
@@ -25,7 +28,8 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UniteService uniteService;
-
+    private final MagasinService magasinService;
+    private final ServiceExploitantService serviceExploitantService;
 
     public void register(RegisterRequest request) {
         if (utilisateurRepository.findByUsrLogin(request.getUsername()).isPresent()) {
@@ -43,7 +47,10 @@ public class AuthenticationService {
                 .role(Role)
                 .build();
 
-        utilisateurRepository.save(Utilisateur);
+        Utilisateur utilisateur = utilisateurRepository.save(Utilisateur);
+        magasinService.addUtilisateurToMagasin(utilisateur.getUsrId(), request.getMagAffect());
+        serviceExploitantService.addUtilisateurToServices(utilisateur.getUsrId(), request.getServAffect());
+
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {

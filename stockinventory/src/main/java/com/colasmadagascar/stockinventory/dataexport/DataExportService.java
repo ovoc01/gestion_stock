@@ -28,11 +28,9 @@ public class DataExportService {
         this.templateEngine = templateEngine;
     }
 
-    public ByteArrayInputStream exportToExcel() throws Exception {
-        String[] columns = {"Article ID","Libelle", "Reference", "Code", "Service","Sous Famille","Unite "};
+    public <T> ByteArrayInputStream exportToExcel(String[] columns, List<T> entities,Class<T>clz) throws Exception {
 
-        List<ArticleDTO> entities = articleRepository.findAllArticles(); // Or use a custom query
-        ExcelExportUtility<ArticleDTO> excelExportUtility = new ExcelExportUtility<>(ArticleDTO.class);
+        ExcelExportUtility<T> excelExportUtility = new ExcelExportUtility<>(clz);
         return excelExportUtility.exportToExcel(entities, columns);
     }
 
@@ -80,5 +78,8 @@ public class DataExportService {
             return null; // Ou lever une exception plus spécifique
         }
     }
+
+
+
 
 }
