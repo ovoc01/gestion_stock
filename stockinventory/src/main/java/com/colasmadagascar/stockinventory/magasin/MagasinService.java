@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.colasmadagascar.stockinventory.magasin.dto.MagasinDetailsDTO;
 import com.colasmadagascar.stockinventory.magasin.dto.UtilisateurMagasinDTO;
+import com.colasmadagascar.stockinventory.shared.Fetch;
 import com.colasmadagascar.stockinventory.utils.Utils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,9 @@ public class MagasinService {
         return magasinRepository.findAll();
     }
 
-    public List<Magasin> getAllEntities(int size, int page) {
+    public List<Magasin> getAllEntities(int size, int page,Fetch fetch) {
+        if (fetch == Fetch.ALL)
+            return magasinRepository.findAll();
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("magId").ascending());
         return magasinRepository.findAll(pageable).toList();
     }

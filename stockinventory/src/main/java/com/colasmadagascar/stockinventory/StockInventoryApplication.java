@@ -11,6 +11,10 @@ import org.springframework.context.event.EventListener;
 import com.colasmadagascar.stockinventory.authentification.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.xhtmlrenderer.pdf.ITextRenderer;
+
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 @SpringBootApplication
 @Service
@@ -30,8 +34,8 @@ public class StockInventoryApplication {
 	}
 
 	
-	//@EventListener(ApplicationReadyEvent.class)
+	@EventListener(ApplicationReadyEvent.class)
 	public void onApplicationReady() throws Exception {
-		//dataExportService.exportToExcel();
+		//dataExportService.generatePdfReport();
 	}
 }

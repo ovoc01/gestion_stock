@@ -1,11 +1,11 @@
 package com.colasmadagascar.stockinventory.article;
 
 import com.colasmadagascar.stockinventory.dataexport.DataExportService;
+import com.colasmadagascar.stockinventory.shared.Fetch;
+
+import jakarta.persistence.FetchType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,10 +27,13 @@ public class ArticleController  {
     private final DataExportService dataExportService;
     
     @GetMapping
-    public ResponseEntity<Object> getAllArticle(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
+    public ResponseEntity<Object> getAllArticles(
+        @RequestParam(name = "page",required = false,defaultValue = "1") int page,
+        @RequestParam(name = "size",required = false,defaultValue = "5") int size,
+        @RequestParam(name="fetch",defaultValue = "PAGINATION") Fetch fetch) {
         HashMap<String,Object> data = new HashMap<>();
         try{
-            List<ArticleDTO>articles =  articleService.getAllArticleDTO(page,size);
+            List<ArticleDTO>articles =  articleService.getAllArticleDTO(page,size,fetch);
             data.put("articles",articles);
             data.put("totalPages",articleService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);

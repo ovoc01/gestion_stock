@@ -19,9 +19,12 @@ public class DataServiceController {
         this.dataExportService = dataExportService;
     }
 
+    //@GetMapping("/export")
+    
 
 
-    @GetMapping("/articles-csv")
+
+    /* @GetMapping("/articles-csv")
     public ResponseEntity<InputStreamResource> exportToCSV() throws Exception {
         String csvData = dataExportService.exportToCSV();
         ByteArrayInputStream resource = new ByteArrayInputStream(csvData.getBytes());
@@ -42,6 +45,6 @@ public class DataServiceController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.pdf")
                 .contentType(MediaType.parseMediaType("application/pdf"))
                 .body(new InputStreamResource(resource));
-    }
+    } */
 
 }

@@ -1,22 +1,17 @@
 package com.colasmadagascar.stockinventory.serviceexp;
 
 import com.colasmadagascar.stockinventory.dataexport.DataExportService;
+import com.colasmadagascar.stockinventory.shared.Fetch;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayInputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Base64;
 import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.HttpStatus;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/service-exploitants")
@@ -24,15 +19,15 @@ import java.util.Map;
 public class ServiceController {
 
     final ServiceExploitantService serviceService;
-    private final DataExportService dataExportService;
 
     @GetMapping
     public ResponseEntity<Object> getAllService(
             @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") int size) {
+            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+            @RequestParam(name = "fetch", defaultValue = "PAGINATION") Fetch fetch) {
         HashMap<String, Object> data = new HashMap<>();
         try {
-            List<ServiceExploitant> services = serviceService.getAllEntities(page, size);
+            List<ServiceExploitant> services = serviceService.getAllEntities(page, size,fetch);
             data.put("serviceExploitants", services);
             data.put("totalPages", serviceService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
@@ -115,7 +110,8 @@ public class ServiceController {
 
     @PostMapping("{id}/utilisateurs/{usrId}")
     @PreAuthorize("hasAuthority('Administrateur')")
-    public ResponseEntity<Object> addUtilisateurService(@PathVariable("usrId") Long usrId, @PathVariable("id") Long serviceId) {
+    public ResponseEntity<Object> addUtilisateurService(@PathVariable("usrId") Long usrId,
+            @PathVariable("id") Long serviceId) {
 
         HashMap<String, Object> response = new HashMap<>();
         try {

@@ -34,6 +34,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/**")
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/test")
+                        .permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(management -> management

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,5 +30,12 @@ public class StockService {
         String[] columns = {"Reference","Article", "Famille", "Magasin", "Emplacement","Quantite","CMUP "};
         List<StockDetailProjection> entities = mouvementRepository.getValorisationDetails(magId,emplId, code); // Or use a custom query
         return dataExportService.exportToExcel(columns,entities, StockDetailProjection.class);
+    }
+
+    public ByteArrayInputStream exportPdf(Long magId, Long emplId, String code) throws IOException {
+        List<StockDetailProjection> entities = mouvementRepository.getValorisationDetails(magId,emplId, code); // Or use a custom query
+        HashMap<String,Object> data = new HashMap<>();
+        data.put("valorisations",entities);
+        return dataExportService.generatePdfReport("valorisation",data);
     }
 }

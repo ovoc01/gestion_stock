@@ -50,4 +50,22 @@ public class StockController {
                 .body(response);
     }
 
+    @PostMapping("/valorisations/export-pdf")
+    public ResponseEntity<Map<String, Object>> exportPDF( @RequestBody StockRequest request) throws Exception {
+        ByteArrayInputStream resource = stockService.exportPdf(request.getMagId(), request.getEmplId(), request.getCode());
+        String fileName = String.format("valorisations_%s.pdf", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss")));
+
+        // Convert the Excel file to Base64 string
+        byte[] byteArray = resource.readAllBytes();
+        String base64Data = Base64.getEncoder().encodeToString(byteArray);
+
+        // Prepare response map
+        Map<String, Object> response = new HashMap<>();
+        response.put("filename", fileName);
+        response.put("filedata", base64Data);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
 }

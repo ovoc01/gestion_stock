@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Valorisation</title>
+</head>
+
+
+<body>
+<h1>
+    Valorisation de Stock
+</h1>
+<table style="border: 0.3pt solid black;width: 100%">
+    <thead>
+    <tr>
+        <th>Reference</th>
+        <th>Article</th>
+        <th>Famille</th>
+        <th>Magasin</th>
+        <th>Emplacement</th>
+        <th>Quantite</th>
+        <th>CMUP</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="val : ${valorisations}" style="font-size: 10px">
+        <td th:text="${val.code_article}"></td>
+        <td th:text="${val.article}"></td>
+        <td th:text="${val.sous_famille}"></td>
+        <td th:text="${val.magasin}"></td>
+        <td th:text="${val.emplacement}"></td>
+        <td th:text="${val.quantite}"></td>
+        <td th:text="${val.cmup}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
