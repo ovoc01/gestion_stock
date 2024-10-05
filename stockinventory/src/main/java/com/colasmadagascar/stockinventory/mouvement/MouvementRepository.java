@@ -8,10 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Time;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface MouvementRepository extends JpaRepository<Mouvement,Long> {

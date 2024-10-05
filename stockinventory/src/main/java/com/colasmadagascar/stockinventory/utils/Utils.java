@@ -1,21 +1,15 @@
 package com.colasmadagascar.stockinventory.utils;
 
-import org.springframework.cglib.core.Local;
+import io.jsonwebtoken.io.IOException;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Base64;
-import java.util.Date;
 import java.util.Locale;
 
 public class Utils {
@@ -52,29 +46,29 @@ public class Utils {
         return sb.toString();
     }
 
-    public static String generateSKU(String article,String famille,String sousFamille,String service) {
-       StringBuilder stringBuilder = new StringBuilder();
+    public static String generateSKU(String article, String famille, String sousFamille, String service) {
+        StringBuilder stringBuilder = new StringBuilder();
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String formattedDate = currentDate.format(formatter);
-       stringBuilder.append(createFamilleLogRef(service)).append("-")
-               .append(createFamilleLogRef(famille)).append("/")
-               .append(createFamilleLogRef(sousFamille)).append("-")
-               .append(createFamilleLogRef(article)).append("-")
-               .append(formattedDate);
+        stringBuilder.append(createFamilleLogRef(service)).append("-")
+                .append(createFamilleLogRef(famille)).append("/")
+                .append(createFamilleLogRef(sousFamille)).append("-")
+                .append(createFamilleLogRef(article)).append("-")
+                .append(formattedDate);
 
-       return stringBuilder.toString();
+        return stringBuilder.toString();
     }
 
-    public static String formatTimestamp(LocalDateTime localDateTime){
-       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH);
+    public static String formatTimestamp(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH);
         return formatter.format(localDateTime);
     }
 
-    public static String encodeImageToBase64(String imagePath) throws IOException {
+    public static String encodeImageToBase64(String imagePath) throws IOException, java.io.IOException {
         File file = new File(imagePath);
         FileInputStream inputStream = new FileInputStream(file);
-        byte[] bytes = new byte[(int)file.length()];
+        byte[] bytes = new byte[(int) file.length()];
         inputStream.read(bytes);
         inputStream.close();
         return Base64.getEncoder().encodeToString(bytes);

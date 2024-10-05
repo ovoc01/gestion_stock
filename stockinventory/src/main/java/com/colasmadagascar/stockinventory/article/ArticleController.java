@@ -3,7 +3,6 @@ package com.colasmadagascar.stockinventory.article;
 import com.colasmadagascar.stockinventory.dataexport.DataExportService;
 import com.colasmadagascar.stockinventory.shared.Fetch;
 
-import jakarta.persistence.FetchType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

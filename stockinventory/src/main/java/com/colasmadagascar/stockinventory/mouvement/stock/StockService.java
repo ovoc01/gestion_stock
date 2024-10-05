@@ -1,6 +1,5 @@
 package com.colasmadagascar.stockinventory.mouvement.stock;
 
-import com.colasmadagascar.stockinventory.article.ArticleDTO;
 import com.colasmadagascar.stockinventory.dataexport.DataExportService;
 import com.colasmadagascar.stockinventory.mouvement.MouvementRepository;
 import lombok.RequiredArgsConstructor;

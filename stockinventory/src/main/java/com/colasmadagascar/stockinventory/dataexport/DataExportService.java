@@ -1,7 +1,5 @@
 package com.colasmadagascar.stockinventory.dataexport;
 
-import com.colasmadagascar.stockinventory.article.ArticleDTO;
-import com.colasmadagascar.stockinventory.article.ArticleRepository;
 import com.colasmadagascar.stockinventory.dataexport.tools.ExcelExportUtility;
 import com.colasmadagascar.stockinventory.utils.Utils;
 import org.springframework.stereotype.Service;

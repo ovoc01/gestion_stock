@@ -6,8 +6,6 @@ import com.colasmadagascar.stockinventory.mouvement.periode.PeriodeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
