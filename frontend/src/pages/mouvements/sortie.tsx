@@ -1,15 +1,23 @@
 import { getAllArticles } from "@/services/api/article.service";
-import { createMouvementSortie, getAllCommandes, getAllSorties } from "@/services/api/mouvement.service";
-import { ArticleDataProps, CommandeData, RowData } from "@/types/types";
+import { createCommande, createMouvementSortie, getAllCommandes, getAllSorties } from "@/services/api/mouvement.service";
+import { ArticleDataProps, CommandeData, EmplacementDataProps, RowData, UniteOperationnelDataProps } from "@/types/types";
 import { Input } from "@nextui-org/input";
-import { Button, Divider, getKeyValue, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import { Button, Divider, getKeyValue, Modal, ModalBody, ModalContent, ModalFooter, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import DetailsCommande from "./details-commande";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAllEmplacements } from "@/services/api/batiment.service";
+import { getAllUniteOperationnel } from "@/services/api/unite-operationnel.service";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 
-export default function MouvementSortie() {
+function Index() {
 
+   const { isOpen, onOpen, onOpenChange } = useDisclosure();
    const [data, setData] = useState<RowData[] | null>([])
+   const navigate = useNavigate()
 
    const [articles, setArticles] = useState<ArticleDataProps[] | null>([])
    const [commandes, setCommandes] = useState<CommandeData[] | null>([])
@@ -26,7 +34,8 @@ export default function MouvementSortie() {
    const [selectedCommande, setSelectedCommande] = useState<number | null>(null)
    const [emplacementDe, setEmplacementDe] = useState<string | null>(null)
    const [unopA, setUnopA] = useState<string | null>(null)
-
+   const [emplacements, setEmplacements] = useState<EmplacementDataProps[] | null>([])
+   const [unOp, setUnOp] = useState<UniteOperationnelDataProps[] | null>([])
 
    useEffect(() => {
       getAllSorties().then((response) => {
@@ -49,176 +58,196 @@ export default function MouvementSortie() {
          .catch((error) => {
             console.log(error)
          })
+
+      getAllUniteOperationnel({ page, size })
+         .then((response) => {
+            setUnOp(response.uniteOperationnels)
+         })
+         .catch((error) => {
+            toast.error('Erreur lors de la récupération des données ', error);
+         })
+
+      getAllEmplacements({ page, size })
+         .then((response) => {
+            setEmplacements(response.emplacements)
+         }).catch((error) => {
+            toast.error('Erreur lors de la récupération des données ', error);
+         })
    }, [pageNeedReload])
 
    const columns = [
       {
-         key: 'cmdeLigneId',
+         key: 'cmdeId',
          label: 'ID',
          sortable: true
       },
       {
-         key: 'article',
-         label: 'Article',
-         sortable: true
-      },
-      {
-         key: 'code',
-         label: 'Code',
-         sortable: true
-      },
-      {
-         key: 'reference',
-         label: 'Reference',
-         sortable: true
-      }
-      ,
-      {
          key: 'emplacement',
-         label: 'Emplacement',
+         label: 'De',
+         sortable: true
+      },
+      {
+         key: 'uniteOperationnel',
+         label: 'Vers',
          sortable: true
       }
-      ,
-      {
-         key: 'prixUnitaire',
-         label: 'Prix unitaire',
-         sortable: true
-      },
-      {
-         key: 'quantite',
-         label: 'Quantite',
-         sortable: true
-      },
-      {
-         key: 'unite',
-         label: 'Unite',
-         sortable: true
-      },
-      {
-         key: 'dateDeMouvement',
-         label: 'Date du mouvement',
+      , {
+         key: 'lib_commande',
+         label: 'Libellé commande',
          sortable: true
       }
    ]
 
-   const addMouvementSortie = () => {
-      createMouvementSortie(quantite!, selectedArticle!, selectedCommande!)
+   const [emplId, setEmplId] = useState<number | null>(null)
+   const [unopId, setUnopId] = useState<number | null>(null)
+
+
+   const createNewCommande = () => {
+      createCommande(emplId!, unopId!)
          .then((response) => {
+            toast.success('Nouvelle commande enregistrer', response)
             setPageNeedReload(!pageNeedReload)
-            toast.success('Sortie enregistré', response)
          }).catch((error) => {
-            console.log(error)
-            //toast.error('Erreur lors de l\'enregistrement de la sortie',error)
-            setRequestError(error.response.data)
+            setRequestError(error.response.data.error)
          })
    }
 
+
    return <>
 
-      <div className="w-full flex flex-col gap-5 pt-5 justify-start">
-         <div className="w-2/5 flex flex-col gap-3 pb-8 border-solid border-1  border-gray-300 rounded-lg shadow-md p-8">
-            <h1 className="text-3xl font-thin"></h1>
-            <h1 className="text-small text-default-400 ml-1">Commande</h1>
-            <Select
-               variant="bordered"
-               label="Commande"
-               size="md"
-               onChange={(e) => {
-                  setSelectedCommande(parseInt(e.target.value))
-                  console.log(commandes!.find((com) => com.cmdeId === parseInt(e.target.value))?.emplacement || null)
-                  setEmplacementDe(commandes!.find((com) => com.cmdeId === parseInt(e.target.value))?.emplacement || null);
-                  setUnopA(commandes!.find((com) => com.cmdeId === parseInt(e.target.value))?.uniteOperationnel || null);
-               }}
+      <div className="w-full flex flex-col gap-5 pt-5 justify-center items-center">
+         <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
+            <ModalContent>
+               {
+                  (onClose) => (
+                     <>
+                        <ModalBody>
+                           <h1 className="text-3xl font-thin">Création nouvelle commande</h1>
+                           <h1 className="text-small text-default-400 ml-1">Unité operationnel concernés</h1>
+                           <div className="flex gap-4">
+                              <Select
+                                 variant="bordered"
+                                 label="De"
+                                 size="sm"
+                                 selectedKeys={emplId ? emplId.toString() : []}
+                                 onChange={(e) => {
+                                    setEmplId(parseInt(e.target.value))
+                                 }}
+                              >
+                                 {emplacements!.map((u) => (
+                                    <SelectItem key={u.emplId} value={u.emplId}>
+                                       {u.emplLi}
+                                    </SelectItem>
+                                 ))}
 
-               selectedKeys={selectedCommande ? [selectedCommande.toString()] : []}
-               isInvalid={requestError?.commandeError !== null && requestError?.commandeError !== undefined}
-               errorMessage={requestError?.commandeError}
+                              </Select>
+                              <Select
+                                 variant="bordered"
+                                 label="À"
+                                 size="sm"
+                                 selectedKeys={unopId ? unopId.toString() : []}
+                                 onChange={(e) => {
+                                    setUnopId(parseInt(e.target.value))
+                                 }}
+                              >
+                                 {unOp!.map((u) => (
+                                    <SelectItem key={u.unopId} value={u.unopId}>
+                                       {u.unopLi}
+                                    </SelectItem>
+                                 ))}
+
+                              </Select>
+                           </div>
+                           <h1 className="text-sm " color="danger">
+                              {requestError}
+                           </h1>
+                        </ModalBody>
+                        <ModalFooter>
+                           <Button
+                              color="danger"
+                              radius="sm"
+                              size="lg"
+                              variant="light"
+                              onPress={() => {
+                                 onClose();
+                              }}
+                           >
+                              Annuler
+                           </Button>
+                           <Button
+                              className="bg-foreground text-background"
+                              radius="sm"
+                              size="lg"
+                              onPress={createNewCommande}
+                           >
+                              Valider
+                           </Button>
+                        </ModalFooter>
+
+                     </>
+
+                  )
+               }
+            </ModalContent>
+         </Modal>
+         <h1 className="text-4xl text-primary font-semibold">
+            Liste des commandes
+         </h1>
+         <div className="w-4/5">
+            <Table aria-label="Example static collection table" className="pt-5 "
+               topContent={
+                  <Button
+                     className="bg-foreground text-background px-4 py-2 w-1/5"
+                     color="default"
+                     endContent={<FontAwesomeIcon icon={faPlus} />}
+                     size="lg"
+                     variant="flat"
+                     onPress={onOpen}
+                  >
+                     Ajouter
+                  </Button>
+               }
+               topContentPlacement="outside"
             >
-               {commandes!.map((com) => (
-                  <SelectItem key={com.cmdeId} value={com.cmdeId}>
-                     {com.lib_commande}
-                  </SelectItem>
-               ))}
-            </Select>
-            <div className="flex gap-4">
-               <Input isDisabled value={emplacementDe ? emplacementDe: ''} type="text" label="De" validationBehavior="aria" radius="sm" size="md" variant="bordered" onChange={(e) => {
+               <TableHeader columns={columns}>
+                  {(column) => (
+                     <TableColumn key={column.key}>
 
-               }} />
-               <Input type="text" value={unopA ? unopA : ''} isDisabled label="Vers" validationBehavior="aria" radius="sm" size="md" variant="bordered" />
-            </div>
+                        {column.label.toLocaleUpperCase()}
+                     </TableColumn>
+                  )}
 
-            <Divider className="my-4" />
-            <h1 className="text-small text-default-400 ml-1">Details du mouvements</h1>
-            <div className="flex w-full gap-4">
-               <Select
-                  variant="bordered"
-                  label="Articles"
-                  size="md"
-                  onChange={(e) => {
-                     setSelectedArticle(parseInt(e.target.value))
-                  }}
+               </TableHeader>
+               <TableBody items={commandes! as Record<string, any>[]} emptyContent={"Aucune sortie"}>
+                  {(item) => (
+                     <TableRow key={item[columns[0].key]} className="hover:cursor-pointer hover:bg-primary-50" onClick={() => {
+                        navigate(`/mouvements/commandes?idCommande=${item[columns[0].key]}`)
+                     }} >
+                        {(columnKey) => (
 
-                  selectedKeys={selectedArticle ? [selectedArticle.toString()] : []}
-                  isInvalid={requestError?.articleError !== null && requestError?.articleError !== undefined}
-                  errorMessage={requestError?.articleError}
-               >
-                  {articles!.map((article) => (
-                     <SelectItem key={article.artId} value={article.artId}>
-                        {article.artLi}
-                     </SelectItem>
-                  ))}
-               </Select>
-            </div>
-            <div className="flex  gap-4">
-               <Input type="number" value={quantite ? quantite!.toString() : ''} label="Quantite" validationBehavior="aria" radius="sm" size="md" variant="bordered" onChange={(e) => {
-                  setQuantite(parseInt(e.target.value))
-
-               }}
-                  isInvalid={requestError?.quantiteError !== null && requestError?.quantiteError !== undefined}
-                  errorMessage={requestError?.quantiteError}
-               />
-
-            </div>
-            <div className="flex w-full gap-4">
-               <Input type="text" label="References" validationBehavior="aria" radius="sm" size="md" variant="bordered" onChange={(e) => {
-
-               }}
-                  isInvalid={requestError?.referenceError !== null && requestError?.referenceError !== undefined}
-                  errorMessage={requestError?.referenceError}
-               />
-            </div>
-
-
-            {/* <Divider className="my-4" />
-         <h1 className="text-small text-default-400 ml-1">Service et Magasin</h1> */}
-            <div className="w-3/6">
-               <Button color="primary" variant="shadow" size="lg" className="h-[50px] " onPress={addMouvementSortie}>
-                  Enregistrez les modifications
-               </Button>
-            </div>
+                           <TableCell className="text-sm">{getKeyValue(item, columnKey)}</TableCell>
+                        )}
+                     </TableRow>
+                  )}
+               </TableBody>
+            </Table>
          </div>
-
-         <Table aria-label="Example static collection table" className="pt-5">
-            <TableHeader columns={columns}>
-               {(column) => (
-                  <TableColumn key={column.key}>
-
-                     {column.label.toLocaleUpperCase()}
-                  </TableColumn>
-               )}
-
-            </TableHeader>
-            <TableBody items={data!} emptyContent={"Aucune sortie"}>
-               {(item) => (
-                  <TableRow key={item[columns[0].key]} >
-                     {(columnKey) => (
-                        <TableCell className="text-sm">{getKeyValue(item, columnKey)}</TableCell>
-                     )}
-                  </TableRow>
-               )}
-            </TableBody>
-         </Table>
 
       </div>
    </>
+}
+
+
+export default function Commande() {
+   const location = useLocation(); // Get the location object
+   const searchParams = new URLSearchParams(location.search);
+   const idMagasin = searchParams.get('idCommande') ? parseInt(searchParams.get('idCommande')!) : null;
+
+   // Use an effect to watch for changes in the URL
+   useEffect(() => {
+      // Any additional logic can go here if needed
+   }, [location]); // Depend on location to trigger on URL change
+
+   const RenderPage = (idMagasin === null || idMagasin === undefined) ? <Index /> : <DetailsCommande />;
+   return RenderPage;
 }

@@ -10,7 +10,6 @@ import SousFamillePage from "@/pages/referentiels/article/sous-famille";
 import UnitePage from "@/pages/referentiels/article/unite";
 import UniteOperationnelPage from "@/pages/referentiels/unop/index";
 import UtilisateurPage from "@/pages/utilisateurs";
-import Commande from "@/pages/mouvements/commande";
 import UserDetails from "@/pages/utilisateurs/user-details";
 import { createBrowserRouter } from "react-router-dom";
 import MouvementSortie from "@/pages/mouvements/sortie";
@@ -72,7 +71,7 @@ export const routes = createBrowserRouter([
          },
          {
             path: 'commandes',
-            element: <Commande />
+            element: <MouvementSortie/>
          },
          {
             path:'sortie',

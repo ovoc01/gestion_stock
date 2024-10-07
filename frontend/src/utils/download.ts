@@ -1,31 +1,33 @@
-import { AxiosResponse } from "axios";
+import { DownloadType } from "@/config/site.enum";
+import { AxiosResponse } from "axios"
+export const downloadFile = async (response: AxiosResponse<any, any>, type: DownloadType) => {
+   // Assuming the response data contains fileName and fileData
+   const { filename, filedata } = response.data;
 
-enum DownloadType {
-   PDF = 'application/pdf',
-   EXCEL = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-   CSV = 'text/csv',
-}
+   let cleanedBase64 = filedata.replace(/[^A-Za-z0-9+/=]/g, ''); 
 
+   // Convert Base64 string to a binary string
+   const byteCharacters = atob(cleanedBase64); // Decode Base64 string
+   const byteNumbers = new Uint8Array(byteCharacters.length);
 
-const downloadFile = (response: AxiosResponse<any, any>, type: DownloadType) => {
-   const blob = new Blob([response.data], { type: type });
-   const url = window.URL.createObjectURL(blob);
-   if(type !== DownloadType.PDF) {
-      const a = document.createElement('a')
-      a.href = url
-      a.download = extractFileName(response)
-      a.click()
-      document.body.appendChild(a)
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      return
+   for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
    }
-   window.open(url, '_blank');
+
+   // Create a Blob from the byte numbers
+   const blob = new Blob([byteNumbers], { type: type });
+
+   // Create a URL for the Blob
+   const url = window.URL.createObjectURL(blob);
+
+   // Create a link element to download the file
+   const a = document.createElement('a');
+   a.href = url;
+   a.download = filename; // Use the filename from the response
+   document.body.appendChild(a);
+   a.click(); // Trigger the download
+   document.body.removeChild(a); // Clean up the DOM
+   window.URL.revokeObjectURL(url); // Release the object URL
 }
 
 
-const extractFileName = (response: AxiosResponse<any, any>): string => {
-   const contentDisposition = response.headers['content-disposition'];
-   const fileName = contentDisposition.split('filename=')[1];
-   return fileName;
-}

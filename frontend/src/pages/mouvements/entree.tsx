@@ -104,7 +104,7 @@ export default function MouvementEntree() {
       }
    ]
 
-   const  handleEntreeCreation = () => {
+   const  handleEntreeCreation = async () => {
       createMouvementEntree(quantite!, prixUnitaire!, selectedArticle!, selectedEmplacement!, justif!)
          .then((response) => {
             setPageNeedReload(!pageNeedReload)
@@ -200,7 +200,6 @@ export default function MouvementEntree() {
                </div>
                <div className="flex w-full gap-4">
                   <Input type="text" label="References" validationBehavior="aria" radius="sm" size="md" variant="bordered" onChange={(e) => {
-
                   }} 
                   />
                   <Input type="text" value={justif!} label="Bon de commande" validationBehavior="aria" radius="sm" size="md" variant="bordered" onChange={(e) => {

@@ -58,7 +58,7 @@ const mouvementsItems:CSDropdownItemProps[] = [
   },
   {
     'label':'Sortie',
-    'href':'/mouvements/sortie',
+    'href':'/mouvements/commandes',
     icon:faArrowLeft
   }
 ]

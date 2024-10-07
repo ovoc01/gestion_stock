@@ -67,6 +67,14 @@ export const createMouvementSortie = async (quantite:number,artId:number,cmdeId:
    return response.data;
 }
 
+export const getAllSortiesByIdCommande = async (idCommande:number)=>{
+   const response = await axios.get(`${BASE_URL}mouvements/commandes/${idCommande}`,{
+      headers:requestHeaders
+   })
+   return response.data;
+}
+
+
 export const getAllEntrees = async ()=>{
    const response = await axios.get(BASE_URL + 'mouvements/entrees',{
       headers:requestHeaders

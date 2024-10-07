@@ -125,7 +125,8 @@ export const updateSousFamille = async (sousFamilleId: number, familleId: number
 
 export const getAllArticles = async ({ page, size }: PaginationProps) => {
    const response = await axios.get(BASE_URL + "articles?page=" + page + "&size=" + size, {
-      headers: requestHeaders
+      headers: requestHeaders,
+      withCredentials:true
    });
    //const response = await axios.get(BASE_URL + "magasins?page="+page+"&size="+size);
    return response.data;
@@ -166,4 +167,12 @@ export const updateArticle = async (articleId: number, ref: string, label: strin
 
    return response.data
 
+}
+
+export const exportArticleExcel = async () => {
+   const response = await axios.get(BASE_URL + 'articles/export', {
+      headers: requestHeaders
+   })
+   
+   return response
 }

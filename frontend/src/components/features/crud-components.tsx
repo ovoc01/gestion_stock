@@ -56,62 +56,46 @@ interface CrudComponentProps {
   isDeleteAuthorized?: boolean;
   isCustomActionAuthorized?: boolean;
   customAction?: React.ReactNode;
-  onAdd?: () => void;
+  onAdd?: () => Promise<void>;
   onSearch?: (searchTerm: string) => void;
   onPageChange?: (page: number) => void;
-  onRowDelete?: (id: number) => void;
-  onRowUpdate?: () => void;
+  onRowDelete?: (id: number) => Promise<void>
+  onRowUpdate?: () => Promise<void>;
   resetInput?: () => void;
   updateIcon?: IconProp;
   deleteIcon?: IconProp;
+  exportPDF?: () => void;
+  exportExcel?: () => void;
   size?:
-    | "2xl"
-    | "xs"
-    | "sm"
-    | "md"
-    | "lg"
-    | "xl"
-    | "3xl"
-    | "4xl"
-    | "5xl"
-    | "full"
-    | undefined;
+  | "2xl"
+  | "xs"
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "3xl"
+  | "4xl"
+  | "5xl"
+  | "full"
+  | undefined;
   extraComponent?: React.ReactNode;
   modalClassName?: string;
   onRowClick?: (id: number) => void;
-  shouldCloseModal: boolean;
+  shouldCloseModal?: boolean;
 }
 
-const ExportButton = () => {
-  const onPressExcel = async () => {
-    const response = await exportArticle();
-    const blob = new Blob([response.data], {
-      type: "text/csv",
-    });
+interface ExportButtonProps {
+  exportExcel?: () => void;
+  exportPDF?: () => void;
+}
 
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
+const ExportButton = ({ exportExcel, exportPDF }: ExportButtonProps) => {
 
-    a.href = url;
-    a.download = "articles.csv";
-    a.click();
-    document.body.appendChild(a);
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-  };
-
-  const onPressPDF = async () => {
-    const response = await exportPDF();
-    const blob = new Blob([response.data], {
-      type: "application/pdf",
-    });
-
-    const url = window.URL.createObjectURL(blob);
-
-    window.open(url, "_blank");
-  };
-
+  if (!exportExcel && !exportPDF) {
+    return <></>; // Don't render anything
+  }
   return (
+
     <Dropdown>
       <DropdownTrigger>
         <Button
@@ -124,13 +108,21 @@ const ExportButton = () => {
         </Button>
       </DropdownTrigger>
       <DropdownMenu>
-        <DropdownItem key="new" onPress={onPressPDF}>
-          PDF
-        </DropdownItem>
-        <DropdownItem key="copy" onPress={onPressExcel}>
-          Excel
-        </DropdownItem>
-        <DropdownItem key="edit">CSV</DropdownItem>
+        {
+          exportPDF! && (
+            <DropdownItem key="copy" onPress={exportPDF}>
+              PDF
+            </DropdownItem>
+          )
+        }
+        {
+          exportExcel! && (
+            <DropdownItem key="copy" onPress={exportExcel}>
+              Excel
+            </DropdownItem>
+          )
+        }
+
       </DropdownMenu>
     </Dropdown>
   );
@@ -218,6 +210,8 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
   modalClassName,
   onRowClick,
   shouldCloseModal,
+  exportExcel,
+  exportPDF
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [liValueToDelete, setLiValueToDelete] = useState<string | null>(null);
@@ -346,10 +340,14 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
         await onRowUpdate!();
         setIsUpdateBtnPressed(false);
       } else {
-        await onAdd!();
+        console.log("tonga ajout")
+        await onAdd!()
       }
       onClose();
-    } catch (error) {}
+      console.log("tonga eto")
+    } catch (error: any) {
+      console.error(error)
+    }
   };
 
   const onDeleteModalDispose = (onClose: () => void, id: number) => {
@@ -396,8 +394,8 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                   className="bg-foreground text-background"
                   radius="sm"
                   size="lg"
-                  onPress={() => {
-                    onModalPressed(onClose);
+                  onPress={async () => {
+                    await onModalPressed(onClose);
                   }}
                 >
                   Valider
@@ -465,7 +463,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                   onClear={() => setSearchTerm("")}
                 />
                 <div className="flex gap-3">
-                  <ExportButton />
+                  <ExportButton exportExcel={exportExcel} exportPDF={exportPDF} />
 
                   <Button
                     className="bg-foreground text-background px-4 py-2"
@@ -486,8 +484,8 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
           <TableHeader
             columns={
               isDeleteAuthorized ||
-              isCustomActionAuthorized ||
-              isUpdateAuthorized
+                isCustomActionAuthorized ||
+                isUpdateAuthorized
                 ? columnWithAction
                 : columns
             }

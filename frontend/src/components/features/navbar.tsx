@@ -27,10 +27,8 @@ export const Navbar = () => {
     //localStorage.removeItem('user')
     navigate('/')
   }
-
-
   return (
-    <NextUINavbar maxWidth="2xl" position="sticky" className="px-8 flex items-center">
+    <NextUINavbar  position="sticky" className="px-8 flex items-center z-50">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand className="gap-3 max-w-fit">
           <Link

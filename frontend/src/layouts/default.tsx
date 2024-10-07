@@ -19,7 +19,7 @@ export default function DefaultLayout({
   return (
     <>
 
-      <div className="relative flex flex-col h-screen w-full  ">
+      <div className="relative flex flex-col h-screen w-full">
         <Navbar />
         <main className="container mx-auto w-full  flex-grow  ">
           {

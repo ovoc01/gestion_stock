@@ -1,7 +1,9 @@
 import CrudComponent from "@/components/features/crud-components"
-import { createArticle, deleteArticle, getAllArticles, getAllSousFamilles, getAllUnite, updateArticle } from "@/services/api/article.service";
+import { DownloadType } from "@/config/site.enum";
+import { createArticle, deleteArticle, exportArticleExcel, getAllArticles, getAllSousFamilles, getAllUnite, updateArticle } from "@/services/api/article.service";
 import { getAllServiceExploitant } from "@/services/api/service-exploitant.service";
 import { ArticleDataProps, ServiceExploitantDataProps, SousFamilleDataProps, UniteDataProps } from "@/types/types";
+import { downloadFile } from "@/utils/download";
 import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Input } from "@nextui-org/input";
@@ -122,9 +124,9 @@ export default function ArticlePage() {
       setRequestError(null)
    }
 
-   const onAdd = () => {
+   const onAdd = async () => {
 
-      createArticle(artRef, label, sousFamId!, serviceId!, uniteId!)
+      await createArticle(artRef, label, sousFamId!, serviceId!, uniteId!)
          .then(() => {
             setIsNewRowAdded(!isNewRowAdded)
             toast.success('Article ajouté avec succès')
@@ -135,6 +137,7 @@ export default function ArticlePage() {
                   setRequestError(error.response.data)
                }
             }
+            throw new Error("Vody")
          })
 
    };
@@ -157,7 +160,7 @@ export default function ArticlePage() {
    }
 
    const onRowUpdate = async () => {
-      updateArticle(rowToUpdate!, artRef, label, sousFamId!, serviceId!, uniteId!)
+      await updateArticle(rowToUpdate!, artRef, label, sousFamId!, serviceId!, uniteId!)
          .then((response) => {
             console.log(response)
             setIsNewRowAdded(!isNewRowAdded)
@@ -173,6 +176,11 @@ export default function ArticlePage() {
 
    }
 
+   const exportExcel = async () => {
+      const response = await exportArticleExcel();
+      console.log(response)
+      await downloadFile(response, DownloadType.EXCEL)
+   }
    return (
       <CrudComponent
          pageTitle="Article"
@@ -189,6 +197,7 @@ export default function ArticlePage() {
          setRowToUpdate={setRowToUpdate}
          isDeleteAuthorized
          isUpdateAuthorized
+         exportExcel={exportExcel}
 
          addModalContent={
             <div className="w-full flex flex-col gap-4 pb-5">

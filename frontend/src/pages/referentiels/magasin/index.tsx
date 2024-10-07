@@ -80,10 +80,6 @@ const Index = () => {
          type: 'string'
       },
       {
-         key: 'magResp',
-         label: 'Responsable'
-      },
-      {
          key: 'magDtCr',
          label: 'Date de création',
       }
@@ -97,12 +93,12 @@ const Index = () => {
    }
 
 
-   const createNewFamille = () => {
+   const createNewFamille = async() => {
       setShouldCloseModal(false)
       console.log(dateCreation)
-      createMagasin(label, dateCreation!.toDate(getLocalTimeZone()), commentaire)
-         .then((response) => {
-            toast.success(response.message)
+      await createMagasin(label, dateCreation!.toDate(getLocalTimeZone()), commentaire)
+         .then(() => {
+            toast.success("Nouveau magasin enregistré")
             setIsNewRowAdded(!isNewRowAdded)
             setShouldCloseModal(true)
 
@@ -112,6 +108,7 @@ const Index = () => {
                   setRequestError(error.response.data)
                }
             }
+            throw new Error("Une erreur c'est produite")
          })
    };
 
@@ -217,17 +214,15 @@ const Index = () => {
 
 
 export default function MagasinPage() {
+   const location = useLocation(); // Get the location object
    const searchParams = new URLSearchParams(location.search);
    const idMagasin = searchParams.get('idMagasin') ? parseInt(searchParams.get('idMagasin')!) : null;
+
+   // Use an effect to watch for changes in the URL
    useEffect(() => {
+      // Any additional logic can go here if needed
+   }, [location]); // Depend on location to trigger on URL change
 
-   }, [idMagasin])
-
-
-
-
-
-
-   const RenderPage = (idMagasin === null || idMagasin === undefined) ? <Index /> : <DetailsMagasin />
+   const RenderPage = (idMagasin === null || idMagasin === undefined) ? <Index /> : <DetailsMagasin />;
    return RenderPage;
 }
