@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # --- Configuration ---
-REPO_URL="git@github.com:your-username/your-repo.git"
-VPS_USER="deploy_user"
-VPS_IP="your_vps_ip"
-APP_DIR="/path/to/your/app" 
+REPO_URL="git@github.com:ovoc01/gestion_stock.git"
+VPS_USER="zephyr"
+VPS_IP="192.168.1.100"
+APP_DIR="~/gestion_stock" 
 
 # --- Get parameters ---
 BRANCH="${1:-main}"  # Default to 'main' if not provided
