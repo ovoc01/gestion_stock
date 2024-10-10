@@ -11,6 +11,7 @@ vps_user = os.getenv("VPS_USER")
 vps_ip = os.getenv("VPS_IP")
 app_dir = os.getenv("APP_DIR")
 
+
 # --- Function to run shell commands ---
 def run_command(command):
     try:
@@ -18,6 +19,7 @@ def run_command(command):
         print(f"Successfully ran: {command}")
     except subprocess.CalledProcessError as e:
         print(f"Error running command: {e}")
+
 
 if __name__ == "__main__":
     branch = input("Enter the branch name to deploy: ")
@@ -31,11 +33,7 @@ if __name__ == "__main__":
     # --- SSH & Deployment ---
     ssh_command = f"""
         ssh {vps_user}@{vps_ip} "
-            cd {app_dir} &&
-            git pull origin {branch} &&
-            docker-compose pull &&
-            docker-compose down &&
-            docker-compose up -d --build
+           
         "
     """
     run_command(ssh_command)
