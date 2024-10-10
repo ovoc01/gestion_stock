@@ -10,17 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Deploiement
-      uses: appleboy/ssh-action@master 
-      with:
-        host: ${{ secrets.VPS_IP }}
-        username: ${{ secrets.VPS_USR }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }} # Store your SSH key as a secret
-        script: |
+      - name: Deploiement
+        run: |
+          ssh ${{ secrets.VPS_USR }}@${{ secrets.VPS_IP }}
           cd ~/gestion_stock
-          git pull origin sprint1
-          # ... your other deployment commands (build, restart, etc.) 
-          echo "Deployment successful!" > deploy.log
+          touch deploy.txt
+          echo "Pulling from GitHub" >> deploy.txt
