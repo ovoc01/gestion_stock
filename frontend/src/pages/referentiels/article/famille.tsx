@@ -124,10 +124,7 @@ export default function FamillePage() {
    }
 
    const onRowUpdate = async () => {
-      if (label.trim() === '') {
-         toast.error('Le libellé est obligatoire')
-         return;
-      }
+      
       await updateFamille(rowToUpdate!, label, dateCreation!.toDate(getLocalTimeZone()))
          .then((response) => {
             toast.success('Famille modifiée avec succès', response)

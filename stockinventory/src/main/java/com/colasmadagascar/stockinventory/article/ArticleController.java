@@ -1,24 +1,38 @@
 package com.colasmadagascar.stockinventory.article;
 
+import com.colasmadagascar.stockinventory.dataexport.DataExportService;
+import com.colasmadagascar.stockinventory.shared.Fetch;
+
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.ByteArrayInputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/articles")
-
+@RequiredArgsConstructor
 public class ArticleController  {
-    @Autowired  ArticleService articleService;
+    final ArticleService articleService;
+    private final DataExportService dataExportService;
     
     @GetMapping
-    public ResponseEntity<Object> getAllArticle(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
+    public ResponseEntity<Object> getAllArticles(
+        @RequestParam(name = "page",required = false,defaultValue = "1") int page,
+        @RequestParam(name = "size",required = false,defaultValue = "5") int size,
+        @RequestParam(name="fetch",defaultValue = "PAGINATION") Fetch fetch) {
         HashMap<String,Object> data = new HashMap<>();
         try{
-            List<ArticleDTO>articles =  articleService.getAllArticleDTO(page,size);
+            List<ArticleDTO>articles =  articleService.getAllArticleDTO(page,size,fetch);
             data.put("articles",articles);
             data.put("totalPages",articleService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
@@ -42,6 +56,27 @@ public class ArticleController  {
             return ResponseEntity.badRequest().body(data);
         }
     }
+
+    @GetMapping("/export")
+    public ResponseEntity<Map<String, Object>> exportExcel() throws Exception {
+        ByteArrayInputStream resource = articleService.exportToExcel();
+        String fileName = String.format("articles_%s.xlsx", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss")));
+
+        // Convert the Excel file to Base64 string
+        byte[] byteArray = resource.readAllBytes();
+        String base64Data = Base64.getEncoder().encodeToString(byteArray);
+
+        // Prepare response map
+        Map<String, Object> response = new HashMap<>();
+        response.put("filename", fileName);
+        response.put("filedata", base64Data);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+
+
 
 
     @PostMapping

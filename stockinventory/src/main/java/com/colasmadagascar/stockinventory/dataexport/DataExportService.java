@@ -1,83 +1,85 @@
 package com.colasmadagascar.stockinventory.dataexport;
 
-
-import com.colasmadagascar.stockinventory.article.ArticleDTO;
-import com.colasmadagascar.stockinventory.article.ArticleRepository;
 import com.colasmadagascar.stockinventory.dataexport.tools.ExcelExportUtility;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.colasmadagascar.stockinventory.utils.Utils;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class DataExportService {
-    private ArticleRepository articleRepository;
-    private TemplateEngine templateEngine;
+    // final private ArticleRepository articleRepository;
+    final private TemplateEngine templateEngine;
 
-    public DataExportService(ArticleRepository articleRepository,TemplateEngine templateEngine) {
-        this.articleRepository = articleRepository;
+    public DataExportService(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
 
-    public ByteArrayInputStream exportToExcel() throws Exception {
-        String[] columns = {"Article ID","Libelle", "Reference", "Code", "Service","Sous Famille","Unite "};
+    public <T> ByteArrayInputStream exportToExcel(String[] columns, List<T> entities, Class<T> clz) throws Exception {
 
-        List<ArticleDTO> entities = articleRepository.findAllArticles(); // Or use a custom query
-        ExcelExportUtility<ArticleDTO> excelExportUtility = new ExcelExportUtility<>(ArticleDTO.class);
+        ExcelExportUtility<T> excelExportUtility = new ExcelExportUtility<>(clz);
         return excelExportUtility.exportToExcel(entities, columns);
     }
 
-    public String exportToCSV() {
-        StringBuilder csvData = new StringBuilder();
-
-        csvData.append("Article ID,Libelle, Reference, Code, Service,Sous Famille,Unite\n");
-
-
-        List<ArticleDTO> entities =articleRepository.findAllArticles(); // Or your custom query
-        for (ArticleDTO entity : entities) {
-            csvData.append(entity.getArtId()).append(",")
-                    .append(entity.getArtLi()).append(",")
-                    .append(entity.getArtRef()).append(",")
-                    .append(entity.getArtCd()).append(",")
-                    .append(entity.getServiceLi()).append(",")
-                    .append(entity.getSousFamLi()).append(",")
-                    .append(entity.getUniteLi())
-                    .append("\n");
-        }
-        return csvData.toString();
-    }
-
-    public ByteArrayInputStream generatePdfReport() {
+    /*
+     * public String exportToCSV() {
+     * StringBuilder csvData = new StringBuilder();
+     * 
+     * csvData.
+     * append("Article ID,Libelle, Reference, Code, Service,Sous Famille,Unite\n");
+     * 
+     * List<ArticleDTO> entities = articleRepository.findAllArticles(); // Or your
+     * custom query
+     * for (ArticleDTO entity : entities) {
+     * csvData.append(entity.getArtId()).append(",")
+     * .append(entity.getArtLi()).append(",")
+     * .append(entity.getArtRef()).append(",")
+     * .append(entity.getArtCd()).append(",")
+     * .append(entity.getServiceLi()).append(",")
+     * .append(entity.getSousFamLi()).append(",")
+     * .append(entity.getUniteLi())
+     * .append("\n");
+     * }
+     * return csvData.toString();
+     * }
+     */
+    public ByteArrayInputStream generatePdfReport(String template, HashMap<String, Object> data) throws IOException {
         // 1. Récupérer les données du référentiel
-
 
         // 2. Créer le contexte Thymeleaf
         Context context = new Context();
-        context.setVariable("entities", "");
+
+        String base64 = Utils
+                .encodeImageToBase64("/Users/dev/gestion-stock/stockinventory/src/main/resources/static/image.png");
+        context.setVariables(data);
+        // System.out.println(base64);
 
         // 3. Rendre le modèle HTML avec Thymeleaf
-        String htmlContent = templateEngine.process("export-template", context);
+        String htmlContent = templateEngine.process(template, context);
+        String pdfPath = "output.pdf";
 
         // 4. Convertir le HTML en PDF avec Flying Saucer
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                OutputStream stream = new FileOutputStream(pdfPath);) {
+
             ITextRenderer renderer = new ITextRenderer();
             renderer.setDocumentFromString(htmlContent);
             renderer.layout();
             renderer.createPDF(outputStream);
+
+            outputStream.writeTo(stream);
+
             return new ByteArrayInputStream(outputStream.toByteArray());
         } catch (Exception e) {
             // Gérer l'exception
             e.printStackTrace(); // Ou une meilleure journalisation des erreurs
-            return null; // Ou lever une exception plus spécifique
+            // return null; // Ou lever une exception plus spécifique
+            return null;
         }
     }
 

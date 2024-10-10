@@ -110,10 +110,10 @@ export default function UniteOperationnelPage() {
 
 
 
-   const createNewUnOp = () => {
+   const createNewUnOp = async () => {
       setShouldCloseModal(false)
       const { lng, lat } = marker ? marker.position : { lng: unopPosition?.lng, lat: unopPosition?.lat }
-      createUniteOperationnel(numbu!, buli!, numAffaire!, mdmId!, label!, { lng: lng!, lat: lat! }, ue!, ueLi!)
+      await createUniteOperationnel(numbu!, buli!, numAffaire!, mdmId!, label!, { lng: lng!, lat: lat! }, ue!, ueLi!)
          .then(() => {
             setIsNewRowAdded(!isNewRowAdded)
             toast.message('Unité operationnel ajoutée')
@@ -137,9 +137,9 @@ export default function UniteOperationnelPage() {
       setRowToUpdate(null)
    }
 
-   const onRowDelete = (unopId: number) => {
+   const onRowDelete = async (unopId: number) => {
       setShouldCloseModal(false)
-      deleteUniteOperationnel(unopId)
+     await deleteUniteOperationnel(unopId)
          .then(() => {
             toast.message('Unité operationnel supprimée')
             setIsNewRowAdded(!isNewRowAdded)
@@ -201,7 +201,7 @@ export default function UniteOperationnelPage() {
 
          addModalContent={
             <div className="flex items-center  gap-4">
-               <div className="w-2/6 flex flex-col gap-1 ">
+               <div className="w-3/6 flex flex-col gap-1 ">
 
 
                   <h1 className="text-small text-default-400 ml-1">Informations du unité operationnel</h1>

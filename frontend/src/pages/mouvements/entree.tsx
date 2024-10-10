@@ -3,6 +3,7 @@ import CrudComponent from "@/components/features/crud-components";
 import { getAllArticles } from "@/services/api/article.service";
 import { getAllEmplacements } from "@/services/api/batiment.service";
 import { createMouvementEntree, getAllEntrees} from "@/services/api/mouvement.service";
+import { FetchType } from "@/shared/shared";
 import { ArticleDataProps, EmplacementDataProps, RowData } from "@/types/types";
 import { Input } from "@nextui-org/input";
 import {Divider, Select, SelectItem } from "@nextui-org/react";
@@ -34,7 +35,7 @@ export default function MouvementEntree() {
          console.log(error)
       })
 
-      getAllArticles({ page, size })
+      getAllArticles({ page, size,fetch:FetchType.ALL })
          .then((response) => {
             setArticles(response.articles)
          })
@@ -42,7 +43,7 @@ export default function MouvementEntree() {
             console.log(error)
          })
 
-      getAllEmplacements({ page, size })
+      getAllEmplacements({ page, size,fetch:FetchType.ALL })
          .then((response) => {
             setEmplacements(response.emplacements)
          }).catch((error) => {
@@ -104,7 +105,7 @@ export default function MouvementEntree() {
       }
    ]
 
-   const  handleEntreeCreation = () => {
+   const  handleEntreeCreation = async () => {
       createMouvementEntree(quantite!, prixUnitaire!, selectedArticle!, selectedEmplacement!, justif!)
          .then((response) => {
             setPageNeedReload(!pageNeedReload)
@@ -200,7 +201,6 @@ export default function MouvementEntree() {
                </div>
                <div className="flex w-full gap-4">
                   <Input type="text" label="References" validationBehavior="aria" radius="sm" size="md" variant="bordered" onChange={(e) => {
-
                   }} 
                   />
                   <Input type="text" value={justif!} label="Bon de commande" validationBehavior="aria" radius="sm" size="md" variant="bordered" onChange={(e) => {

@@ -114,7 +114,9 @@ export type RegistrationPayload = {
    password:string,
    nom:string,
    prenom:string,
-   roleId:number
+   roleId:number,
+   magAffect?:number[]
+   servAffect?:number[]
 }
 
 
@@ -168,3 +170,21 @@ export type UserClaims = {
    username:string,
    role:string,
 }
+
+
+export type ValorisationDetails = {
+   code_article:string
+   article:string
+   emplacement:string,
+   magasin:string
+   sous_famille:string
+   quantite:number,
+   cmup:number
+}
+
+
+export type CommandeDetails = {
+   info:CommandeData,
+   details:MouvementData[]
+}
+

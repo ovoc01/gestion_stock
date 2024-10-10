@@ -25,8 +25,8 @@ export default function EmplacementPage() {
    const [magasins, setMagasins] = useState<MagasinDataProps[] | null>([])
    const [data, setData] = useState<EmplacementDataProps[] | null>([]);
    const [totalPage, setTotalPage] = useState<number>();
-   
-   const [shouldCloseModal,setShouldCloseModal] = useState(false)
+
+   const [shouldCloseModal, setShouldCloseModal] = useState(false)
 
 
    const navigate = useNavigate()
@@ -41,7 +41,7 @@ export default function EmplacementPage() {
             toast.error('Erreur lors de la récupération des données ', error);
          })
 
-         
+
 
       getAllMagasins({ page, size })
          .then((response) => {
@@ -78,10 +78,6 @@ export default function EmplacementPage() {
    }, [isNewRowAdded, page, size]);
 
 
-
-
-
-
    const columns = [
       {
          key: 'emplId',
@@ -109,9 +105,9 @@ export default function EmplacementPage() {
    ]
 
 
-   const createNewEmplacement = () => {
+   const createNewEmplacement = async () => {
       setShouldCloseModal(false)
-      createEmplacement(label, magId!, serviceId!)
+      await createEmplacement(label, magId!, serviceId!)
          .then((response) => {
             toast.success('Emplacement ajouté avec succès', response)
             setIsNewRowAdded(!isNewRowAdded)
@@ -128,9 +124,9 @@ export default function EmplacementPage() {
          })
    };
 
-   const onRowDelete = (emplId: number) => {
+   const onRowDelete = async (emplId: number) => {
       setShouldCloseModal(false)
-      deleteEmplacement(emplId)
+      await deleteEmplacement(emplId)
          .then((response) => {
             toast.success('Emplacement supprimé avec succès', response)
             setIsNewRowAdded(!isNewRowAdded)

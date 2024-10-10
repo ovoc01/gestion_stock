@@ -164,3 +164,20 @@ GROUP BY
     sf.sous_fam_id,
     sf.famille_id,
     a.art_id;
+
+
+create or replace view v_magasin_detail_ligne_lib as
+SELECT m.mag_id,
+       m.mag_li                         AS magasin,
+       m.mag_dt_cr                      AS datecreation,
+       'Aucune numero enregistré'::text AS telephone,
+       CASE
+           WHEN count(DISTINCT u.usr_id) = 0 THEN 'Aucun utilisateurs associés a ce magasin'::text
+           ELSE string_agg(DISTINCT concat(u.usr_nom, ' ', u.usr_prenom), ', '::text)
+           END                          AS utilisateurs,
+       count(DISTINCT e.empl_id)        AS nombreemplacement
+FROM magasin m
+         LEFT JOIN utilisateur_magasin um ON m.mag_id = um.mag_id
+         LEFT JOIN utilisateur u ON u.usr_id = um.usr_id
+         LEFT JOIN emplacement e ON m.mag_id = e.mag_id
+GROUP BY m.mag_dt_cr, m.mag_li, m.mag_id

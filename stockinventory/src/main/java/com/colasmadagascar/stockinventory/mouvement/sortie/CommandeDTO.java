@@ -4,7 +4,6 @@ public interface CommandeDTO {
     public Long getCmdeId();
 
     public Long getEmplId();
-
     public Long getUnopId();
     public String getEmplacement();
     public String getUniteOperationnel();

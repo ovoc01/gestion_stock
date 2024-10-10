@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
+import com.colasmadagascar.stockinventory.shared.Fetch;
+
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,9 @@ public class EmplacementService {
         emplacementRepository.createEmplacement(request.getEmplLi(), request.getServiceId(), request.getMagId());
     }
 
-    public List<EmplacementDTO> getAllEntitiesDTO(int page, int size) {
+    public List<EmplacementDTO> getAllEntitiesDTO(int page, int size,Fetch fetch) {
+        if (fetch == Fetch.ALL)
+            return emplacementRepository.findAllEmplacementDTO();
         Pageable pageable = PageRequest.of(page - 1, size);
         return emplacementRepository.findAllEmplacementDTO(pageable).toList();
     }

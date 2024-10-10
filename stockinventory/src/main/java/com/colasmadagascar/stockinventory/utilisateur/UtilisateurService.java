@@ -2,6 +2,7 @@ package com.colasmadagascar.stockinventory.utilisateur;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,10 +32,11 @@ public class UtilisateurService {
     }
 
     public List<UtilisateurDTO> getAllUtilisateur() {
+
         return utilisateurRepository.findAllBy();
     }
 
-    public long count(){
+    public long count() {
         return utilisateurRepository.count();
     }
 

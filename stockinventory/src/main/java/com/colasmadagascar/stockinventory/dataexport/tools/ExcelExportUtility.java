@@ -11,6 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -61,20 +62,13 @@ public class ExcelExportUtility<T> {
         Sheet sheet = workbook.createSheet("Sheet1");
         // Create header row
         Row headerRow = sheet.createRow(0);
-        Field[] fields = type.getDeclaredFields();
+        Method[] methods = type.getDeclaredMethods();
         int columnIdx = 0;
 
         if (headers != null) {
             for (int i = 0; i < headers.length; i++) {
                 Cell cell = headerRow.createCell(columnIdx++);
                 cell.setCellValue(headers[i]);
-            }
-        } else {
-            for (Field field : fields) {
-                if (field.isAnnotationPresent(Column.class) || field.isAnnotationPresent(Id.class)) {
-                    Cell cell = headerRow.createCell(columnIdx++);
-                    cell.setCellValue(getFieldDisplayName(field));
-                }
             }
         }
 
@@ -83,13 +77,13 @@ public class ExcelExportUtility<T> {
         int rowNum = 1;
         for (T entity : entities) {
             Row row = sheet.createRow(rowNum++);
-            columnIdx = 0;
-
-            for (Field field : fields) {
-                if (field.isAnnotationPresent(Column.class) || field.isAnnotationPresent(Id.class)) {
-                    field.setAccessible(true);
-                    Object value = field.get(entity);
-                    Cell cell = row.createCell(columnIdx++);
+            for (Method m :methods){
+                ExcelRow excelRow = m.getAnnotation(ExcelRow.class);
+                if(excelRow!=null){
+                    System.out.println(m.getName());
+                    m.setAccessible(true);
+                    Object value = m.invoke(entity);
+                    Cell cell = row.createCell(excelRow.value()-1);
                     setCellValue(cell, value);
                 }
             }

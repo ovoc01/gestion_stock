@@ -1,11 +1,11 @@
 package com.colasmadagascar.stockinventory.mouvement.sortie;
 
+import com.colasmadagascar.stockinventory.mouvement.MouvementRepository;
 import com.colasmadagascar.stockinventory.mouvement.periode.Periode;
 import com.colasmadagascar.stockinventory.mouvement.periode.PeriodeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,13 +13,23 @@ import java.util.Optional;
 public class CommandeService {
     public final CommandeRepository commandeRepository;
     public final PeriodeRepository periodeRepository;
-    public CommandeService (CommandeRepository commandeRepository, PeriodeRepository periodeRepository) {
+    public final MouvementRepository mouvementRepository;
+
+    public CommandeService (CommandeRepository commandeRepository, PeriodeRepository periodeRepository, MouvementRepository mouvementRepository) {
         this.commandeRepository = commandeRepository;
         this.periodeRepository = periodeRepository;
+        this.mouvementRepository = mouvementRepository;
     }
 
     public List<CommandeDTO> getAllCommande (){
         return commandeRepository.getAllCommande();
+    }
+
+    public CommandeDetailDTO getAllCommandeSortie(Long cmdeId){
+        CommandeDetailDTO dto = new CommandeDetailDTO();
+        dto.setInfo(commandeRepository.getCommandeDetails(cmdeId));
+        dto.setDetails(mouvementRepository.getAllSortieByCommande(cmdeId));
+        return  dto;
     }
 
     public Commande getCommandeById(Long id) {

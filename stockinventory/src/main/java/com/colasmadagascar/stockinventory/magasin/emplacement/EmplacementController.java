@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.List;
 
-
+import com.colasmadagascar.stockinventory.shared.Fetch;
 
 @RestController
 @RequestMapping("api/v1/emplacements")
@@ -17,10 +17,14 @@ public class EmplacementController  {
     @Autowired  EmplacementService emplacementService;
     
     @GetMapping
-    public ResponseEntity<Object> getAllEmplacement(@RequestParam(name = "page",required = false,defaultValue = "1") int page,@RequestParam(name = "size",required = false,defaultValue = "5") int size) {
+    public ResponseEntity<Object> getAllEmplacement(
+        @RequestParam(name = "page",required = false,defaultValue = "1") int page,
+        @RequestParam(name = "size",required = false,defaultValue = "5") int size,
+        @RequestParam(name = "fetch", defaultValue = "PAGINATION") Fetch fetch
+        ) {
         HashMap<String,Object> data = new HashMap<>();
         try{
-            List<EmplacementDTO>emplacements =  emplacementService.getAllEntitiesDTO(page, size);
+            List<EmplacementDTO>emplacements =  emplacementService.getAllEntitiesDTO(page, size,fetch);
             data.put("emplacements",emplacements);
             data.put("totalPages",emplacementService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);

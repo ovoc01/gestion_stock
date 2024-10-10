@@ -161,13 +161,15 @@ CREATE TABLE service (
 CREATE TABLE unite_operationnel (
     unop_id SERIAL PRIMARY KEY,
     unop_li varchar UNIQUE,
-    unop_num_bu INT,
-    unop_li_bu varchar,
+    unop_num_bu VARCHAR(30),
+    unop_ue VARCHAR(10),
+    unop_ue_li VARCHAR,
     unop_li_num_aff varchar,
     unop_ref varchar UNIQUE,
-    unop_matrn_id varchar,
+    unop_mdm_id varchar,
     unop_lng DOUBLE precision,
     unop_ltd double precision,
+    unop_responsable varchar,
     unop_dt_cr TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     unop_dern_mdf TIMESTAMP WITH TIME ZONE
 );

@@ -1,5 +1,6 @@
 package com.colasmadagascar.stockinventory.mouvement.sortie;
 
+import com.colasmadagascar.stockinventory.mouvement.MouvementDTO;
 import com.colasmadagascar.stockinventory.mouvement.stock.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -26,5 +27,9 @@ public interface CommandeRepository extends JpaRepository<Commande,Long> {
     @Query(nativeQuery = true,value = "select * from v_commande_lib")
     List<CommandeDTO> getAllCommande();
 
+    @Query(nativeQuery = true,value = "select * from v_commande_lib where cmdeid=?1")
+    CommandeDTO getCommandeDetails(Long id);
 
+    @Query(nativeQuery = true,value = "select * from v_mouvement_lib where cmdeid=?1")
+    List<MouvementDTO> getAllCommandeSortie(Long cmdeId);
 }

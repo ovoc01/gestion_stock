@@ -13,10 +13,10 @@ import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article,Long> {
     @Query(nativeQuery = true,value = "select * from v_article_lib")
-    Page<ArticleDTO> findAllArticleDTO(Pageable pageable);
+    Page<ArticleDTO> findAllArticlesDTO(Pageable pageable);
 
     @Query(nativeQuery = true,value = "select * from v_article_lib")
-    List<ArticleDTO> findAllArticles();
+    List<ArticleDTO> findAllArticlesDTO();
 
     @Query(nativeQuery = true,value = "insert into article (art_li,art_ref,art_cd,sous_famille_id,service_id,unite_id) values (?1,?2,?3,?4,?5,?6)")
     @Modifying

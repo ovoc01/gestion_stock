@@ -1,8 +1,11 @@
 package com.colasmadagascar.stockinventory.serviceexp;
 
+import com.colasmadagascar.stockinventory.shared.Fetch;
+
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,18 +14,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/service-exploitants")
-
+@RequiredArgsConstructor
 public class ServiceController {
-    @Autowired
-    ServiceExploitantService serviceService;
+
+    final ServiceExploitantService serviceService;
 
     @GetMapping
     public ResponseEntity<Object> getAllService(
             @RequestParam(name = "page", required = false, defaultValue = "1") int page,
-            @RequestParam(name = "size", required = false, defaultValue = "5") int size) {
+            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+            @RequestParam(name = "fetch", defaultValue = "PAGINATION") Fetch fetch) {
         HashMap<String, Object> data = new HashMap<>();
         try {
-            List<ServiceExploitant> services = serviceService.getAllEntities(page, size);
+            List<ServiceExploitant> services = serviceService.getAllEntities(page, size,fetch);
             data.put("serviceExploitants", services);
             data.put("totalPages", serviceService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
@@ -105,7 +109,8 @@ public class ServiceController {
 
     @PostMapping("{id}/utilisateurs/{usrId}")
     @PreAuthorize("hasAuthority('Administrateur')")
-    public ResponseEntity<Object> addUtilisateurService(@PathVariable("usrId") Long usrId, @PathVariable("id") Long serviceId) {
+    public ResponseEntity<Object> addUtilisateurService(@PathVariable("usrId") Long usrId,
+            @PathVariable("id") Long serviceId) {
 
         HashMap<String, Object> response = new HashMap<>();
         try {

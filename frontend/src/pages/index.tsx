@@ -37,8 +37,8 @@ export default function IndexPage() {
 
   return (
     <div className="flex h-screen justify-center items-center ">
-      <div className="flex px-8 rounded-lg flex-col w-[400px] h-[500px] justify-center items-center mx-auto flex-wrap md:flex-nowrap gap-4 shadow-lg ">
-        <div className="pb-8">
+      <div className="flex px-8 rounded-lg flex-col w-[400px] h-fit justify-center items-center mx-auto  gap-4 shadow-lg ">
+        <div className="pb-8 flex flex-col justify-center items-center">
           <Logo className="mb-8" height={100} width={200} logo="title" />
           <h1 className="font-bold text-4xl">
             Gestion de Stock
@@ -53,9 +53,11 @@ export default function IndexPage() {
             </Checkbox>
           </div>
         </div>
-        <Button className="mt-6 w-full h-[40px] dark" onClick={authentificate}>
-          Se connectez
-        </Button>
+        <div className="w-full p-5">
+          <Button className=" w-full h-12   bg-dark text-light" size="md" onClick={authentificate}>
+            Se connectez
+          </Button>
+        </div>
       </div>
     </div>
 

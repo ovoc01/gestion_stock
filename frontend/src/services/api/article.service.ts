@@ -1,9 +1,10 @@
 import axios from "axios";
-import { BASE_URL, PaginationProps, requestHeaders } from "../../shared/shared";
+import { BASE_URL, FetchType, PaginationProps, requestHeaders } from "../../shared/shared";
 
 
-export const getAllUnite = async ({ page, size }: PaginationProps) => {
-   const response = await axios.get(BASE_URL + "unites?page=" + page + "&size=" + size, {
+export const getAllUnite = async ({ page, size ,fetch=FetchType.PAGINATION}: PaginationProps) => {
+   BASE_URL + "unites?page=" + page + "&size=" + size
+   const response = await axios.get(`${BASE_URL}unites?page=${page}&size=${size}&fetch=${fetch}`, {
       headers: requestHeaders
    });
    //const response = await axios.get(BASE_URL + "magasins?page="+page+"&size="+size);
@@ -123,9 +124,10 @@ export const updateSousFamille = async (sousFamilleId: number, familleId: number
 
 }
 
-export const getAllArticles = async ({ page, size }: PaginationProps) => {
-   const response = await axios.get(BASE_URL + "articles?page=" + page + "&size=" + size, {
-      headers: requestHeaders
+export const getAllArticles = async ({ page, size,fetch=FetchType.PAGINATION }: PaginationProps) => {
+   const response = await axios.get(`${BASE_URL}articles?page=${page}&size=${size}&fetch=${fetch}`, {
+      headers: requestHeaders,
+      withCredentials:true
    });
    //const response = await axios.get(BASE_URL + "magasins?page="+page+"&size="+size);
    return response.data;
@@ -166,4 +168,12 @@ export const updateArticle = async (articleId: number, ref: string, label: strin
 
    return response.data
 
+}
+
+export const exportArticleExcel = async () => {
+   const response = await axios.get(BASE_URL + 'articles/export', {
+      headers: requestHeaders
+   })
+   
+   return response
 }

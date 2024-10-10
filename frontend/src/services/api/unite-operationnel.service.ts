@@ -1,13 +1,14 @@
 import axios from "axios";
 
-import { BASE_URL, PaginationProps, requestHeaders } from "../../shared/shared";
+import { BASE_URL, FetchType, PaginationProps, requestHeaders } from "../../shared/shared";
 
 export const getAllUniteOperationnel = async ({
   page,
   size,
+  fetch=FetchType.PAGINATION
 }: PaginationProps) => {
   const response = await axios.get(
-    `${BASE_URL}unite-operationnels?page=${page}&size=${size}`,
+    `${BASE_URL}unite-operationnels?page=${page}&size=${size}&fetch=${fetch}`,
     {
       headers: requestHeaders,
     },
@@ -91,7 +92,7 @@ export const updateUniteOperationnel = async (
 
     return response.data;
   } catch (err) {
-    console.log("voyyyydd");
+    //console.log("voyyyydd");
     throw err;
   }
 };

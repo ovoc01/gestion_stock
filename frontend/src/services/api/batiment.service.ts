@@ -1,10 +1,10 @@
 import axios from "axios";
 
-import { BASE_URL, PaginationProps, requestHeaders } from "@/shared/shared.ts";
+import { BASE_URL, FetchType, PaginationProps, requestHeaders } from "@/shared/shared.ts";
 
-export const getAllMagasins = async ({ page, size }: PaginationProps) => {
+export const getAllMagasins = async ({ page, size ,fetch=FetchType.PAGINATION}: PaginationProps) => {
   const response = await axios.get(
-    BASE_URL + "magasins?page=" + page + "&size=" + size,
+    `${BASE_URL}magasins?page=${page}&size=${size}&fetch=${fetch}`,
     {
       headers: requestHeaders,
     },
@@ -69,9 +69,9 @@ export const updateMagasin = async (
   return response.data;
 };
 
-export const getAllEmplacements = async ({ page, size }: PaginationProps) => {
+export const getAllEmplacements = async ({ page, size,fetch=FetchType.PAGINATION }: PaginationProps) => {
   const response = await axios.get(
-    BASE_URL + "emplacements?page=" + page + "&size=" + size,
+    `${BASE_URL}emplacements?page=${page}&size=${size}&fetch=${fetch.valueOf()}`,
     {
       headers: requestHeaders,
     },

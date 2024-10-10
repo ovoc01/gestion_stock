@@ -102,19 +102,33 @@ export default function UtilisateurPage() {
    });
 
 
-   const handleUserRegistration = (onClose: () => void) => {
+   const handleUserRegistration = async (onClose: () => void) => {
+      const magasinsSet = selectedMagasins as Set<number>
+      const serviceSet = selectedServices as Set<number>
+      
+      let magAffect:number[] = [];
+      let servAffect:number[] = [];
+
+      
+      serviceSet.forEach((y)=>{
+         servAffect.push(y)
+      })
+
+      magasinsSet.forEach((val)=>{magAffect.push(val)})
       const userRegsitrationPayload: RegistrationPayload = {
          username: usrLogin,
          password: usrPassword,
          nom: usrNom,
          prenom: usrPrenom,
-         roleId: role!
+         roleId: role!,
+         magAffect:magAffect,
+         servAffect:servAffect
       }
-      registerUser(userRegsitrationPayload)
+      await registerUser(userRegsitrationPayload)
          .then(() => {
             setPageNeedReload(!pageNeedReload)
             toast.success('Nouveau utilisateur enregistré')
-            
+
             onClose()
 
          }).catch((error) => {
@@ -127,10 +141,33 @@ export default function UtilisateurPage() {
             }
          })
    }
+   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(e.target.value);
+
+   };
+
+
+   const resetInput = () => {
+      setUsrPrenom('')
+      setUsrNom('')
+      setUsrPassword('')
+      setUsrLogin('')
+      setSelectedMagasins(new Set())
+      setSelectedServices(new Set())
+
+   }
+
+
+
 
    return (
       <>
-         <Modal ref={modalRef} isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} isKeyboardDismissDisabled={true} size="3xl">
+         <Modal ref={modalRef} isOpen={isOpen} onOpenChange={
+            () => {
+               onOpenChange();
+               resetInput()
+            }
+         } isDismissable={false} isKeyboardDismissDisabled={true} size="3xl">
             <ModalContent>
                {(onClose) => (
                   <>
@@ -196,7 +233,7 @@ export default function UtilisateurPage() {
                               isRequired
                               errorMessage={requestError?.roleIdError}
                               isInvalid={requestError?.roleIdError !== null && requestError?.roleIdError !== undefined}
-
+                              isMultiline
                            >
                               {roles!.map((role) => (
                                  <SelectItem key={role.roleId} value={role.roleId}>
@@ -214,6 +251,7 @@ export default function UtilisateurPage() {
                            onSelectionChange={setSelectedMagasins}
                            selectedKeys={selectedMagasins}
                            selectionMode="multiple"
+                           isMultiline
                         >
                            {magasins!.map((mag) => (
                               <SelectItem key={mag.magId} value={mag.magId}>
@@ -286,6 +324,10 @@ export default function UtilisateurPage() {
                            startContent={
                               <SearchIcon className="text-default-300" />
                            }
+                           onClear={() => {
+                              setSearchTerm('')
+                           }}
+                           onChange={handleSearch}
                            variant="bordered"
 
                         />
@@ -321,11 +363,9 @@ export default function UtilisateurPage() {
                </TableHeader>
                <TableBody items={filteredRows} emptyContent={"Pas d'élément à afficher"}>
                   {(item) => (
-                     <TableRow key={item[columns[0].key]} >
+                     <TableRow key={item[columns[0].key]} className=" hover:bg-slate-100 hover:cursor-pointer">
                         {(columnKey) => (
-                           <TableCell className="text-lg " style={{
-                              cursor: 'pointer'
-                           }}
+                           <TableCell className="text-lg"
                               onClick={() => {
                                  const id = getKeyValue(item, columns[0].key)
                                  navigate(`/utilisateurs/${id}`, { state: item })

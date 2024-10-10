@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
-import java.time.LocalDateTime;
+
 import java.util.Optional;
+import java.util.List;
 
 @Repository
 
@@ -25,6 +25,10 @@ public interface SousFamilleRepository extends JpaRepository<SousFamille,Long> {
 
     @Query(nativeQuery = true,value = "select * from v_sous_famille_lib")
     Page<SousFamilleDTO> findAllSousFamilles(Pageable pageable);
+
+
+    @Query(nativeQuery = true,value = "select * from v_sous_famille_lib")
+    List<SousFamilleDTO> findAllSousFamilles();
 
     @Query(nativeQuery = true,value = "select * from v_sous_famille_lib where sousfamid=?1")
     Optional<SousFamilleDTO > findSousFamilleBySousFamId(Long sousFamId);

@@ -1,5 +1,6 @@
 package com.colasmadagascar.stockinventory.article;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,8 +8,11 @@ import com.colasmadagascar.stockinventory.article.sousfamille.SousFamille;
 import com.colasmadagascar.stockinventory.article.sousfamille.SousFamilleDTO;
 import com.colasmadagascar.stockinventory.article.sousfamille.SousFamilleRepository;
 import com.colasmadagascar.stockinventory.article.sousfamille.SousFamilleService;
+import com.colasmadagascar.stockinventory.dataexport.DataExportService;
 import com.colasmadagascar.stockinventory.serviceexp.ServiceExploitant;
 import com.colasmadagascar.stockinventory.serviceexp.ServiceExploitantRepository;
+import com.colasmadagascar.stockinventory.shared.Fetch;
+
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -23,12 +27,14 @@ public class ArticleService {
     ArticleRepository articleRepository;
     SousFamilleService sousFamilleService;
     final ServiceExploitantRepository serviceExploitantRepository;
+    final DataExportService dataExportService;
 
-    public ArticleService(ArticleRepository articleRepository, SousFamilleService sousFamilleService, SousFamilleRepository sousFamilleRepository, ServiceExploitantRepository serviceExploitantRepository) {
+    public ArticleService(ArticleRepository articleRepository, SousFamilleService sousFamilleService, SousFamilleRepository sousFamilleRepository, ServiceExploitantRepository serviceExploitantRepository, DataExportService dataExportService) {
         this.sousFamilleService = sousFamilleService;
         this.articleRepository = articleRepository;
         this.sousFamilleRepository = sousFamilleRepository;
         this.serviceExploitantRepository = serviceExploitantRepository;
+        this.dataExportService = dataExportService;
     }
 
 
@@ -37,9 +43,10 @@ public class ArticleService {
         return articleRepository.findAll(pageable).toList();
     }
 
-    public List<ArticleDTO> getAllArticleDTO(int page, int size) {
+    public List<ArticleDTO> getAllArticleDTO(int page, int size,Fetch fetch) {
+        if(fetch == Fetch.ALL) return articleRepository.findAllArticlesDTO();
         Pageable pageable = PageRequest.of(page - 1, size);
-        return articleRepository.findAllArticleDTO(pageable).toList();
+        return articleRepository.findAllArticlesDTO(pageable).toList();
     }
 
     @Transactional
@@ -90,4 +97,9 @@ public class ArticleService {
     }
 
 
+    public ByteArrayInputStream exportToExcel() throws Exception {
+        String[] columns = {"Article ID","Libelle", "Reference", "Code", "Service","Sous Famille","Unite "};
+        List<ArticleDTO> entities = articleRepository.findAllArticlesDTO(); // Or use a custom query
+        return dataExportService.exportToExcel(columns,entities, ArticleDTO.class);
+    }
 }

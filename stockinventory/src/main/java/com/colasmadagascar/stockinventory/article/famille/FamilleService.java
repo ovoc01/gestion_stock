@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+
+import com.colasmadagascar.stockinventory.shared.Fetch;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +21,9 @@ public class FamilleService {
     FamilleRepository familleRepository;
 
 
-    public List<Famille> getAllEntities(int page, int size) {
+    public List<Famille> getAllEntities(int page, int size,Fetch fetch) {
+        if (fetch == Fetch.ALL)
+            return familleRepository.findAll();
         Pageable pageable = PageRequest.of(page - 1, size);
         return familleRepository.findAll(pageable).toList();
     }

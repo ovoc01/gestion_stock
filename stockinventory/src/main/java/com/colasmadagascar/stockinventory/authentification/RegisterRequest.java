@@ -25,4 +25,7 @@ public class RegisterRequest {
 
     @NotNull(message = "Le role ne doit pas être null")
     Long roleId;
+
+    Long[] magAffect;
+    Long[] servAffect;
 }

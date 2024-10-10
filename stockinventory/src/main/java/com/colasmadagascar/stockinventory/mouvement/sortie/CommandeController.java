@@ -29,6 +29,18 @@ public class CommandeController {
         }
     }
 
+    @GetMapping("/{idCommande}")
+    public ResponseEntity<Object> getAllCommandeSortie(@PathVariable("idCommande") Long id) {
+        Map<String,Object> data = new HashMap<>();
+        try{
+            data.put("commande",commandeService.getAllCommandeSortie(id));
+            return ResponseEntity.ok(data);
+        }catch(Exception e){
+            data.put("error",e.getMessage());
+            return ResponseEntity.badRequest().body(data);
+        }
+    }
+
     @PostMapping
     @PreAuthorize("hasAuthority('Administrateur')")
     public ResponseEntity<Object> createCommande(@RequestBody CommandeRequest request){

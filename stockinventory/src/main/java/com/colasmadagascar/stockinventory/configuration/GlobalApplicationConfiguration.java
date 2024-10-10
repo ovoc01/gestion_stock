@@ -16,9 +16,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 @Configuration
 @RequiredArgsConstructor
+@Component
 public class GlobalApplicationConfiguration {
     private final UtilisateurRepository utilisateurRepository;
     private  final PeriodeRepository periodeRepository;
@@ -33,11 +35,14 @@ public class GlobalApplicationConfiguration {
             }
         };
     }
+
+
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
+        passwordEncoder();
         return authProvider;
     }
 
@@ -53,6 +58,6 @@ public class GlobalApplicationConfiguration {
 
     @Bean
     public Periode activePeriode(){
-        return periodeRepository.getCurrentActivePeriode();
+        return null;
     }
 }

@@ -19,8 +19,8 @@ export default function DefaultLayout({
   return (
     <>
 
-      <div className="relative flex flex-col h-screen w-full  ">
-        <Navbar />
+      <div className="relative flex items-center flex-col h-screen w-full">
+          <Navbar />
         <main className="container mx-auto w-full  flex-grow  ">
           {
             isAuthenticated ? (children) : (<UserSessionExpired />)

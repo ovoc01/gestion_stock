@@ -100,6 +100,11 @@ export default function ServiceExploitantPage() {
       setLabel('')
       setNumbu('')
    }
+
+   const exportExcel = ()=> {
+
+   }
+
    return (
       <CrudComponent
          pageTitle="Service exploitant"
@@ -113,6 +118,7 @@ export default function ServiceExploitantPage() {
          dataAbbreviation="service"
          onPageChange={onPageChange}
          resetInput={resetInput}
+         exportExcel={exportExcel}
 
          addModalContent={
             <div className="w-full flex flex-col gap-4 pb-5" >
