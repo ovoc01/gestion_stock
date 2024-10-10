@@ -1,8 +1,7 @@
 import { getAllArticles } from "@/services/api/article.service";
-import { createCommande, createMouvementSortie, getAllCommandes, getAllSorties } from "@/services/api/mouvement.service";
+import { createCommande, getAllCommandes, getAllSorties } from "@/services/api/mouvement.service";
 import { ArticleDataProps, CommandeData, EmplacementDataProps, RowData, UniteOperationnelDataProps } from "@/types/types";
-import { Input } from "@nextui-org/input";
-import { Button, Divider, getKeyValue, Modal, ModalBody, ModalContent, ModalFooter, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react";
+import { Button, getKeyValue, Modal, ModalBody, ModalContent, ModalFooter, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import DetailsCommande from "./details-commande";
@@ -11,6 +10,7 @@ import { getAllEmplacements } from "@/services/api/batiment.service";
 import { getAllUniteOperationnel } from "@/services/api/unite-operationnel.service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FetchType } from "@/shared/shared";
 
 
 function Index() {
@@ -44,7 +44,7 @@ function Index() {
          console.log(error)
       })
 
-      getAllArticles({ page, size })
+      getAllArticles({ page, size ,fetch:FetchType.ALL})
          .then((response) => {
             setArticles(response.articles)
          })
@@ -59,7 +59,7 @@ function Index() {
             console.log(error)
          })
 
-      getAllUniteOperationnel({ page, size })
+      getAllUniteOperationnel({ page, size,fetch:FetchType.ALL })
          .then((response) => {
             setUnOp(response.uniteOperationnels)
          })
@@ -67,7 +67,7 @@ function Index() {
             toast.error('Erreur lors de la récupération des données ', error);
          })
 
-      getAllEmplacements({ page, size })
+      getAllEmplacements({ page, size,fetch:FetchType.ALL })
          .then((response) => {
             setEmplacements(response.emplacements)
          }).catch((error) => {
@@ -131,6 +131,7 @@ function Index() {
                                  size="sm"
                                  selectedKeys={emplId ? emplId.toString() : []}
                                  onChange={(e) => {
+                                    console.log(e)
                                     setEmplId(parseInt(e.target.value))
                                  }}
                               >
@@ -143,10 +144,11 @@ function Index() {
                               </Select>
                               <Select
                                  variant="bordered"
-                                 label="À"
+                                 label="De"
                                  size="sm"
                                  selectedKeys={unopId ? unopId.toString() : []}
                                  onChange={(e) => {
+                                    console.log(e)
                                     setUnopId(parseInt(e.target.value))
                                  }}
                               >

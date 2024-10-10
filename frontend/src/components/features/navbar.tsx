@@ -28,16 +28,13 @@ export const Navbar = () => {
     navigate('/')
   }
   return (
-    <NextUINavbar  position="sticky" className="px-8 flex items-center z-50">
-      <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
-        <NavbarBrand className="gap-3 max-w-fit">
-          <Link
-            className="flex justify-start items-center gap-1"
-            color="foreground"
-            href="/dashboards"
-          >
-            <Logo height={30} width={90} logo="n-title" className="mx-auto" />
-          </Link>
+    <NextUINavbar className="bg-slate-20 container" position="sticky" maxWidth="full">
+
+      <NavbarContent className="basis-1/5 sm:basis-full" justify="start"  >
+        <NavbarBrand>
+          <div className="w-[100px]">
+            <Logo height={40} width={100} logo="n-title" />
+          </div>
         </NavbarBrand>
         <NavbarItem>
           <Button
@@ -77,11 +74,10 @@ export const Navbar = () => {
             >
               Gérer les Utilisateurs
             </Button>
-          </NavbarItem>) : (<></>)
+          </NavbarItem>) : ('')
         }
 
-
-        <div className="hidden lg:flex gap-4 justify-start ml-2">
+        <div >
           <Dropdown>
             <NavbarItem>
               <DropdownTrigger>
@@ -127,7 +123,8 @@ export const Navbar = () => {
             </DropdownMenu>
           </Dropdown>
         </div>
-        <div className="hidden lg:flex gap-4 justify-start ml-2">
+
+        <div >
           <Dropdown>
             <NavbarItem>
               <DropdownTrigger>
@@ -174,7 +171,7 @@ export const Navbar = () => {
           </Dropdown>
         </div>
 
-        <div className="hidden lg:flex gap-4 justify-start ml-2">
+        <div>
           <Dropdown>
             <NavbarItem>
               <DropdownTrigger>
@@ -217,16 +214,14 @@ export const Navbar = () => {
 
             </DropdownMenu>
           </Dropdown>
+
         </div>
-
-
       </NavbarContent>
 
       <NavbarContent
-        className="hidden sm:flex basis-1/5 sm:basis-full"
+        className="hidden sm:flex basis-1/5 sm:basis-full "
         justify="end"
       >
-
 
         <NavbarItem className=" sm:flex gap-2 flex items-center " >
           Bonjour 👋🏽  <h2 className="font-semibold text-lg">{user?.username}</h2>

@@ -73,4 +73,11 @@ public class Utils {
         inputStream.close();
         return Base64.getEncoder().encodeToString(bytes);
     }
+
+    public static String generateSKU(String fam,String sfam,String art){
+        String formattedFam = fam.substring(0,3).toUpperCase();
+        String formattedSfam = sfam.substring(0,3);
+        String formattedArt = art.toUpperCase().replaceAll("[^A-Z0-9]","").substring(0,4);
+        return formattedFam+"-"+formattedSfam+"-"+formattedArt;
+    }
 }

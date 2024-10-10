@@ -33,12 +33,14 @@ export default function ArticlePage() {
    const [data, setData] = useState<ArticleDataProps[] | null>([])
 
    const [requestError, setRequestError] = useState<any>(null)
-
+   const [totalPage, setTotalPage] = useState<number>()
 
    useEffect(() => {
       getAllArticles({ page, size })
          .then((response) => {
             setData(response.articles)
+            const realPage = Math.ceil(response.totalPages / size)
+            setTotalPage(realPage)
 
          })
    }, [isNewRowAdded, page, size])
@@ -198,6 +200,7 @@ export default function ArticlePage() {
          isDeleteAuthorized
          isUpdateAuthorized
          exportExcel={exportExcel}
+         pages={totalPage}
 
          addModalContent={
             <div className="w-full flex flex-col gap-4 pb-5">

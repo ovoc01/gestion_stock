@@ -14,7 +14,7 @@ export const login = async (username: string, password: string) => {
 
 export const buildUserClaims = (token: string) => {
    const decodedData: any = jwtDecode(token)
-   console.log(decodedData)
+   //console.log(decodedData)
    const userClaims: UserClaims = {
       username: decodedData.username,
       role: decodedData.role

@@ -1,6 +1,7 @@
 package com.colasmadagascar.stockinventory.mouvement;
 
 import com.colasmadagascar.stockinventory.mouvement.periode.Periode;
+import com.colasmadagascar.stockinventory.mouvement.periode.PeriodeRepository;
 import com.colasmadagascar.stockinventory.mouvement.sortie.Commande;
 import com.colasmadagascar.stockinventory.mouvement.sortie.CommandeRepository;
 import jakarta.transaction.Transactional;
@@ -14,13 +15,15 @@ import java.util.Optional;
 @Service
 public class MouvementService {
     private final MouvementRepository mouvementRepository;
-    private final Periode activePeriode;
+    private  Periode activePeriode;
     private final CommandeRepository commandeRepository;
+    private final PeriodeRepository periodeRepository;
 
 
-    public MouvementService(MouvementRepository mouvementRepository, Periode activePeriode, CommandeRepository commandeRepository) {
+    public MouvementService(MouvementRepository mouvementRepository, CommandeRepository commandeRepository, PeriodeRepository periodeRepository) {
         this.mouvementRepository = mouvementRepository;
-        this.activePeriode = activePeriode;
+        this.periodeRepository = periodeRepository;
+        this.activePeriode = periodeRepository.getCurrentActivePeriode();
         this.commandeRepository = commandeRepository;
     }
 
@@ -40,6 +43,7 @@ public class MouvementService {
                 .emplId(commande.get().getEmplId())
                 .artId(request.article)
                 .cmdeLignePu(request.getPrixUnitaire())
+                .periodeId(activePeriode.getPeriodeId())
                 .build();
         save(mouvement);
     }
@@ -53,6 +57,7 @@ public class MouvementService {
                 .cmdeLignePu(mouvement.prixUnitaire)
                 .mvtType(0)
                 .cmdeBc(mouvement.justif)
+                .periodeId(activePeriode.getPeriodeId())
                 .build();
         save(build);
     }

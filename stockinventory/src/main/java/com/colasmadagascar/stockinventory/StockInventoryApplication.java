@@ -2,6 +2,7 @@ package com.colasmadagascar.stockinventory;
 
 import com.colasmadagascar.stockinventory.dataexport.DataExportService;
 
+import com.colasmadagascar.stockinventory.utils.Utils;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.boot.SpringApplication;
@@ -23,12 +24,12 @@ public class StockInventoryApplication {
 
 	
 	public static void main(String[] args) {
-
+		//System.out.println(Utils.generateSKU("Matière Premières","Ciments","Holcim OONJA"));
 		SpringApplication.run(StockInventoryApplication.class, args);
 	}
 
 	
-	@EventListener(ApplicationReadyEvent.class)
+	//@EventListener(ApplicationReadyEvent.class)
 	public void onApplicationReady() throws Exception {
 		//dataExportService.generatePdfReport();
 	}

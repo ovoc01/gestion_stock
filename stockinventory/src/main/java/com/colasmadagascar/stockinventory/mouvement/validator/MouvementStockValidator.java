@@ -3,6 +3,7 @@ package com.colasmadagascar.stockinventory.mouvement.validator;
 import com.colasmadagascar.stockinventory.mouvement.MouvementRepository;
 import com.colasmadagascar.stockinventory.mouvement.MouvementSortieRequest;
 import com.colasmadagascar.stockinventory.mouvement.periode.Periode;
+import com.colasmadagascar.stockinventory.mouvement.periode.PeriodeRepository;
 import com.colasmadagascar.stockinventory.mouvement.sortie.Commande;
 import com.colasmadagascar.stockinventory.mouvement.sortie.CommandeRepository;
 import com.colasmadagascar.stockinventory.mouvement.stock.Stock;
@@ -17,11 +18,14 @@ public class MouvementStockValidator implements ConstraintValidator<MouvementSor
     private final MouvementRepository repository;
     private final CommandeRepository commandeRepository;
     private final Periode activePeriode;
+    private final PeriodeRepository periodeRepository;
 
-    public MouvementStockValidator(MouvementRepository repository, CommandeRepository commandeRepository, Periode activePeriode) {
+
+    public MouvementStockValidator(MouvementRepository repository, CommandeRepository commandeRepository, PeriodeRepository periodeRepository) {
         this.repository = repository;
         this.commandeRepository = commandeRepository;
-        this.activePeriode = activePeriode;
+        this.activePeriode = periodeRepository.getCurrentActivePeriode();
+        this.periodeRepository = periodeRepository;
     }
 
     @Override
@@ -40,7 +44,6 @@ public class MouvementStockValidator implements ConstraintValidator<MouvementSor
             context.buildConstraintViolationWithTemplate("Commande requis")
                     .addPropertyNode("commande")
                     .addConstraintViolation();
-
             return false;
         }
 

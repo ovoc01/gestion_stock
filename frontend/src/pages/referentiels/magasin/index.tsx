@@ -11,6 +11,7 @@ import { DatePicker } from "@nextui-org/date-picker";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MagasinDataProps } from "@/types/types";
 import DetailsMagasin from "./details";
+import { FetchType } from "@/shared/shared";
 
 const Index = () => {
    const [label, setLabel] = useState('')
@@ -37,7 +38,7 @@ const Index = () => {
 
    useEffect(() => {
       if (idMagasin === null) {
-         getAllMagasins({ page, size })
+         getAllMagasins({ page, size ,fetch:FetchType.PAGINATION})
             .then((response) => {
                console.table(response)
                setData(response.magasins);
