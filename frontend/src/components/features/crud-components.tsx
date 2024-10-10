@@ -29,7 +29,6 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { title } from "../primitives";
 
 import { levenshteinDistance } from "@/utils/index";
-import { exportArticle, exportPDF } from "@/services/api/export-data.service";
 import { SearchIcon } from "@/components/ui/icons";
 import "./crudComponents.css";
 import { RowData } from "@/types/types";
@@ -59,7 +58,7 @@ interface CrudComponentProps {
   onAdd?: () => Promise<void>;
   onSearch?: (searchTerm: string) => void;
   onPageChange?: (page: number) => void;
-  onRowDelete?: (id: number) => Promise<void>
+  onRowDelete?: (id: number) => Promise<void>;
   onRowUpdate?: () => Promise<void>;
   resetInput?: () => void;
   updateIcon?: IconProp;
@@ -67,17 +66,17 @@ interface CrudComponentProps {
   exportPDF?: () => void;
   exportExcel?: () => void;
   size?:
-  | "2xl"
-  | "xs"
-  | "sm"
-  | "md"
-  | "lg"
-  | "xl"
-  | "3xl"
-  | "4xl"
-  | "5xl"
-  | "full"
-  | undefined;
+    | "2xl"
+    | "xs"
+    | "sm"
+    | "md"
+    | "lg"
+    | "xl"
+    | "3xl"
+    | "4xl"
+    | "5xl"
+    | "full"
+    | undefined;
   extraComponent?: React.ReactNode;
   modalClassName?: string;
   onRowClick?: (id: number) => void;
@@ -90,12 +89,11 @@ interface ExportButtonProps {
 }
 
 const ExportButton = ({ exportExcel, exportPDF }: ExportButtonProps) => {
-
   if (!exportExcel && !exportPDF) {
     return <></>; // Don't render anything
   }
-  return (
 
+  return (
     <Dropdown>
       <DropdownTrigger>
         <Button
@@ -108,21 +106,16 @@ const ExportButton = ({ exportExcel, exportPDF }: ExportButtonProps) => {
         </Button>
       </DropdownTrigger>
       <DropdownMenu>
-        {
-          exportPDF! && (
-            <DropdownItem key="copy" onPress={exportPDF}>
-              PDF
-            </DropdownItem>
-          )
-        }
-        {
-          exportExcel! && (
-            <DropdownItem key="copy" onPress={exportExcel}>
-              Excel
-            </DropdownItem>
-          )
-        }
-
+        {exportPDF! && (
+          <DropdownItem key="copy" onPress={exportPDF}>
+            PDF
+          </DropdownItem>
+        )}
+        {exportExcel! && (
+          <DropdownItem key="copy" onPress={exportExcel}>
+            Excel
+          </DropdownItem>
+        )}
       </DropdownMenu>
     </Dropdown>
   );
@@ -209,9 +202,8 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
   extraComponent,
   modalClassName,
   onRowClick,
-  shouldCloseModal,
   exportExcel,
-  exportPDF
+  exportPDF,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [liValueToDelete, setLiValueToDelete] = useState<string | null>(null);
@@ -340,13 +332,13 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
         await onRowUpdate!();
         setIsUpdateBtnPressed(false);
       } else {
-        console.log("tonga ajout")
-        await onAdd!()
+        console.log("tonga ajout");
+        await onAdd!();
       }
       onClose();
-      console.log("tonga eto")
+      console.log("tonga eto");
     } catch (error: any) {
-      console.error(error)
+      console.error(error);
     }
   };
 
@@ -463,7 +455,10 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                   onClear={() => setSearchTerm("")}
                 />
                 <div className="flex gap-3">
-                  <ExportButton exportExcel={exportExcel} exportPDF={exportPDF} />
+                  <ExportButton
+                    exportExcel={exportExcel}
+                    exportPDF={exportPDF}
+                  />
 
                   <Button
                     className="bg-foreground text-background px-4 py-2"
@@ -484,8 +479,8 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
           <TableHeader
             columns={
               isDeleteAuthorized ||
-                isCustomActionAuthorized ||
-                isUpdateAuthorized
+              isCustomActionAuthorized ||
+              isUpdateAuthorized
                 ? columnWithAction
                 : columns
             }

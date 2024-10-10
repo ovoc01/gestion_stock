@@ -1,0 +1,19 @@
+name: Deploiement sur le serveur
+
+on:
+  push:
+    branches:
+      - sprint1
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    environment: production
+
+    steps:
+      - name: Deploiement
+        run: |
+          ssh ${{ secrets.VPS_USR }}@${{ secrets.VPS_IP }}
+          cd ~/gestion_stock
+          touch deploy.txt
+          echo "Pulling from GitHub" >> deploy.txt

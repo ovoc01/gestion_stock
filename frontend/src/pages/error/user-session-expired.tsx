@@ -1,6 +1,3 @@
-
-export default function UserSessionExpired (){
-   return <div>
-      Session expiré
-   </div>
+export default function UserSessionExpired() {
+  return <div>Session expiré</div>;
 }
