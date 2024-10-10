@@ -5,23 +5,22 @@ on:
     branches:
       - sprint1
 
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Configuration SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -t rsa ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-        chmod 644 ~/.ssh/known_hosts
-    
+    - name: Checkout code
+      uses: actions/checkout@v2
+
     - name: Deploiement
-      run: |
-        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}
-        cd ~/gestion_stock
-        touch deploy.txt
-        echo "Pulling from GitHub" >> deploy.txt
+      uses: appleboy/ssh-action@master 
+      with:
+        host: ${{ secrets.VPS_IP }}
+        username: ${{ secrets.VPS_USR }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }} # Store your SSH key as a secret
+        script: |
+          cd ~/gestion_stock
+          git pull origin sprint1
+          # ... your other deployment commands (build, restart, etc.) 
+          echo "Deployment successful!" > deploy.log
