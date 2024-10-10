@@ -62,7 +62,7 @@ export default function UserDetails() {
 
   const [userDetails] = useState<UserInfoProps>(user);
 
-  const [dateCreation, setDateCreation] = useState<DateValue>(
+  const [dateCreation] = useState<DateValue>(
     fromDate(new Date(user.usrDtCr), getLocalTimeZone()),
   );
   const [roles, setRoles] = useState<RoleDataProps[] | null>([]);
