@@ -2,10 +2,11 @@
 FROM node:22 AS build
 
 WORKDIR /app
-COPY ./frontend/package*.json ./
-RUN  yarn install
+COPY ./frontend/package.json ./
+COPY ./frontend/yarn.lock ./
+RUN yarn install
 COPY ./frontend ./
-RUN yarn build
+RUN yarn build 
 
 
 FROM nginx:alpine
