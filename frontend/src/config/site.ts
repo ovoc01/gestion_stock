@@ -1,4 +1,4 @@
-import {  faArrowLeft, faArrowRight, faBrain, faBuilding, faBuildingShield, faCalendarCheck, faCube, faLayerGroup, faMapLocationDot, faMoneyBillTransfer, faNewspaper, faRobot, faRuler, faUsers, faWarehouse } from "@fortawesome/free-solid-svg-icons";
+import {  faArrowLeft, faArrowRight, faBrain, faBuilding, faBuildingShield, faCalendarCheck, faCube, faLayerGroup, faMapLocationDot, faMoneyBillTransfer, faNewspaper, faRuler, faUsers, faWarehouse } from "@fortawesome/free-solid-svg-icons";
 import { CSDropdownItemProps } from "@/types/types";
 export type SiteConfig = typeof siteConfig;
 

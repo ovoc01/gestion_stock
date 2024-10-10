@@ -1,34 +1,27 @@
 import { Link } from "@nextui-org/link";
+import { Toaster } from "sonner";
 
 import { Navbar } from "@/components/features/navbar";
-import { Toaster } from 'sonner';
 import { useAuth } from "@/hooks/useAuth";
 import UserSessionExpired from "@/pages/error/user-session-expired";
-
 
 export default function DefaultLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
-  const provider = useAuth()
-  const isAuthenticated = provider.isAuthenticated
-
+  const provider = useAuth();
+  const isAuthenticated = provider.isAuthenticated;
 
   return (
     <>
-
       <div className="relative flex items-center flex-col h-screen w-full">
-          <Navbar />
+        <Navbar />
         <main className="container mx-auto w-full  flex-grow  ">
-          {
-            isAuthenticated ? (children) : (<UserSessionExpired />)
-          }
-
+          {isAuthenticated ? children : <UserSessionExpired />}
         </main>
-        <Toaster position="top-right" richColors />
-        <footer className="w-full flex items-center justify-center py-3 bg-foreground" >
+        <Toaster richColors position="top-right" />
+        <footer className="w-full flex items-center justify-center py-3 bg-foreground">
           <Link
             isExternal
             className="flex items-center gap-1 text-current"

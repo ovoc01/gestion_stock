@@ -7,7 +7,7 @@ export enum FetchType {
 export type PaginationProps = {
    page?:number
    size?:number
-   fetch:FetchType 
+   fetch?:FetchType 
 }
 
 
