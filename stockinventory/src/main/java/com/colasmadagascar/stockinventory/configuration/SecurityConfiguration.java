@@ -53,7 +53,8 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
         
         configuration.addAllowedOrigin("http://localhost:5173"); // Allow the specific origin
-        configuration.addAllowedOrigin("http://192.168.1.100:5173");
+        configuration.addAllowedOrigin("http://192.168.1.100:3000");
+        configuration.addAllowedOrigin("http://192.168.1.101:3000");
         configuration.addAllowedOrigin("http://192.168.1.101:5173");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
