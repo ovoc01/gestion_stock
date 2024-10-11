@@ -12,10 +12,17 @@ services:
     build:
       context: .
       dockerfile: stockinventory/Dockerfile
+      args:
+        - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}"
     ports:
       - "8080:8080"
-    env_file:
-      - .env
+    
+    volumes:
+      - ~/.m2:/root/.m2
+    
+
+    
+      
     depends_on:  # Ensure the database starts before the backend
       - databases
 

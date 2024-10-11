@@ -6,8 +6,10 @@ import com.colasmadagascar.stockinventory.utils.Utils;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.event.EventListener;
 import com.colasmadagascar.stockinventory.authentification.AuthenticationService;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 @SpringBootApplication
 @Service
 @RequiredArgsConstructor
+@EnableConfigurationProperties
+@EnableAutoConfiguration
 public class StockInventoryApplication {
 	
 	private final AuthenticationService authService;
