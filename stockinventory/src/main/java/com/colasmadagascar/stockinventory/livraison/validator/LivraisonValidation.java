@@ -5,91 +5,108 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class LivraisonValidation implements ConstraintValidator<ValidateLivraison, LivraisonCreationRequest> {
+
     @Override
     public boolean isValid(LivraisonCreationRequest value, ConstraintValidatorContext context) {
         context.disableDefaultConstraintViolation();
 
-        if (value.getFournisseur() == null) {
-            context.buildConstraintViolationWithTemplate("Le fournisseur est obligatoire")
-                    .addPropertyNode("fournisseur")
-                    .addConstraintViolation();
-           return false;
-        }
+        boolean isValid = true;
 
-        if(value.getLivreur() == null || value.getLivreur().trim().isBlank()){
-            context.buildConstraintViolationWithTemplate("Le livreur est obligatoire")
-                    .addPropertyNode("livreur")
-                    .addConstraintViolation();
+        isValid &= validateFournisseur(value.getFournisseur(), context);
+        isValid &= validateLivreur(value.getLivreur(), context);
+        isValid &= validateCin(value.getCin(), context);
+        isValid &= validateBonLivraison(value.getBonLivraison(), context);
+        isValid &= validateDateLivraison(value.getDateLivraison(), context);
+        isValid &= validateDateEcheance(value.getDateEcheance(), value.getDateLivraison(), context);
+        isValid &= validateBonCommande(value.getBonCommande(), context);
+        isValid &= validateDateCommande(value.getDateCommande(), value.getDateEcheance(), value.getDateLivraison(), context);
+
+        return isValid;
+    }
+
+    private boolean validateFournisseur(Long fournisseur, ConstraintValidatorContext context) {
+        if (fournisseur == null) {
+            addConstraintViolation(context, "Le fournisseur est obligatoire", "fournisseur");
             return false;
         }
-
-        if(value.getCin() == null || value.getCin().trim().isBlank()){
-            context.buildConstraintViolationWithTemplate("Le cin est obligatoire")
-                    .addPropertyNode("cin")
-                    .addConstraintViolation();
-            return false;
-        }
-
-        if(value.getBonLivraison() == null || value.getBonLivraison().trim().isBlank()){
-            context.buildConstraintViolationWithTemplate("Le bon de livraison est obligatoire")
-                    .addPropertyNode("bonLivraison")
-                    .addConstraintViolation();
-            return false;
-        }
-
-        if(value.getDateLivraison() == null){
-            context.buildConstraintViolationWithTemplate("La date de livraison est obligatoire")
-                    .addPropertyNode("dateLivraison")
-                    .addConstraintViolation();
-            return false;
-        }
-
-        if(value.getDateEcheance() == null){
-            context.buildConstraintViolationWithTemplate("La date d'écheance est obligatoire")
-                    .addPropertyNode("dateEcheance")
-                    .addConstraintViolation();
-            return false;
-        }
-
-        if(value.getDateEcheance().isBefore(value.getDateLivraison())){
-            context.buildConstraintViolationWithTemplate("La date d'écheance doit être superieur à la date de livraison")
-                    .addPropertyNode("dateEcheance")
-                    .addConstraintViolation();
-            return false;
-        }
-
-        if(value.getBonCommande() == null || value.getBonCommande().trim().isBlank()){
-            context.buildConstraintViolationWithTemplate("Le bon de commande est obligatoire")
-                    .addPropertyNode("bonCommande")
-                    .addConstraintViolation();
-            return false;
-        }
-
-        if(value.getDateCommande() == null){
-            context.buildConstraintViolationWithTemplate("La date de commande est obligatoire")
-                    .addPropertyNode("dateCommande")
-                    .addConstraintViolation();
-            return false;
-        }
-
-        if(value.getDateCommande().isAfter(value.getDateEcheance())){
-            context.buildConstraintViolationWithTemplate("La date de commande doit être avant à la date d'écheance")
-                    .addPropertyNode("dateCommande")
-                    .addConstraintViolation();
-            return false;
-
-        }
-
-        if(value.getDateCommande().isAfter(value.getDateLivraison())){
-            context.buildConstraintViolationWithTemplate("La date de commande doit être avant à la date de livraison")
-                    .addPropertyNode("dateCommande")
-                    .addConstraintViolation();
-            return false;
-
-        }
-
         return true;
+    }
+
+    private boolean validateLivreur(String livreur, ConstraintValidatorContext context) {
+        if (livreur == null || livreur.trim().isBlank()) {
+            addConstraintViolation(context, "Le livreur est obligatoire", "livreur");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateCin(String cin, ConstraintValidatorContext context) {
+        if (cin == null || cin.trim().isBlank()) {
+            addConstraintViolation(context, "Le cin est obligatoire", "cin");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateBonLivraison(String bonLivraison, ConstraintValidatorContext context) {
+        if (bonLivraison == null || bonLivraison.trim().isBlank()) {
+            addConstraintViolation(context, "Le bon de livraison est obligatoire", "bonLivraison");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateDateLivraison(LocalDate dateLivraison, ConstraintValidatorContext context) {
+        if (dateLivraison == null) {
+            addConstraintViolation(context, "La date de livraison est obligatoire", "dateLivraison");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateDateEcheance(LocalDate dateEcheance, LocalDate dateLivraison, ConstraintValidatorContext context) {
+        if (dateEcheance == null) {
+            addConstraintViolation(context, "La date d'échéance est obligatoire", "dateEcheance");
+            return false;
+        }
+        if (dateLivraison != null && dateEcheance.isBefore(dateLivraison)) {
+            addConstraintViolation(context, "La date d'échéance doit être supérieure à la date de livraison", "dateEcheance");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateBonCommande(String bonCommande, ConstraintValidatorContext context) {
+        if (bonCommande == null || bonCommande.trim().isBlank()) {
+            addConstraintViolation(context, "Le bon de commande est obligatoire", "bonCommande");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateDateCommande(LocalDate dateCommande, LocalDate dateEcheance, LocalDate dateLivraison, ConstraintValidatorContext context) {
+        if (dateCommande == null) {
+            addConstraintViolation(context, "La date de commande est obligatoire", "dateCommande");
+            return false;
+        }
+        if (dateEcheance != null && dateCommande.isAfter(dateEcheance)) {
+            addConstraintViolation(context, "La date de commande doit être avant la date d'échéance", "dateCommande");
+            return false;
+        }
+        if (dateLivraison != null && dateCommande.isAfter(dateLivraison)) {
+            addConstraintViolation(context, "La date de commande doit être avant la date de livraison", "dateCommande");
+            return false;
+        }
+        return true;
+    }
+
+    private void addConstraintViolation(ConstraintValidatorContext context, String message, String propertyNode) {
+        context.buildConstraintViolationWithTemplate(message)
+                .addPropertyNode(propertyNode)
+                .addConstraintViolation();
     }
 }

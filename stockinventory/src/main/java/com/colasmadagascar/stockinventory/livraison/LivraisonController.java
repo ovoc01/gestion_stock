@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/livraisons")
+@RequestMapping("api/v1/livraisons")
 public class LivraisonController {
     @PostMapping
     public ResponseEntity<Object> createLivraison(@RequestBody @Valid LivraisonCreationRequest livraison) {
