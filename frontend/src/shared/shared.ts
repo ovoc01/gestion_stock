@@ -1,13 +1,13 @@
-export const BASE_URL = "http://192.168.1.100:8080/api/v1/";
+export const BASE_URL = import.meta.env.VITE_SERVER_SPRING_URL as string;
 
 export enum FetchType {
-   PAGINATION= 'PAGINATION',
-   ALL='ALL'
+   PAGINATION = 'PAGINATION',
+   ALL = 'ALL'
 }
 export type PaginationProps = {
-   page?:number
-   size?:number
-   fetch?:FetchType 
+   page?: number
+   size?: number
+   fetch?: FetchType
 }
 
 

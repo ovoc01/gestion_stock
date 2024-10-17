@@ -66,17 +66,17 @@ interface CrudComponentProps {
   exportPDF?: () => void;
   exportExcel?: () => void;
   size?:
-    | "2xl"
-    | "xs"
-    | "sm"
-    | "md"
-    | "lg"
-    | "xl"
-    | "3xl"
-    | "4xl"
-    | "5xl"
-    | "full"
-    | undefined;
+  | "2xl"
+  | "xs"
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "3xl"
+  | "4xl"
+  | "5xl"
+  | "full"
+  | undefined;
   extraComponent?: React.ReactNode;
   modalClassName?: string;
   onRowClick?: (id: number) => void;
@@ -100,7 +100,7 @@ const ExportButton = ({ exportExcel, exportPDF }: ExportButtonProps) => {
           className=" text-background px-4 py-2"
           color="secondary"
           endContent={<FontAwesomeIcon icon={faShare} />}
-          size="lg"
+          size="md"
         >
           Exporter
         </Button>
@@ -447,7 +447,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                     inputWrapper: "border-1",
                   }}
                   placeholder="Rechercher..."
-                  size="lg"
+                  size="md"
                   startContent={<SearchIcon className="text-default-300" />}
                   value={searchTerm}
                   variant="bordered"
@@ -464,7 +464,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                     className="bg-foreground text-background px-4 py-2"
                     color="default"
                     endContent={<FontAwesomeIcon icon={faPlus} />}
-                    size="lg"
+                    size="md"
                     variant="flat"
                     onPress={onOpen}
                   >
@@ -479,8 +479,8 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
           <TableHeader
             columns={
               isDeleteAuthorized ||
-              isCustomActionAuthorized ||
-              isUpdateAuthorized
+                isCustomActionAuthorized ||
+                isUpdateAuthorized
                 ? columnWithAction
                 : columns
             }
@@ -500,7 +500,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                 {(columnKey) => (
                   <TableCell
                     className={[
-                      "text-lg",
+                      "text-md",
                       onRowClick === undefined ? "" : "cursor-pointer",
                     ].join(" ")}
                     onClick={() => {

@@ -27,7 +27,7 @@ export default function DefaultLayout({
             className="flex items-center gap-1 text-current"
             href="https://colas.com"
           >
-            <span className="text-default-600">© Copyright</span>
+            <span className="text-default-400">© Tous droits réservées</span>
             <p className="text-warning">Colas Madagascar 2024</p>
           </Link>
         </footer>

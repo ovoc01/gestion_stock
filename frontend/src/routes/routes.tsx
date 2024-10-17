@@ -18,6 +18,7 @@ import MouvementEntree from "@/pages/mouvements/entree";
 import ValorisationStock from "@/pages/stock";
 import DetailsMagasin from "@/pages/referentiels/magasin/details";
 import DashboardPage from "@/pages/dashboard";
+import Livraison from "@/pages/livraison";
 
 export const routes = createBrowserRouter([
   {
@@ -128,4 +129,13 @@ export const routes = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/livraisons",
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        element: <Livraison />
+      }]
+  }
 ]);
