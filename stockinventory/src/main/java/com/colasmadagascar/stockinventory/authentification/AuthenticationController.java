@@ -23,6 +23,7 @@ public class AuthenticationController {
     public ResponseEntity<Object> register(@Valid @RequestBody RegisterRequest register) {
         HashMap<String, Object> map = new HashMap<>();
         try {
+
             authenticationService.register(register);
             map.put("message", "Utilisateur créée avec succes");
             return new ResponseEntity<>(map, HttpStatus.CREATED);
@@ -37,6 +38,7 @@ public class AuthenticationController {
     public ResponseEntity<Object> login(@Valid @RequestBody AuthenticationRequest authRequest) {
 
         HashMap<String, Object> map = new HashMap<>();
+        System.out.println("bogoss");
         try {
             return ResponseEntity.ok(authenticationService.authenticate(authRequest));
         } catch (Exception e) {

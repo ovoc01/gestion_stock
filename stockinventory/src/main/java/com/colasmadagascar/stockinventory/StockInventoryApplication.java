@@ -28,13 +28,14 @@ public class StockInventoryApplication {
 
 	
 	public static void main(String[] args) {
-		//System.out.println(Utils.generateSKU("Matière Premières","Ciments","Holcim OONJA"));
+		//System.out.println(Utils.generateSU("Matière Premières","Ciments","Holcim OONJA"));
 		SpringApplication.run(StockInventoryApplication.class, args);
 	}
 
 	
 	//@EventListener(ApplicationReadyEvent.class)
 	public void onApplicationReady() throws Exception {
-		//dataExportService.generatePdfReport();
+		//dataExportService.generatePdfReport(
 	}
+
 }
