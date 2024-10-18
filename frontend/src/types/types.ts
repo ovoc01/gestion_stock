@@ -76,8 +76,8 @@ export type UniteOperationnelDataProps = {
    unopMdmId: string;
    unopLng?: number;
    unopLtd?: number;
-   unopUe:string;
-   unopUeLi:string
+   unopUe: string;
+   unopUeLi: string
 }
 
 export type EmplacementDataProps = {
@@ -111,80 +111,91 @@ export interface RowData {
 
 export type RegistrationPayload = {
    username: string,
-   password:string,
-   nom:string,
-   prenom:string,
-   roleId:number,
-   magAffect?:number[]
-   servAffect?:number[]
+   password: string,
+   nom: string,
+   prenom: string,
+   roleId: number,
+   magAffect?: number[]
+   servAffect?: number[]
 }
 
 
 export type MouvementData = {
    cmdeLigneId: number;
-   article:string,
-   code:string,
-   reference:string,
-   emplacement:string,
-   prixUnitaire:number;
-   quantite:number,
-   unite:string,
-   dateDeMouvement:Date,
-   mvtType:number
+   article: string,
+   code: string,
+   reference: string,
+   emplacement: string,
+   prixUnitaire: number;
+   quantite: number,
+   unite: string,
+   dateDeMouvement: Date,
+   mvtType: number
 }
 
 export type CommandeData = {
    cmdeId: number;
-   emplId:number;
-   unopId:number;
-   emplacement:string;
-   uniteOperationnel:string;
-   lib_commande:string
+   emplId: number;
+   unopId: number;
+   emplacement: string;
+   uniteOperationnel: string;
+   lib_commande: string
 }
 
 type MagasinInfo = {
-   dateCreation:Date,
-   niceDate:string
-   telephone:string,
-   utilisateurs:string,
-   nombreEmplacement:number,
-   magasin:string
+   dateCreation: Date,
+   niceDate: string
+   telephone: string,
+   utilisateurs: string,
+   nombreEmplacement: number,
+   magasin: string
 }
 
 type StockDetails = {
-   quantite:number,
-   article:string,
-   emplacement:string,
-   code_article:string,
-   prixTotal:number,
-   cmup:number
+   quantite: number,
+   article: string,
+   emplacement: string,
+   code_article: string,
+   prixTotal: number,
+   cmup: number
 }
 export type MagasinDetails = {
-   info:MagasinInfo
-   stocks:StockDetails[]
-   valorisations:number
+   info: MagasinInfo
+   stocks: StockDetails[]
+   valorisations: number
 }
 
 
 export type UserClaims = {
-   username:string,
-   role:string,
+   username: string,
+   role: string,
 }
 
 
 export type ValorisationDetails = {
-   code_article:string
-   article:string
-   emplacement:string,
-   magasin:string
-   sous_famille:string
-   quantite:number,
-   cmup:number
+   code_article: string
+   article: string
+   emplacement: string,
+   magasin: string
+   sous_famille: string
+   quantite: number,
+   cmup: number
 }
 
 
 export type CommandeDetails = {
-   info:CommandeData,
-   details:MouvementData[]
+   info: CommandeData,
+   details: MouvementData[]
 }
 
+export type Livraison = {
+   fournisseur: number
+   livreur: string,
+   cin: string,
+   bonLivraison: string,
+   dateLivraison: Date,
+   dateEcheance: Date,
+   bonCommande: string
+   dateCommande: Date,
+   observation?: string
+}

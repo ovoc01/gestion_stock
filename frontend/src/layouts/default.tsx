@@ -18,10 +18,10 @@ export default function DefaultLayout({
       <div className="relative flex items-center flex-col h-screen w-full">
         <Navbar />
         <main className="container mx-auto w-full  flex-grow  ">
-          {isAuthenticated ? children : <UserSessionExpired />}
+          {/* isAuthenticated ? children : */ <UserSessionExpired />}
         </main>
         <Toaster richColors position="top-right" />
-        <footer className="w-full flex items-center justify-center py-3 bg-foreground">
+        <footer className="w-full flex items-center  justify-center py-3 bg-foreground ">
           <Link
             isExternal
             className="flex items-center gap-1 text-current"

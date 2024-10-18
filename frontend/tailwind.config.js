@@ -48,7 +48,18 @@ module.exports = {
         colaPrune: 'rgba(192, 17, 111, 1)',
         colaOrange: 'rgba(238, 116, 2, 1)',
         colaGrayP: 'rgba(202, 202, 202, 1)',
+
+        animation: {
+          pulse: 'pulse 2s infinite',
+        },
+        keyframes: {
+          pulse: {
+            '0%, 100%': { transform: 'scale(1)' },
+            '50%': { transform: 'scale(1.1)' }, // Increased scale for a more noticeable effect
+          }
+        }
       },
+
 
     }
   },
