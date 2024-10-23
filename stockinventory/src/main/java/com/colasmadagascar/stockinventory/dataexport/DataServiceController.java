@@ -1,10 +1,15 @@
 package com.colasmadagascar.stockinventory.dataexport;
 
 
+import java.util.Map;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 @RestController
-@RequestMapping("api/v1/data")
+@RequestMapping("api/v1/export")
 public class DataServiceController {
     private  DataExportService dataExportService;
 
@@ -14,6 +19,20 @@ public class DataServiceController {
 
     //@GetMapping("/export")
     
+    
+    @GetMapping
+    public ResponseEntity<Object> export(
+            @RequestParam(name = "type")String output, 
+            @RequestParam(name = "classe") String classe) throws Exception {
+        //Constant.ETAT.get(1);
+        
+        
+        Map<String,Object> data = dataExportService.export(classe, output);        
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(data);
+    }
 
 
 

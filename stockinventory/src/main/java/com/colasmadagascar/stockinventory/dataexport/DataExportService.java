@@ -2,26 +2,31 @@ package com.colasmadagascar.stockinventory.dataexport;
 
 import com.colasmadagascar.stockinventory.dataexport.tools.ExcelExportUtility;
 import com.colasmadagascar.stockinventory.utils.Utils;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.List;
 
 @Service
 public class DataExportService {
     // final private ArticleRepository articleRepository;
     final private TemplateEngine templateEngine;
+    
+    //final private Map<String,Object> map;
 
     public DataExportService(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
+        
     }
 
-    public <T> ByteArrayInputStream exportToExcel(String[] columns, List<T> entities, Class<T> clz) throws Exception {
-
+    public <T> ByteArrayInputStream exportToExcel(String[] columns, List<?> entities, Class<T> clz) throws Exception {
         ExcelExportUtility<T> excelExportUtility = new ExcelExportUtility<>(clz);
         return excelExportUtility.exportToExcel(entities, columns);
     }
@@ -81,6 +86,24 @@ public class DataExportService {
             // return null; // Ou lever une exception plus spécifique
             return null;
         }
+    }
+    
+    
+    public String generateFileName(String classeName,String type){
+        StringBuilder sb = new StringBuilder();
+        sb.append(classeName)
+                .append("_")
+                .append(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss")))
+                .append(ExportType.getFileExtension(type))
+                ;
+        
+        return sb.toString();
+    }
+    
+    public Map<String,Object> export(String classeName,String type){
+        return new HashMap<>(){{
+        put("fileName",generateFileName(classeName, type));
+        }};
     }
 
 }

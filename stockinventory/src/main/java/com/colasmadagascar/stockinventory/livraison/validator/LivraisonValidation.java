@@ -3,9 +3,8 @@ package com.colasmadagascar.stockinventory.livraison.validator;
 import com.colasmadagascar.stockinventory.livraison.request.LivraisonCreationRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
+import org.springframework.stereotype.Component;
 
 @Component
 public class LivraisonValidation implements ConstraintValidator<ValidateLivraison, LivraisonCreationRequest> {
@@ -23,11 +22,12 @@ public class LivraisonValidation implements ConstraintValidator<ValidateLivraiso
         isValid &= validateDateLivraison(value.getDateLivraison(), context);
         isValid &= validateDateEcheance(value.getDateEcheance(), value.getDateLivraison(), context);
         isValid &= validateBonCommande(value.getBonCommande(), context);
-        isValid &= validateDateCommande(value.getDateCommande(), value.getDateEcheance(), value.getDateLivraison(), context);
-
+        isValid &= validateDateCommande(value.getDateCommande(), value.getDateEcheance(), value.getDateLivraison(),
+                context);
         return isValid;
     }
 
+    
     private boolean validateFournisseur(Long fournisseur, ConstraintValidatorContext context) {
         if (fournisseur == null) {
             addConstraintViolation(context, "Le fournisseur est obligatoire", "fournisseur");
@@ -38,6 +38,7 @@ public class LivraisonValidation implements ConstraintValidator<ValidateLivraiso
 
     private boolean validateLivreur(String livreur, ConstraintValidatorContext context) {
         if (livreur == null || livreur.trim().isBlank()) {
+            
             addConstraintViolation(context, "Le livreur est obligatoire", "livreur");
             return false;
         }
@@ -46,6 +47,7 @@ public class LivraisonValidation implements ConstraintValidator<ValidateLivraiso
 
     private boolean validateCin(String cin, ConstraintValidatorContext context) {
         if (cin == null || cin.trim().isBlank()) {
+            
             addConstraintViolation(context, "Le cin est obligatoire", "cin");
             return false;
         }
@@ -68,13 +70,15 @@ public class LivraisonValidation implements ConstraintValidator<ValidateLivraiso
         return true;
     }
 
-    private boolean validateDateEcheance(LocalDate dateEcheance, LocalDate dateLivraison, ConstraintValidatorContext context) {
+    private boolean validateDateEcheance(LocalDate dateEcheance, LocalDate dateLivraison,
+            ConstraintValidatorContext context) {
         if (dateEcheance == null) {
             addConstraintViolation(context, "La date d'échéance est obligatoire", "dateEcheance");
             return false;
         }
         if (dateLivraison != null && dateEcheance.isBefore(dateLivraison)) {
-            addConstraintViolation(context, "La date d'échéance doit être supérieure à la date de livraison", "dateEcheance");
+            addConstraintViolation(context, "La date d'échéance doit être supérieure à la date de livraison",
+                    "dateEcheance");
             return false;
         }
         return true;
@@ -88,7 +92,8 @@ public class LivraisonValidation implements ConstraintValidator<ValidateLivraiso
         return true;
     }
 
-    private boolean validateDateCommande(LocalDate dateCommande, LocalDate dateEcheance, LocalDate dateLivraison, ConstraintValidatorContext context) {
+    private boolean validateDateCommande(LocalDate dateCommande, LocalDate dateEcheance, LocalDate dateLivraison,
+            ConstraintValidatorContext context) {
         if (dateCommande == null) {
             addConstraintViolation(context, "La date de commande est obligatoire", "dateCommande");
             return false;

@@ -74,7 +74,6 @@ public class AuthenticationService {
     @Transactional
     public void createUserData(){
 
-
         RegisterRequest request1 = new RegisterRequest();
         request1.setUsername("DOEJOHN4");
         request1.setPassword("test1234!!");
@@ -83,7 +82,7 @@ public class AuthenticationService {
         request1.setRoleId(Long.parseLong("2"));
         register(request1);
 
-
+        
         register(request1);
     }
 }

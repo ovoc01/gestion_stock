@@ -2,21 +2,19 @@ package com.colasmadagascar.stockinventory.article;
 
 import com.colasmadagascar.stockinventory.dataexport.DataExportService;
 import com.colasmadagascar.stockinventory.shared.Fetch;
-
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
 import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.HashMap;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/articles")
