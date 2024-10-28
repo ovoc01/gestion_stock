@@ -8,5 +8,11 @@ public interface CommandeDTO {
     public String getEmplacement();
     public String getUniteOperationnel();
     public String getLib_commande();
-
+    default public String getResponsable(){
+        return "Voary Rakotoarison";
+    }
+    
+    
+    
+    
 }

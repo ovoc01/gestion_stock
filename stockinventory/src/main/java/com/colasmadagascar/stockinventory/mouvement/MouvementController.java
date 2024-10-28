@@ -17,63 +17,65 @@ public class MouvementController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> entree(@RequestBody  Mouvement mouvement) {
-        Map<String,Object> data = new HashMap<>();
-        try{
+    public ResponseEntity<Object> entree(@RequestBody Mouvement mouvement) {
+        Map<String, Object> data = new HashMap<>();
+        try {
             mouvementService.save(mouvement);
-            data.put("mouvement",mouvement);
+            data.put("mouvement", mouvement);
             return ResponseEntity.ok(data);
-        }catch (Exception e){
-            data.put("error",e.getMessage());
+        } catch (Exception e) {
+            data.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(data);
         }
     }
 
     @GetMapping("/sorties")
-    public ResponseEntity<Object> getAllMouvementSortie(){
-        Map<String,Object> data = new HashMap<>();
-        try{
-            data.put("mouvements",mouvementService.getAllMouvementSortie());
+    public ResponseEntity<Object> getAllMouvementSortie() {
+        Map<String, Object> data = new HashMap<>();
+        try {
+            data.put("mouvements", mouvementService.getAllMouvementSortie());
             return ResponseEntity.ok(data);
-        }catch (Exception e){
-            data.put("error",e.getLocalizedMessage());
+        } catch (Exception e) {
+            data.put("error", e.getLocalizedMessage());
             return ResponseEntity.badRequest().body(data);
         }
     }
+
     @PostMapping("/sorties")
-    public ResponseEntity<Object> createSortie( @Valid @RequestBody  MouvementSortieRequest mouvement) {
-        Map<String,Object> data = new HashMap<>();
-        try{
+    public ResponseEntity<Object> createSortie(@Valid @RequestBody MouvementSortieRequest mouvement) {
+        Map<String, Object> data = new HashMap<>();
+        try {
             mouvementService.createSortie(mouvement);
-            data.put("mouvement",mouvement);
+            data.put("mouvement", mouvement);
             return ResponseEntity.ok(data);
-        }catch (Exception e){
-            data.put("error",e.getMessage());
+        } catch (Exception e) {
+            data.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(data);
         }
     }
 
 
     @GetMapping("/entrees")
-    public ResponseEntity<Object> getAllMouvementEntree(){
-        Map<String,Object> data = new HashMap<>();
-        try{
-            data.put("mouvements",mouvementService.getAllMouvementEntree());
+    public ResponseEntity<Object> getAllMouvementEntree() {
+        Map<String, Object> data = new HashMap<>();
+        try {
+            data.put("mouvements", mouvementService.getAllMouvementEntree());
             return ResponseEntity.ok(data);
-        }catch (Exception e){
-            data.put("error",e.getLocalizedMessage());
+        } catch (Exception e) {
+            data.put("error", e.getLocalizedMessage());
             return ResponseEntity.badRequest().body(data);
         }
     }
+
     @PostMapping("/entrees")
-    public ResponseEntity<Object> createEntree(@Valid @RequestBody  MouvementEntreeRequest mouvement) {
-        Map<String,Object> data = new HashMap<>();
-        try{
+    public ResponseEntity<Object> createEntree(@Valid @RequestBody MouvementEntreeRequest mouvement) {
+        Map<String, Object> data = new HashMap<>();
+        try {
             mouvementService.createEntree(mouvement);
-            data.put("mouvement",mouvement);
+            data.put("mouvement", mouvement);
             return ResponseEntity.ok(data);
-        }catch (Exception e){
-            data.put("error",e.getMessage());
+        } catch (Exception e) {
+            data.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(data);
         }
     }

@@ -4,6 +4,8 @@ package com.colasmadagascar.stockinventory.configuration;
 import com.colasmadagascar.stockinventory.mouvement.periode.Periode;
 import com.colasmadagascar.stockinventory.mouvement.periode.PeriodeRepository;
 import com.colasmadagascar.stockinventory.utilisateur.UtilisateurRepository;
+import java.text.NumberFormat;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 @Configuration
 @RequiredArgsConstructor
@@ -59,5 +64,35 @@ public class GlobalApplicationConfiguration {
     @Bean
     public Periode activePeriode(){
         return null;
+    }
+    
+    
+    @Bean 
+    public TemplateEngine templateEngine(){
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setPrefix("/templates/");
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setCharacterEncoding("UTF-8");
+        
+        TemplateEngine templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+        
+        return templateEngine;
+    }
+    
+    
+    @Bean
+    public Locale localCurrency(){
+        Locale  locale = new Locale("en","US");
+        return locale;
+    }
+    
+    @Bean
+    public NumberFormat currencyFormatter (){
+         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+        currencyFormatter.setMinimumFractionDigits(0);
+        currencyFormatter.setMaximumFractionDigits(2);
+        return currencyFormatter;
     }
 }

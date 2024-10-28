@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" media="all" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Title</title>
+
+</head>
+
+
+
+<body>
+
+    <div class='header' th:replace="~{header :: header}"></div>
+
+    <main class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 150px;"></th>
+                    <th style="width: 400px;">NUMERO AFFAIRE</th>
+                    <th>CODE BU</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>De:</strong></td>
+                    <td>2200001AD001.300800 - SERVICE INFORMATIQUE</td>
+                    <td>2200001AD001</td>
+                </tr>
+                <tr>
+                    <td><strong>A:</strong></td>
+                    <td>2200001SO001 - DTEI</td>
+                    <td>2200001SO001</td>
+                </tr>
+                <tr>
+                    <td><strong>Période:</strong></td>
+                    <td>01/09/2024 au
+                        24/09/2024</td>
+                </tr>
+                <tr>
+                    <td><strong>Libellé commande:</strong></td>
+                    <td>CESSION INFORMATIQUE OCTOBRE</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="mvt">
+            <thead>
+                <tr>
+                    <th style="width: 80px;">Date</th>
+                    <th style="width: 80px;">N°Piece</th>
+                    <th style="width: 200px;">Designation</th>
+                    <th style="width: 50px;">Qté</th>
+                    <th style="width: 80px;">PU</th>
+                    <th style="width: 100px;">Montant</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>03/09/2024</td>
+                    <td>FM 0301702</td>
+                    <td>Papier A0 0.914*50m</td>
+                    <td style="text-align: right;">3.0</td>
+                    <td style="text-align: right;">550 000</td>
+                    <td style="text-align: right;">550 000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="visa">
+            <thead>
+                <tr>
+                    <th style="width: 550px;">Validé par</th>
+                    <th style="width:200px; text-align:end">MONTANT TOTAL</th>
+                    <th style=" width:150px;text-align: start;">4 872 744,47 MGA</th>
+                </tr>
+            </thead>
+        </table>
+
+
+
+
+    </main>
+
+
+</body>
+
+</html>

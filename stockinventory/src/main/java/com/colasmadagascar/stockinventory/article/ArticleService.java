@@ -43,8 +43,8 @@ public class ArticleService {
         return articleRepository.findAll(pageable).toList();
     }
 
-    public List<ArticleDTO> getAllArticleDTO(int page, int size,Fetch fetch) {
-        if(fetch == Fetch.ALL) return articleRepository.findAllArticlesDTO();
+    public List<ArticleDTO> getAllArticleDTO(int page, int size, Fetch fetch) {
+        if (fetch == Fetch.ALL) return articleRepository.findAllArticlesDTO();
         Pageable pageable = PageRequest.of(page - 1, size);
         return articleRepository.findAllArticlesDTO(pageable).toList();
     }
@@ -98,8 +98,8 @@ public class ArticleService {
 
 
     public ByteArrayInputStream exportToExcel() throws Exception {
-        String[] columns = {"Article ID","Libelle", "Reference", "Code", "Service","Sous Famille","Unite "};
+        String[] columns = {"Article ID", "Libelle", "Reference", "Code", "Service", "Sous Famille", "Unite "};
         List<ArticleDTO> entities = articleRepository.findAllArticlesDTO(); // Or use a custom query
-        return dataExportService.exportToExcel(columns,entities, ArticleDTO.class);
+        return dataExportService.exportToExcel(columns, entities, ArticleDTO.class);
     }
 }

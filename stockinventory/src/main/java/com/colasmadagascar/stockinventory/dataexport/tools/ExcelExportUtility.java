@@ -2,6 +2,7 @@ package com.colasmadagascar.stockinventory.dataexport.tools;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -76,13 +78,13 @@ public class ExcelExportUtility<T> {
         int rowNum = 1;
         for (Object entity : entities) {
             Row row = sheet.createRow(rowNum++);
-            for (Method m :methods){
+            for (Method m : methods) {
                 ExcelRow excelRow = m.getAnnotation(ExcelRow.class);
-                if(excelRow!=null){
+                if (excelRow != null) {
                     System.out.println(m.getName());
                     m.setAccessible(true);
                     Object value = m.invoke(entity);
-                    Cell cell = row.createCell(excelRow.value()-1);
+                    Cell cell = row.createCell(excelRow.value() - 1);
                     setCellValue(cell, value);
                 }
             }

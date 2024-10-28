@@ -9,9 +9,8 @@ import com.colasmadagascar.stockinventory.mouvement.sortie.CommandeRepository;
 import com.colasmadagascar.stockinventory.mouvement.stock.Stock;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 public class MouvementStockValidator implements ConstraintValidator<MouvementSortieAnnotation, MouvementSortieRequest> {
@@ -19,7 +18,7 @@ public class MouvementStockValidator implements ConstraintValidator<MouvementSor
     private final CommandeRepository commandeRepository;
     private final Periode activePeriode;
     private final PeriodeRepository periodeRepository;
-
+    
 
     public MouvementStockValidator(MouvementRepository repository, CommandeRepository commandeRepository, PeriodeRepository periodeRepository) {
         this.repository = repository;
@@ -63,9 +62,11 @@ public class MouvementStockValidator implements ConstraintValidator<MouvementSor
         }
 
         Stock stock = repository.findExistanceStock(commande.get().getEmplId(), value.getArticle(), activePeriode.getPeriodeId());
-        if(value.getQuantite() > stock.getQuantite() ){
+        //System.out.println(stock);
+        double qteEnStock = (stock == null ? 0:stock.getQuantite()==null?0:stock.getQuantite());
+        if(value.getQuantite() > qteEnStock ){
 
-            context.buildConstraintViolationWithTemplate("La quantite en stock de cette article est insuffisante, il ne reste que "+stock.getQuantite())
+            context.buildConstraintViolationWithTemplate("La quantitée en stock de cette article est insuffisante ")
                     .addPropertyNode("quantite")
                     .addConstraintViolation();
             return false;

@@ -1,0 +1,18 @@
+{
+    "classes": {
+        "article": {
+            "name": "article",
+            "authorizeType": "excel,pdf",
+            "columns": [
+                "Article ID",
+                "Libelle",
+                "Reference",
+                "Code",
+                "Service",
+                "Sous Famille",
+                "Unite"
+            ],
+            "dataClass": "com.colasmadagascar.stockinventory.article.ArticleDTO"
+        }
+    }
+}

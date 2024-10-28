@@ -7,17 +7,16 @@ package com.colasmadagascar.stockinventory.dataexport;
 import lombok.Data;
 
 /**
- *
  * @author dev
  */
 @Data
 public class ExportType {
-    
+
     /**
-     * 
+     *
      */
-    public static String getFileExtension(String type){
-        switch(type.toLowerCase()){
+    public static String getFileExtension(String type) {
+        switch (type.toLowerCase()) {
             case "pdf":
                 return ".pdf";
             case "csv":
@@ -25,8 +24,8 @@ public class ExportType {
             case "excel":
                 return "xlsx";
             default:
-                    throw new IllegalArgumentException(String.format("Extension not found for %",type));
-                       
+                throw new IllegalArgumentException(String.format("Extension not found for %", type));
+
         }
     }
 }

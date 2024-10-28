@@ -13,13 +13,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @EnableConfigurationProperties
-@EnableAutoConfiguration
 public class StockInventoryApplication {
 
 	private final AuthenticationService authService;
 	private final DataExportService dataExportService;
 
-	
+
 	public static void main(String[] args) {
 		// System.out.println(Utils.generateSU("Matière Premières","Ciments","Holcim
 		// OONJA"));
