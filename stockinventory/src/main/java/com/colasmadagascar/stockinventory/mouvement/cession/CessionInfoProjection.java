@@ -1,7 +1,9 @@
 package com.colasmadagascar.stockinventory.mouvement.cession;
 
-
 import java.util.Date;
+import java.time.LocalDate;
+
+import com.colasmadagascar.stockinventory.utils.Utils;
 
 public interface CessionInfoProjection {
     Long getCmdeId();
@@ -14,12 +16,28 @@ public interface CessionInfoProjection {
 
     String getUoBu();
 
-    Date getDateDebut();
+    LocalDate getDateDebut();
 
-    Date getDateFin();
+    LocalDate getDateFin();
+
+    Double getMontantTotal();
 
     default String getDateFinFinal() {
-        if (getDateFin() == null) return "À déterminer";
+        if (getDateFin() == null)
+            return "À déterminer";
         return getDateFin().toString();
     }
+
+    default String getDateDebutFormatted() {
+        return Utils.formatDate(getDateDebut());
+    }
+
+    default String getLabel() {
+        return Utils.generateCessionLabel(getService());
+    }
+
+    default String getMontantTotalFormatted() {
+        return Utils.formatCurrency(getMontantTotal());
+    }
+
 }

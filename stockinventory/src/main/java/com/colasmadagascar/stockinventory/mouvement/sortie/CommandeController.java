@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,12 +66,29 @@ public class CommandeController {
     public ResponseEntity<Object> generateCession(@PathVariable("idCommande") Long id) throws IOException {
         HashMap<String, Object> data = new HashMap<>();
         data.put("cession", commandeService.getCessionById(id));
+        data.put("title", "FEUILLE DE CESSION INTERNE");
         ByteArrayInputStream resource = dataExportService.generatePdfReport("cession", data);
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.pdf")
-                .contentType(MediaType.parseMediaType("application/pdf"))
-                .body(new InputStreamResource(resource));
+        HashMap<String, Object> response = new HashMap<>();
+
+        byte[] byteArray = resource.readAllBytes();
+        String base64Data = Base64.getEncoder().encodeToString(byteArray);
+
+        response.put("filename", dataExportService.generateFileName("cession", "pdf"));
+        response.put("filedata", base64Data);
+
+        try {
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.pdf")
+
+                    .body(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            data.put("error", e.getLocalizedMessage());
+            return ResponseEntity.badRequest()
+                    .body(data);
+        }
+
     }
 
 }

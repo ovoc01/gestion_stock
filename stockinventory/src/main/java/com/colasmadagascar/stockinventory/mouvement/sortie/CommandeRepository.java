@@ -1,6 +1,7 @@
 package com.colasmadagascar.stockinventory.mouvement.sortie;
 
 import com.colasmadagascar.stockinventory.mouvement.MouvementDTO;
+import com.colasmadagascar.stockinventory.mouvement.cession.CessionDetails;
 import com.colasmadagascar.stockinventory.mouvement.cession.CessionInfoProjection;
 import com.colasmadagascar.stockinventory.mouvement.stock.Stock;
 
@@ -19,7 +20,6 @@ public interface CommandeRepository extends JpaRepository<Commande, Long> {
     @Modifying
     void persist(Long emplId, Long unopId, Long periodeId);
 
-
     @Query(nativeQuery = true, value = "select * from commande where empl_id=?1 and unop_id=?2 and periode_id=?3 ")
     Optional<Commande> findExistance(Long emplId, Long unopId, Long periodeId);
 
@@ -37,4 +37,7 @@ public interface CommandeRepository extends JpaRepository<Commande, Long> {
 
     @Query(nativeQuery = true, value = "select * from v_cession_info where cmdeid =?1")
     CessionInfoProjection getSessionInfo(Long id);
+
+    @Query(nativeQuery = true, value = "select * from v_cession_details where cmde_id =?1")
+    List<CessionDetails> getCessionDetails(Long id);
 }

@@ -3,6 +3,7 @@ package com.colasmadagascar.stockinventory.dataexport;
 import com.colasmadagascar.stockinventory.article.ArticleDTO;
 import com.colasmadagascar.stockinventory.article.ArticleRepository;
 import com.colasmadagascar.stockinventory.dataexport.tools.ExcelExportUtility;
+import com.colasmadagascar.stockinventory.utils.Utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,8 +16,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDate;
 
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,6 +33,8 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 public class DataExportService {
     final private ArticleRepository articleRepository;
     final private TemplateEngine templateEngine;
+    final DateTimeFormatter dateTimeFormatter;
+
     // final private Map<String,Object> map;
     final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -62,8 +68,11 @@ public class DataExportService {
 
         // 2. Créer le contexte Thymeleaf
         Context context = new Context();
+        context.setVariable("todayDate", Utils.formatDate(LocalDate.now()));
 
-        String htmlContent = templateEngine.process("export-template", context);
+        context.setVariables(data);
+
+        String htmlContent = templateEngine.process(template, context);
 
         // htmlContent = htmlContent.replace("${imageUrl}", base64);
         String pdfPath = "output.pdf";
@@ -104,7 +113,7 @@ public class DataExportService {
                 .append(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss")))
                 .append(ExportType.getFileExtension(type));
 
-        return sb.toString();
+        return sb.toString().toUpperCase();
     }
 
     public Map<String, Object> export(String classeName, String type) {

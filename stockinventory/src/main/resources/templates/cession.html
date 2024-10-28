@@ -27,22 +27,29 @@
             <tbody>
                 <tr>
                     <td><strong>De:</strong></td>
-                    <td>2200001AD001.300800 - SERVICE INFORMATIQUE</td>
-                    <td>2200001AD001</td>
+                    <td>
+                        <span th:text="${cession.info.numeroAffaire}"></span> -
+                        <span th:text="${cession.info.service}"></span>
+                    </td>
+                    <td th:text="${cession.info.numeroAffaire}"></td>
                 </tr>
                 <tr>
                     <td><strong>A:</strong></td>
-                    <td>2200001SO001 - DTEI</td>
-                    <td>2200001SO001</td>
+                    <td>
+                        <span th:text="${cession.info.uoBu}"></span> -
+                        <span th:text="${cession.info.uniteOperationnel}"></span>
+                    </td>
+                    <td th:text="${cession.info.uoBu}"></td>
                 </tr>
                 <tr>
                     <td><strong>Période:</strong></td>
-                    <td>01/09/2024 au
-                        24/09/2024</td>
+                    <td><span th:text="${cession.info.dateDebutFormatted}"></span> au
+                        <span th:text="${cession.info.dateFinFinal}"></span>
+                    </td>
                 </tr>
                 <tr>
                     <td><strong>Libellé commande:</strong></td>
-                    <td>CESSION INFORMATIQUE OCTOBRE</td>
+                    <td th:text="${cession.info.label}"></td>
                 </tr>
             </tbody>
         </table>
@@ -59,13 +66,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>03/09/2024</td>
-                    <td>FM 0301702</td>
-                    <td>Papier A0 0.914*50m</td>
-                    <td style="text-align: right;">3.0</td>
-                    <td style="text-align: right;">550 000</td>
-                    <td style="text-align: right;">550 000</td>
+                <tr th:each=" detail: ${cession.details}">
+                    <td th:text="${detail.dateAjout}"></td>
+                    <td th:text="${detail.numeroPiece}"></td>
+                    <td th:text="${detail.designation}"></td>
+                    <td th:text="${detail.formattedQuantite}"></td>
+                    <td th:text="${detail.formattedPrixUnitaire}"></td>
+                    <td>
+                        <strong th:text="${detail.formattedMontant}"></strong>
+                    </td>
+
                 </tr>
             </tbody>
         </table>
@@ -75,17 +85,11 @@
                 <tr>
                     <th style="width: 550px;">Validé par</th>
                     <th style="width:200px; text-align:end">MONTANT TOTAL</th>
-                    <th style=" width:150px;text-align: start;">4 872 744,47 MGA</th>
+                    <th style=" width:150px;text-align: start;" th:text="${cession.info.montantTotalFormatted}"></th>
                 </tr>
             </thead>
         </table>
-
-
-
-
     </main>
-
-
 </body>
 
 </html>

@@ -5,6 +5,8 @@ import com.colasmadagascar.stockinventory.mouvement.MouvementRepository;
 import com.colasmadagascar.stockinventory.mouvement.cession.Cession;
 import com.colasmadagascar.stockinventory.mouvement.periode.Periode;
 import com.colasmadagascar.stockinventory.mouvement.periode.PeriodeRepository;
+import com.colasmadagascar.stockinventory.utils.Utils;
+
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -20,7 +22,6 @@ public class CommandeService {
     public final PeriodeRepository periodeRepository;
     public final MouvementRepository mouvementRepository;
     public final CurrencyService currencyService;
-
 
     public List<CommandeDTO> getAllCommande() {
         return commandeRepository.getAllCommande();
@@ -41,17 +42,19 @@ public class CommandeService {
     @Transactional
     public void createCommande(Long emplacementDeId, Long unopAId) {
         Periode periode = periodeRepository.getCurrentActivePeriode();
-        Optional<Commande> existance = commandeRepository.findExistance(emplacementDeId, unopAId, periode.getPeriodeId());
+        Optional<Commande> existance = commandeRepository.findExistance(emplacementDeId, unopAId,
+                periode.getPeriodeId());
         if (existance.isPresent()) {
             throw new IllegalStateException("Cette commande existe deja");
         }
         commandeRepository.persist(emplacementDeId, unopAId, periode.getPeriodeId());
     }
 
-
     public Cession getCessionById(Long id) {
         Cession cession = new Cession();
         cession.setInfo(commandeRepository.getSessionInfo(id));
+        cession.setDetails(commandeRepository.getCessionDetails(id));
+        // System.out.println(Utils.formatDate(cession.getInfo().getDateDebut()));
         return cession;
     }
 }
