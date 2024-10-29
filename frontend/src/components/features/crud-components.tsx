@@ -428,7 +428,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                   isCompact
                   showControls
                   showShadow
-                  color="default"
+                  color="primary"
                   page={initialPage}
                   total={pages}
                   onChange={(page) => onPageChange!(page)}
@@ -487,7 +487,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
           >
             {(column) => (
               <TableColumn key={column.key}>
-                <h1 className="text-lg">{column.label}</h1>
+                <h1 className="text-md">{column.label}</h1>
               </TableColumn>
             )}
           </TableHeader>
@@ -500,7 +500,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                 {(columnKey) => (
                   <TableCell
                     className={[
-                      "text-md",
+                      "text-sm",
                       onRowClick === undefined ? "" : "cursor-pointer",
                     ].join(" ")}
                     onClick={() => {

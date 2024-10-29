@@ -227,15 +227,7 @@ export default function MouvementEntree() {
               />
             </div>
             <div className="flex w-full gap-4">
-              <Input
-                label="References"
-                radius="sm"
-                size="md"
-                type="text"
-                validationBehavior="aria"
-                variant="bordered"
-                onChange={() => {}}
-              />
+              
               <Input
                 errorMessage={requestError?.justifError}
                 isInvalid={

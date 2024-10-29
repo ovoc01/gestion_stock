@@ -23,7 +23,7 @@ import Livraison from "@/pages/livraison";
 export const routes = createBrowserRouter([
   {
     path: "/",
-    element: <IndexPage />,
+    element: <IndexPage />
   },
   {
     path: "/referentiels/",

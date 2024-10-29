@@ -1,5 +1,5 @@
 import { Input, Textarea } from "@nextui-org/input";
-import { Autocomplete, AutocompleteItem, Button, DatePicker, Divider } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Button, Checkbox, DatePicker, Divider } from "@nextui-org/react";
 import { useState } from "react";
 import { now, getLocalTimeZone, DateValue } from "@internationalized/date";
 import { createLivraison } from "@/services/api/livraison.service";
@@ -17,6 +17,10 @@ export default function Livraison() {
    const [dateCommande, setDateCommande] = useState<DateValue>(now(getLocalTimeZone()));
    const [observation, setObservation] = useState('')
    const [requestError, setRequestError] = useState<any>(null);
+   const [isDetailsBoxChecked, setIsDetailsBoxChecked] = useState(false)
+
+   // url parameter
+
 
    //useEffect
 
@@ -27,10 +31,18 @@ export default function Livraison() {
       { id: 4, name: 'Sotrami' },
    ]
 
+   // static data
+   const detailsTableColumns = [
+      { key: 'produit', label: 'Produit' },
+      { key: 'quantite', label: 'Quantité' },
+      { key: 'prix', label: 'Prix' },
+      { key: 'total', label: 'Total' },
+   ]
+
 
 
    //handlers
-   const onFormSubmit = () => {
+   const onFormSubmit = async () => {
       /* setRequestError({
          fournisseurError: fournisseur === 0 ? 'Veuillez sélectionner un fournisseur' : null,
          livreurError: livreur.length === 0 ? 'Veuillez saisir le nom du livreur' : null,
@@ -42,8 +54,8 @@ export default function Livraison() {
          dateCommandeError: dateCommande === null ? 'Veuillez saisir la date de commande' : null,
       }) */
 
-      createLivraison({
-         fournisseur: fournisseur!,
+      await createLivraison({
+         fournisseur: 1,
          livreur: livreur,
          cin: cin,
          bonLivraison: bonLivraison,
@@ -54,7 +66,21 @@ export default function Livraison() {
          observation: observation
       }).catch((error) => {
          setRequestError(error.response.data)
+         setTimeout(() => {
+            setRequestError(null)
+         }, 10000)
       })
+   }
+
+   const onFournisseurChange = (item: any) => {
+      if (item) {
+         setFournisseur(parseInt(item.toString()))
+      }
+   }
+
+
+   const NewDetails = () => {
+      return
    }
 
 
@@ -63,7 +89,7 @@ export default function Livraison() {
          <div className="w-2/5 h-full pb-8 border-solid border-1  border-gray-300 rounded-lg shadow-md p-8">
             <div className="about flex flex-col gap-4 ">
                <div className="flex justify-center items-center">
-                  <h1 className="text-4xl font-semibold">Nouvelle livraison</h1>
+                  <h1 className="text-4xl font-semibold">Nouvelle Entrée</h1>
                </div>
                <h1 className="text-small text-default-400 ml-1">
                   Information de livraison
@@ -81,7 +107,7 @@ export default function Livraison() {
                         emptyContent: 'Aucun fournisseur trouvé',
                      }}
                      isClearable
-                     onSelectionChange={(item) => setFournisseur(parseInt(item!.toString()))}
+                     onSelectionChange={(item) => onFournisseurChange(item)}
                      defaultSelectedKey={1}
 
                   >
@@ -127,7 +153,8 @@ export default function Livraison() {
 
                   <DatePicker
                      hideTimeZone
-                     showMonthAndYearPickers
+
+
                      //defaultValue={dateCreation}
                      label="Date de livraison"
                      variant="bordered"
@@ -141,7 +168,7 @@ export default function Livraison() {
                <div className="flex gap-2 w-3/6 flex-col">
                   <DatePicker
                      hideTimeZone
-                     showMonthAndYearPickers
+                     granularity="day"
                      //defaultValue={dateCreation}
                      label="Date d'écheance"
                      variant="bordered"
@@ -164,6 +191,7 @@ export default function Livraison() {
                      label="Bon de commande"
                      type="text"
                      variant="bordered"
+
                      size="sm"
                      isInvalid={requestError?.bonCommandeError !== null && requestError?.bonCommandeError !== undefined}
                      errorMessage={requestError?.bonCommandeError}
@@ -173,7 +201,8 @@ export default function Livraison() {
 
                   <DatePicker
                      hideTimeZone
-                     showMonthAndYearPickers
+                     granularity="day"
+
                      //defaultValue={dateCreation}
                      label="Date du commande"
                      variant="bordered"
@@ -195,6 +224,9 @@ export default function Livraison() {
                   value={observation}
                   onChange={(e) => setObservation(e.target.value)}
                />
+               <Checkbox radius="sm" color="primary" isSelected={isDetailsBoxChecked} onClick={() => setIsDetailsBoxChecked(!isDetailsBoxChecked)}>
+                  <h1 className="text-sm">Détails</h1>
+               </Checkbox>
 
                <div className="w-full  flex justify-end">
                   <Button className=" rounded-md bg-foreground text-white" size="lg" onPress={onFormSubmit}>
@@ -203,6 +235,17 @@ export default function Livraison() {
                </div>
             </div>
          </div>
+         {
+            isDetailsBoxChecked && (
+               <div className="w-3/5 h-full  pb-8 border-solid border-1  border-gray-300 rounded-lg shadow-md p-8">
+                  <div className="flex justify-center items-center">
+                     <h1 className="text-4xl font-semibold">Détails du livraison</h1>
+                  </div>
+
+               </div>
+            )
+         }
+
       </div>
    );
 }

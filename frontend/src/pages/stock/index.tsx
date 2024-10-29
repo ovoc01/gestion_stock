@@ -1,7 +1,7 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@nextui-org/button";
-import { Input, Select, SelectItem } from "@nextui-org/react";
+import { DatePicker, Input, Select, SelectItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -232,7 +232,7 @@ export default function ValorisationStock() {
             <></>
           )}
         </div>
-        <div className="w-2/6 max-w-[300px] max-h-[350px] flex  flex-col gap-3 pb-8 border-solid border-1  border-gray-300 rounded-lg shadow-md p-8  mt-8 sticky">
+        <div className="w-2/6 max-w-[450px] max-h-[550px] flex  flex-col gap-3 pb-8 border-solid border-1  border-gray-300 rounded-lg shadow-md p-8  mt-8 sticky">
           <h1 className="text-3xl font-thin flex items-center justify-center w-full gap-8">
             Filtre
             {/*   <Button size="sm" onPress={resetInput}>
@@ -304,13 +304,38 @@ export default function ValorisationStock() {
             />
           </div>
 
-          <div className="w-3/6 p-4 ">
+
+          <h1 className="text-small text-default-400 ml-1">Date</h1>
+          <div className="flex gap-4">
+            <DatePicker
+              hideTimeZone
+              showMonthAndYearPickers
+              //defaultValue={dateCreation}
+              label="Début"
+              variant="bordered"
+              size="sm"
+
+            />
+            <DatePicker
+              hideTimeZone
+              showMonthAndYearPickers
+              //defaultValue={dateCreation}
+              label="Fin"
+              variant="bordered"
+              size="sm"
+
+            />
+          </div>
+
+          <div className="w-3/6 p-4  ">
             <Button
               color="primary"
               size="lg"
               startContent={<FontAwesomeIcon icon={faSearch} />}
               variant="shadow"
               onPress={handleSearch}
+              radius="sm"
+              className="w-full"
             >
               Rechercher
             </Button>

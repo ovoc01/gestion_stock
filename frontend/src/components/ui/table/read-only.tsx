@@ -31,7 +31,9 @@ export default function ReadOnlyTable({
           {data?.map((record, index) => (
             <tr key={index} className="text-gray-500 border-b border-gray-300">
               {headers.map(({ key }) => (
-                <td className="font-light text-start py-4 ">{record[key]}</td>
+                <td key={key} className="font-light text-left py-4 ">
+                  {record[key]}
+                </td>
               ))}
             </tr>
           ))}
