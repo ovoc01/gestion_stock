@@ -2,7 +2,6 @@ package com.colasmadagascar.stockinventory.magasin;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import com.colasmadagascar.stockinventory.magasin.dto.MagasinDetailsDTO;
 import com.colasmadagascar.stockinventory.magasin.dto.UtilisateurMagasinDTO;

@@ -1,6 +1,5 @@
 package com.colasmadagascar.stockinventory.dataexport;
 
-
 import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,42 +22,43 @@ public class DataServiceController {
         this.dataExportService = dataExportService;
     }
 
-    //@GetMapping("/export")
-
+    // @GetMapping("/export")
 
     @GetMapping
     public ResponseEntity<Object> export(
             @RequestParam(name = "type") String output,
             @RequestParam(name = "classe") String classe) throws Exception {
-        //Constant.ETAT.get(1);
+        // Constant.ETAT.get(1);
 
         Map<String, Object> data = dataExportService.export(classe, output);
-        
+
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(data);
     }
 
-
-
-    /* @GetMapping("/articles-csv")
-    public ResponseEntity<InputStreamResource> exportToCSV() throws Exception {
-        String csvData = dataExportService.exportToCSV();
-        ByteArrayInputStream resource = new ByteArrayInputStream(csvData.getBytes());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.csv")
-                .contentType(MediaType.parseMediaType("text/csv"))
-                .body(new InputStreamResource(resource));
-    }
-*/
-
+    /*
+     * @GetMapping("/articles-csv")
+     * public ResponseEntity<InputStreamResource> exportToCSV() throws Exception {
+     * String csvData = dataExportService.exportToCSV();
+     * ByteArrayInputStream resource = new ByteArrayInputStream(csvData.getBytes());
+     * 
+     * return ResponseEntity.ok()
+     * .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.csv")
+     * .contentType(MediaType.parseMediaType("text/csv"))
+     * .body(new InputStreamResource(resource));
+     * }
+     */
 
     @GetMapping("/articles-pdf")
     public ResponseEntity<InputStreamResource> exportToPDF() throws Exception {
-        //String csvData =;
-        ByteArrayInputStream resource = dataExportService.generatePdfReport("cession", new HashMap<>());
+        // String csvData =;
+        ByteArrayInputStream resource = dataExportService.generatePdfReport("etat-stock", new HashMap<>() {
+            {
+                put("title", "ETAT DE MOUVEMENT DE STOCK");
+            }
+        });
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.pdf")

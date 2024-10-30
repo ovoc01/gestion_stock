@@ -24,22 +24,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/fournisseurs")
 public class FournisseurController {
     private final FournisseurService fournisseurService;
-    
-    
+
     @GetMapping
-    public ResponseEntity<Object> getAllArticles(
-        @RequestParam(name = "page",required = false,defaultValue = "1") int page,
-        @RequestParam(name = "size",required = false,defaultValue = "5") int size,
-        @RequestParam(name="fetch",defaultValue = "PAGINATION",required=false) Fetch fetch) {
-        HashMap<String,Object> data = new HashMap<>();
-        try{
-            List<Fournisseur>fournisseurs =  fournisseurService.getAllEntitiesDTO(page, size, fetch);
-            data.put("fournisseurs",fournisseurs);
-            data.put("totalPages",fournisseurService.count());
-            data.put("counts",fournisseurService.count());
+    public ResponseEntity<Object> getAllFournisseurs(
+            @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+            @RequestParam(name = "fetch", defaultValue = "PAGINATION", required = false) Fetch fetch) {
+        HashMap<String, Object> data = new HashMap<>();
+        try {
+            List<Fournisseur> fournisseurs = fournisseurService.getAllEntitiesDTO(page, size, fetch);
+            data.put("fournisseurs", fournisseurs);
+            data.put("totalPages", fournisseurService.count());
+            data.put("counts", fournisseurService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
-        }catch(Exception e){
-            data.put("error",e.getMessage());
+        } catch (Exception e) {
+            data.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(data);
         }
 

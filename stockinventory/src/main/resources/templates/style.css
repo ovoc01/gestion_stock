@@ -1,47 +1,6 @@
-.date {
-   position: absolute;
-   top: 1.5%;
-   left: 80%;
-   width: 150px;
-   font-size: 14px;
-}
 
-.logo {
-   width: 150px;
-   height: 40px;
-}
 
-body {
-   width: 596px;
-   height: 842px;
-   font-family: "Arial Thin", Arial, sans-serif;
-}
 
-.logo {
-   position: absolute;
-   top: 0%;
-   left: 0%;
-}
-
-.title {
-   position: absolute;
-   top: 1%;
-   left: 25%;
-   font-size: 20px;
-   text-align: center;
-   width: 350px;
-   font-weight: 700;
-   text-transform: uppercase;
-}
-
-.ue {
-   text-transform: uppercase;
-   position: absolute;
-   top: 5%;
-   left: 6%;
-   font-weight: bolder;
-   font-size: 8px;
-}
 
 .container {
    font-size: 13px;

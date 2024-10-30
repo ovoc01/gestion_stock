@@ -16,6 +16,7 @@ public class LivraisonValidation implements ConstraintValidator<ValidateLivraiso
         boolean isValid = true;
 
         isValid &= validateFournisseur(value.getFournisseur(), context);
+        isValid &= validateEmplacement(value.getEmplacement(), context);
         isValid &= validateLivreur(value.getLivreur(), context);
         isValid &= validateCin(value.getCin(), context);
         isValid &= validateBonLivraison(value.getBonLivraison(), context);
@@ -24,10 +25,10 @@ public class LivraisonValidation implements ConstraintValidator<ValidateLivraiso
         isValid &= validateBonCommande(value.getBonCommande(), context);
         isValid &= validateDateCommande(value.getDateCommande(), value.getDateEcheance(), value.getDateLivraison(),
                 context);
+
         return isValid;
     }
 
-    
     private boolean validateFournisseur(Long fournisseur, ConstraintValidatorContext context) {
         if (fournisseur == null) {
             addConstraintViolation(context, "Le fournisseur est obligatoire", "fournisseur");
@@ -36,9 +37,17 @@ public class LivraisonValidation implements ConstraintValidator<ValidateLivraiso
         return true;
     }
 
+    private boolean validateEmplacement(Long emplacement, ConstraintValidatorContext context) {
+        if (emplacement == null) {
+            addConstraintViolation(context, "L'emplacement est obligatoire", "emplacement");
+            return false;
+        }
+        return true;
+    }
+
     private boolean validateLivreur(String livreur, ConstraintValidatorContext context) {
         if (livreur == null || livreur.trim().isBlank()) {
-            
+
             addConstraintViolation(context, "Le livreur est obligatoire", "livreur");
             return false;
         }
@@ -47,7 +56,7 @@ public class LivraisonValidation implements ConstraintValidator<ValidateLivraiso
 
     private boolean validateCin(String cin, ConstraintValidatorContext context) {
         if (cin == null || cin.trim().isBlank()) {
-            
+
             addConstraintViolation(context, "Le cin est obligatoire", "cin");
             return false;
         }

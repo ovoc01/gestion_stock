@@ -91,4 +91,19 @@ public class CommandeController {
 
     }
 
+    @GetMapping("etat-stock")
+    public ResponseEntity<InputStreamResource> exportToPDF() throws Exception {
+        // String csvData =;
+        ByteArrayInputStream resource = dataExportService.generatePdfReport("etat-stock", new HashMap<>() {
+            {
+                put("title", "ETAT DE MOUVEMENT DE STOCK");
+            }
+        });
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.pdf")
+                .contentType(MediaType.parseMediaType("application/pdf"))
+                .body(new InputStreamResource(resource));
+    }
+
 }
