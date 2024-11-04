@@ -13,7 +13,7 @@ interface LoginPageProps {
   defaultPwd: string
 }
 
-export default function IndexPage({ home, defaultPwd, defaultUser }: LoginPageProps) {
+export default function IndexPage({ defaultUser }: LoginPageProps) {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [username, setUsername] = useState(defaultUser);
   const [password, setPassword] = useState("test1234!!");

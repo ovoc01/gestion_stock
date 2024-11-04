@@ -26,7 +26,7 @@ import { faPlus, faShare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import { title } from "../primitives";
+
 
 import { levenshteinDistance } from "@/utils/index";
 import { SearchIcon } from "@/components/ui/icons";
@@ -183,7 +183,6 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
   addModalContent,
   errorMessage,
   pageTitle,
-  pageIcon,
   isUpdateAuthorized,
   isCustomActionAuthorized,
   isDeleteAuthorized,

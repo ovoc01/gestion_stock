@@ -134,10 +134,10 @@ function Index() {
   const [emplId, setEmplId] = useState<number | null>(null);
   const [unopId, setUnopId] = useState<number | null>(null);
 
-  const resetInput = () => {
+  /* const resetInput = () => {
     setEmplId(null);
     setUnopId(null);
-  };
+  }; */
 
   const createNewCommande = () => {
     createCommande(emplId!, unopId!)
@@ -175,7 +175,7 @@ function Index() {
                         const selectedValue = Array.from(value)[0];
 
                         setEmplId(
-                          selectedValue ? parseInt(selectedValue) : null,
+                          selectedValue ? parseInt(selectedValue as string) : null,
                         );
                       }}
                     >
@@ -196,7 +196,7 @@ function Index() {
                         const selectedValue = Array.from(value)[0];
 
                         setUnopId(
-                          selectedValue ? parseInt(selectedValue) : null,
+                          selectedValue ? parseInt(selectedValue as string) : null,
                         );
                       }}
                     >

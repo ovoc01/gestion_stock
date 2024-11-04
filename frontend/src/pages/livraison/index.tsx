@@ -11,6 +11,7 @@ export default function Livraison() {
 
    //state
    const [fournisseur, setFournisseur] = useState<number | null>()
+   fournisseur
    const [livreur, setLivreur] = useState('')
    const [cin, setCIN] = useState('')
    const [bonLivraison, setBonLivraison] = useState('')
@@ -52,20 +53,6 @@ export default function Livraison() {
          })
    }, [])
 
-   const fakeFournisseurs = [
-      { id: 1, name: 'Sidef' },
-      { id: 2, name: 'Sogea' },
-      { id: 3, name: 'MadaAuto' },
-      { id: 4, name: 'Sotrami' },
-   ]
-
-   // static data
-   const detailsTableColumns = [
-      { key: 'produit', label: 'Produit' },
-      { key: 'quantite', label: 'Quantité' },
-      { key: 'prix', label: 'Prix' },
-      { key: 'total', label: 'Total' },
-   ]
 
 
 

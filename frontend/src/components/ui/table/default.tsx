@@ -43,7 +43,8 @@ export function DefaultTable({
                         <td key={key} className="py-2 px-4 border-b  text-gray-500">
                            {isChip ? (
                               <Chip className={
-                                 chipClassName!.find(chip => chip.key.toLowerCase() === record[key].toLowerCase())?.class || "bg-gray-200 text-gray-700"
+                                 chipClassName!.find
+                                    (chip => chip.key.toLowerCase() === record[key].toLowerCase())?.class || "bg-gray-200 text-gray-700"
                               } size="sm">
                                  {record[key]}
                               </Chip>

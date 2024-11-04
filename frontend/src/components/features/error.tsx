@@ -1,6 +1,5 @@
 import { Button } from "@nextui-org/button";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 type ErrorProps = {
    error: string;
@@ -11,7 +10,7 @@ type ErrorProps = {
 
 export default function Error({ error, message, illustration }: ErrorProps) {
    const [timer, setTimer] = useState(10);
-   const router = useNavigate()
+   //const router = useNavigate()
    useEffect(() => {
       const interval = setInterval(() => {
          setTimer((prevTimer) => {
@@ -44,7 +43,7 @@ export default function Error({ error, message, illustration }: ErrorProps) {
          </div>
          <div>
             <img src={`/svg/error/${illustration}`} alt="authentication" />
-         </div> 
+         </div>
       </div>
    );
 }

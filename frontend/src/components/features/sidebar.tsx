@@ -12,7 +12,7 @@ export const Sidebar = () => {
    //const history = useHistory();
    const location = useLocation();
    const navigate = useNavigate();
-   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+   const [isSidebarOpen] = useState(true);
    const navigationItems = AdminNavbarItems.map(item => ({
       title: item.label,
       itemId: item.href || item.key, // Use href if available, otherwise fall back to key
@@ -71,7 +71,7 @@ export const Sidebar = () => {
                         elemBefore: () => <Icon name="activity" />
                      }
                   ]}
-                  onSelect={({ itemId }) => {
+                  onSelect={({ }) => {
 
                   }}
                />
@@ -84,8 +84,7 @@ export const Sidebar = () => {
                         elemBefore: () => <Icon name="power" />
                      }
                   ]}
-                  onSelect={({ itemId }) => {
-
+                  onSelect={({ }) => {
                   }}
                />
             </div>

@@ -47,32 +47,6 @@ export function UserInfo() {
    //static var initialisation
    const { usrNom, usrPrenom, usrLogin, roleId } = user;
    const { page, size } = { page: 1, size: 5 };
-   const serviceColumns = [
-      {
-         key: "serviceLi",
-         label: "SERVICE",
-         type: "string",
-      },
-
-      {
-         key: "depuisr",
-         label: "Depuis quand",
-         type: "string",
-      },
-   ];
-
-   const magasinColumns = [
-      {
-         key: "magLi",
-         label: "MAGASIN",
-         type: "string",
-      },
-      {
-         key: "depuis",
-         label: "DEPUIS",
-         type: "string",
-      },
-   ];
 
    //state initialisation
    const [usrNomSate, setUsrNom] = useState(usrNom);
@@ -80,14 +54,14 @@ export function UserInfo() {
    const [usrLoginState, setUsrLogin] = useState(usrLogin);
    const [roleIdState] = useState(roleId);
    const [isUserDataChanged, setIsUserDataChanged] = useState(false);
-   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+   const { isOpen, onOpenChange } = useDisclosure();
    const [isVisible, setIsVisible] = useState(false);
    const [userDetails] = useState<UserInfoProps>(user);
    const [dateCreation] = useState<DateValue>(
       fromDate(new Date(user.usrDtCr), getLocalTimeZone()),
    );
    const [roles, setRoles] = useState<RoleDataProps[] | null>([]);
-   const [acitiveModalContent, setActiveModalContent] = useState<string | null>(
+   const [acitiveModalContent,] = useState<string | null>(
       null,
    );
 
@@ -112,12 +86,13 @@ export function UserInfo() {
    useEffect(() => {
       getAllRoles().then((response) => {
          setRoles(response.roles);
+
       });
 
       getAllUsrServiceExploitant(userDetails.usrId)
          .then((response) => {
             const d = response.services as Record<string, any>[];
-
+            usrServiceExploitant
             setUsrServiceExploitant(d);
          })
          .catch((error) => {
@@ -126,7 +101,7 @@ export function UserInfo() {
 
       getAllUtilisateurMagasins(userDetails.usrId).then((response) => {
          const d = response.magasins as Record<string, any>[];
-
+         usrMagasins
          setUsrMagasins(d);
       });
    }, [isUserDataChanged]);
@@ -153,10 +128,10 @@ export function UserInfo() {
 
    //functions
    const toggleVisibility = () => setIsVisible(!isVisible);
-   const handleModalOpen = (activeModalContent: string) => {
+   /* const handleModalOpen = (activeModalContent: string) => {
       setActiveModalContent(activeModalContent);
       onOpen();
-   };
+   }; */
 
    const handleModalValidation = () => {
       if (acitiveModalContent === "service") {
@@ -256,7 +231,7 @@ export function UserInfo() {
 
          <div className="w-full flex gap-5 pt-5  overflow-auto hide-scrollbar">
 
-            <div className="w-4/5 flex flex-col gap-4 pb-8 border-solid border-1  border-gray-300 rounded-lg shadow-md p-8">
+            <div className="w-4/5 flex flex-col gap-3 pb-8 border-solid border-1  border-gray-300 rounded-lg shadow-md p-8">
                <h1 className="text-3xl font-thin">
                   Informations générales de l'utilisateur
                </h1>
@@ -287,7 +262,7 @@ export function UserInfo() {
                   />
                </div>
 
-               <Divider className="my-4" />
+               <Divider className="my-2" />
                <h1 className="text-small text-default-400 ml-1">Date </h1>
                <div className="flex  gap-4">
                   <DatePicker
@@ -307,7 +282,7 @@ export function UserInfo() {
                   />
                </div>
 
-               <Divider className="my-4" />
+               <Divider className="my-2" />
                <h1 className="text-small text-default-400 ml-1">
                   Role et informations de connections
                </h1>
@@ -386,6 +361,12 @@ export function UserInfo() {
                   </Button>
                </div>
             </div>
+            {/* <div className="w-1/5 h-[300px] border-solid border-1 border-gray-300 rounded-lg shadow-md p-5">
+               <h1 className="text-primary text-lg">Accès utilisateurs </h1>
+               <ul>
+                  Magasin
+               </ul>
+            </div> */}
          </div>
          <div className="w-full mt-5 p-5 h-[300px] shadow-lg rounded-md  border-solid border-1  border-gray-300 flex flex-col gap-6">
             <h1 className=" font-semibold text-gray-500">
@@ -418,6 +399,7 @@ export function UserInfo() {
                   variant="flat"
                   radius="sm"
                   isLoading={isBtnLoading}
+                  isDisabled
                   onClick={() => {
                      onAccountDeactivation()
                   }}

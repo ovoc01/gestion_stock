@@ -11,8 +11,9 @@ import { Toaster } from "sonner";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
    const { isAuthenticated, userClaims, isVerificationDone } = useAuth();
+   children
    const [navbarItems, setNavbarItems] = useState<NavBarItems[]>(SimpleUserNavBar);
-
+   navbarItems
    useEffect(() => {
       if (isAuthenticated && userClaims) {
          setNavbarItems(NAVBAR_CONFIG.get(userClaims.role!)!);
@@ -33,6 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                <main className="flex-grow overflow-y-auto container mx-auto h-screen p-4">
                   <div className="bg-white rounded-lg  p-6">
                      {isAuthenticated ? <Outlet /> : <UserSessionExpired />}
+
                      <Toaster position="top-right" richColors />
                   </div>
                </main>

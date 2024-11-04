@@ -1,4 +1,4 @@
-import { faUser, faBuildingShield, faStore, faKey } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faKey } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, ButtonGroup } from "@nextui-org/button";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -23,9 +23,7 @@ export function UserDetails() {
     navigate(`/utilisateurs/${id}?${newSearchParams.toString()}`, { state: user });
   }
 
-  const getButtonVariant = (page: string) => {
-    return activePage === page ? '' : 'light';
-  }
+
 
   //Nested component
   const Render = () => {

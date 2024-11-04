@@ -1,10 +1,9 @@
 import { Button } from "@nextui-org/button";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function UserSessionExpired() {
   const [timer, setTimer] = useState(10);
-  const router = useNavigate()
+  //const router = useNavigate()
   useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prevTimer) => {

@@ -2,9 +2,9 @@ import { Button } from "@nextui-org/button";
 import { Checkbox } from "@nextui-org/checkbox";
 import { Input } from "@nextui-org/input";
 import { useState } from "react";
-import { To, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { getUserLandingUrl, login } from "@/services/api/auth.service";
+import { login } from "@/services/api/auth.service";
 import Logo from "@/components/ui/logo";
 
 interface LoginPageProps {
@@ -32,7 +32,7 @@ export default function LoginPage({ home, defaultPwd, defaultUser }: LoginPagePr
          .then((response) => {
             const token = response.token;
 
-            const landingUrl = getUserLandingUrl(token);
+            //const landingUrl = getUserLandingUrl(token);
             localStorage.setItem("token", token);
             navigate(home);
          })
