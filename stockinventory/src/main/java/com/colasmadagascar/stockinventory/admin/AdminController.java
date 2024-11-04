@@ -67,23 +67,16 @@ public class AdminController {
       }
    }
 
-   
    @GetMapping("/utilisateurs/{id}")
    public ResponseEntity<Object> getUtilisateurById(Long id) {
       HashMap<String, Object> response = new HashMap<>();
       try {
-         response.put("user", utilisateurService.getEntityById(id));
+         response.put("user", utilisateurService.getUtilisateurById(id));
          return ResponseEntity.ok(response);
       } catch (Exception e) {
          response.put("error", e.getMessage());
          return ResponseEntity.badRequest().body(response);
       }
    }
-   
-   
-   
-
-
-   
 
 }

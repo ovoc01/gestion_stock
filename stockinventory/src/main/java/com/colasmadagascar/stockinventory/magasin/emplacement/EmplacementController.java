@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import java.util.List;
 
@@ -13,83 +14,83 @@ import com.colasmadagascar.stockinventory.shared.Fetch;
 @RestController
 @RequestMapping("api/v1/emplacements")
 
-public class EmplacementController  {
-    @Autowired  EmplacementService emplacementService;
-    
+public class EmplacementController {
+    @Autowired
+    EmplacementService emplacementService;
+
     @GetMapping
     public ResponseEntity<Object> getAllEmplacement(
-        @RequestParam(name = "page",required = false,defaultValue = "1") int page,
-        @RequestParam(name = "size",required = false,defaultValue = "5") int size,
-        @RequestParam(name = "fetch", defaultValue = "PAGINATION") Fetch fetch
-        ) {
-        HashMap<String,Object> data = new HashMap<>();
-        try{
-            List<EmplacementDTO>emplacements =  emplacementService.getAllEntitiesDTO(page, size,fetch);
-            data.put("emplacements",emplacements);
-            data.put("totalPages",emplacementService.count());
+            @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+            @RequestParam(name = "fetch", defaultValue = "PAGINATION") Fetch fetch,
+            Authentication authentication) {
+        HashMap<String, Object> data = new HashMap<>();
+        try {
+            List<EmplacementDTO> emplacements = emplacementService.getAllEntitiesDTO(page, size, fetch, authentication);
+            data.put("emplacements", emplacements);
+            data.put("totalPages", emplacementService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
-        }catch(Exception e){
-            data.put("error",e.getMessage());
+        } catch (Exception e) {
+            data.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(data);
         }
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findByIdEmplacement(@PathVariable("id")Long id){
-        HashMap<String,Object> data = new HashMap<>();
+    public ResponseEntity<Object> findByIdEmplacement(@PathVariable("id") Long id) {
+        HashMap<String, Object> data = new HashMap<>();
 
-        try{
+        try {
             Emplacement emplacement = emplacementService.getEntityById(id).get();
-            data.put("emplacement",emplacement);
+            data.put("emplacement", emplacement);
             return new ResponseEntity<>(data, HttpStatus.OK);
-        }catch(Exception e){
-            data.put("error",e.getMessage());
+        } catch (Exception e) {
+            data.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(data);
         }
     }
-
 
     @PostMapping
-    public ResponseEntity<Object> createEmplacement(@Valid  @RequestBody EmplacementRequest emplacement){
-        HashMap<String,Object> data = new HashMap<>();
-        try{
+    public ResponseEntity<Object> createEmplacement(@Valid @RequestBody EmplacementRequest emplacement) {
+        HashMap<String, Object> data = new HashMap<>();
+        try {
             emplacementService.createEmplacement(emplacement);
-            data.put("message","Emplacement created successfully");
+            data.put("message", "Emplacement created successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
-        }catch(Exception e){
-            data.put("error",e.getMessage());
+        } catch (Exception e) {
+            data.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(data);
         }
     }
 
-
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateEmplacement(@Valid @RequestBody EmplacementUpdateRequest emplacement){
-        HashMap<String,Object> data = new HashMap<>();
+    public ResponseEntity<Object> updateEmplacement(@Valid @RequestBody EmplacementUpdateRequest emplacement) {
+        HashMap<String, Object> data = new HashMap<>();
 
-        try{
-            emplacementService.updateEmplacement(emplacement);;
-            data.put("message","Emplacement update successfully");
+        try {
+            emplacementService.updateEmplacement(emplacement);
+            ;
+            data.put("message", "Emplacement update successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
-        }catch(Exception e){
-            data.put("error",e.getMessage());
+        } catch (Exception e) {
+            data.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(data);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> createEmplacement(@PathVariable("id")Long id){
-        HashMap<String,Object> data = new HashMap<>();
-        try{
-            emplacementService.deleteEntityById(id);;
-            data.put("message","Emplacement deleted successfully");
+    public ResponseEntity<Object> createEmplacement(@PathVariable("id") Long id) {
+        HashMap<String, Object> data = new HashMap<>();
+        try {
+            emplacementService.deleteEntityById(id);
+            ;
+            data.put("message", "Emplacement deleted successfully");
             return new ResponseEntity<>(data, HttpStatus.CREATED);
-        }catch(Exception e){
-            data.put("error",e.getMessage());
+        } catch (Exception e) {
+            data.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(data);
         }
     }
-
 
 }

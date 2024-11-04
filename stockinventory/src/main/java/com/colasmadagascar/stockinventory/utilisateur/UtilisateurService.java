@@ -36,6 +36,10 @@ public class UtilisateurService {
         return utilisateurRepository.findAllBy();
     }
 
+    public UtilisateurDTO getUtilisateurById(Long id) {
+        return utilisateurRepository.findByUsrId(id);
+    }
+
     public long count() {
         return utilisateurRepository.count();
     }

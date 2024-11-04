@@ -1,29 +1,25 @@
 services:
   frontend:
-    build: 
+    build:
       context: .
       dockerfile: frontend/Dockerfile
     ports:
       - "3000:80"
-    
-    
 
   backend:
     build:
       context: .
       dockerfile: stockinventory/Dockerfile
       args:
-        - "SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}"
+        - "SPRING_PROFILES_ACTIVE=prod"
     ports:
       - "8080:8080"
-    
+
     volumes:
       - ~/.m2:/root/.m2
-    
 
-    
-      
-    depends_on:  # Ensure the database starts before the backend
+    depends_on:
+      # Ensure the database starts before the backend
       - databases
 
   ml_service:
@@ -33,9 +29,8 @@ services:
     ports:
       - "4500:4500"
 
-
   databases:
-    
+
     image: postgres:14-alpine
     environment:
       POSTGRES_USER: postgres
@@ -45,4 +40,3 @@ services:
       - ./database:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
-    

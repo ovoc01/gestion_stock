@@ -3,6 +3,7 @@ package com.colasmadagascar.stockinventory.authentification;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    //@PreAuthorize("hasAuthority('Administrateur')")
+    // @PreAuthorize("hasAuthority('Administrateur')")
     public ResponseEntity<Object> register(@Valid @RequestBody RegisterRequest register) {
         HashMap<String, Object> map = new HashMap<>();
         try {
@@ -41,8 +42,12 @@ public class AuthenticationController {
         System.out.println("bogoss");
         try {
             return ResponseEntity.ok(authenticationService.authenticate(authRequest));
+        } catch (BadCredentialsException e) {
+            map.put("error", "Email et/ou mot de passe incorrect");
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(map);
         } catch (Exception e) {
-            map.put("error", e.getMessage());
+            map.put("error", e.getLocalizedMessage());
             e.printStackTrace();
             return ResponseEntity.badRequest().body(map);
         }
