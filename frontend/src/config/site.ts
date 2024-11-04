@@ -1,9 +1,10 @@
 import {
+  faArrowDownUpAcrossLine,
   faArrowLeft, faArrowRight,
-  faBell,
+  faBalanceScale,
   faBrain, faBuilding, faBuildingShield, faCalendarCheck,
   faChartSimple,
-  faCube, faDatabase, faDumbbell, faLayerGroup, faMapLocationDot, faMoneyBillTransfer, faNewspaper,
+  faCube, faDatabase, faLayerGroup, faMapLocationDot, faMoneyBillTransfer, faNewspaper,
   faRuler, faScaleBalanced, faTruck, faUsers, faWarehouse
 } from "@fortawesome/free-solid-svg-icons";
 import { CSDropdownItemProps } from "@/types/types";
@@ -89,12 +90,12 @@ const userItems: CSDropdownItemProps[] = [
 
 const stockItems: CSDropdownItemProps[] = [
   {
-    'label': 'Valorisation de stock',
+    'label': 'Valorisation',
     'href': '/stocks',
     icon: faMoneyBillTransfer
   },
   {
-    'label': 'Prévision de stock',
+    'label': 'Prévision',
     'href': '/stocks/previsions',
     icon: faBrain,
     isDibbled: true
@@ -121,20 +122,39 @@ export const SimpleUserNavBar: NavBarItems[] = [
     label: 'Livraison',
     href: '/livraisons',
     icon: faTruck
+  },
+  {
+    key: 'commandes',
+    label: 'Commandes',
+    href: '/commandes',
+    icon: faNewspaper
   }
   ,
-  {
+  /* {
     key: 'mouvement',
     label: 'Mouvement',
     href: '/mouvements',
     icon: undefined,
     dropdownItems: [
+
       {
-        label: 'Entrée',
-        href: 'Entrée',
-        icon: undefined
+        'label': 'Entrée',
+        'href': '/mouvements/entree',
+        icon: faArrowRight
+      },
+      {
+        'label': 'Sortie',
+        'href': '/mouvements/commandes',
+        icon: faArrowLeft
       }
     ]
+  }, */
+  {
+    key: 'Stock',
+    label: 'Stock',
+    href: '/stock',
+    icon: faBalanceScale,
+    dropdownItems: siteConfig.stockItems
   }
 ]
 
@@ -148,16 +168,18 @@ export const AdminNavbarItems: NavBarItems[] = [
 
   {
     key: 'users',
-    label: 'Gérer les Utilisateurs',
+    label: 'Utilisateurs',
     href: '/utilisateurs',
     icon: faUsers
   },
 
+
+
   {
     key: 'mouvement',
     label: 'Mouvement',
-    href: '/mouvements',
-    icon: undefined,
+    href: 'empty-0',
+    icon: faArrowDownUpAcrossLine,
     dropdownItems: siteConfig.mouvementsItems
   }
 
@@ -165,7 +187,7 @@ export const AdminNavbarItems: NavBarItems[] = [
   {
     key: 'réferentiels',
     label: 'Réferentiels',
-    href: '',
+    href: 'empty-1',
     icon: faDatabase,
     dropdownItems: siteConfig.referentielsItems
   }
@@ -174,7 +196,7 @@ export const AdminNavbarItems: NavBarItems[] = [
   {
     key: 'stock',
     label: 'Stock',
-    href: '',
+    href: 'empty-2',
     icon: faScaleBalanced,
     dropdownItems: siteConfig.stockItems
   },

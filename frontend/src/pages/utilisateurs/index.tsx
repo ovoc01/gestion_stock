@@ -220,7 +220,7 @@ export default function UtilisateurPage() {
                     }
                     label="Nom"
                     radius="sm"
-                    size="lg"
+                    size="sm"
                     type="text"
                     validationBehavior="aria"
                     value={usrNom}
@@ -238,7 +238,7 @@ export default function UtilisateurPage() {
                     }
                     label="Prénom"
                     radius="sm"
-                    size="lg"
+                    size="sm"
                     type="text"
                     validationBehavior="aria"
                     value={usrPrenom}
@@ -263,7 +263,7 @@ export default function UtilisateurPage() {
                     }
                     label="Nom d'utilisateur"
                     radius="sm"
-                    size="lg"
+                    size="sm"
                     type="text"
                     validationBehavior="aria"
                     value={usrLogin}
@@ -296,7 +296,7 @@ export default function UtilisateurPage() {
                     }
                     label="Mot de passe"
                     radius="sm"
-                    size="lg"
+                    size="sm"
                     type={isVisible ? "text" : "password"}
                     validationBehavior="aria"
                     value={usrPassword}
@@ -316,7 +316,7 @@ export default function UtilisateurPage() {
                       requestError?.roleIdError !== undefined
                     }
                     label="Role de l'utilisateur"
-                    size="lg"
+                    size="sm"
                     variant="bordered"
                     onChange={(e) => {
                       setRole(parseInt(e.target.value));
@@ -338,7 +338,7 @@ export default function UtilisateurPage() {
                   label="Magasins"
                   selectedKeys={selectedMagasins}
                   selectionMode="multiple"
-                  size="lg"
+                  size="sm"
                   variant="bordered"
                   onSelectionChange={setSelectedMagasins}
                 >
@@ -353,18 +353,18 @@ export default function UtilisateurPage() {
                     isRequired
                     label="Du"
                     radius="sm"
-                    size="lg"
+                    size="sm"
                     validationBehavior="aria"
                     variant="bordered"
-                    onChange={() => {}}
+                    onChange={() => { }}
                   />
                   <DatePicker
                     label="À"
                     radius="sm"
-                    size="lg"
+                    size="sm"
                     validationBehavior="aria"
                     variant="bordered"
-                    onChange={() => {}}
+                    onChange={() => { }}
                   />
                 </div>
                 <Divider className="my-4" />
@@ -373,7 +373,7 @@ export default function UtilisateurPage() {
                   label="Services"
                   selectedKeys={selectedServices}
                   selectionMode="multiple"
-                  size="lg"
+                  size="sm"
                   variant="bordered"
                   onSelectionChange={setSelectedServices}
                 >

@@ -14,14 +14,16 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import Logo from "@/components/ui/logo";
-import { AdminNavbarItems, SimpleUserNavBar } from "@/config/site";
+import { NavBarItems } from "@/config/site";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
 import { NavbarItemsRenderer } from "./navbar-items-renderer";
 
+interface NavbarProps {
+  navbarItems: NavBarItems[]
+}
 
-
-export const Navbar = () => {
+export const Navbar: React.FC<NavbarProps> = ({ navbarItems }) => {
   const provider = useAuth();
   const user = provider.userClaims;
   const navigate = useNavigate();
@@ -50,12 +52,13 @@ export const Navbar = () => {
           "items-center",
           "data-[active=true]:after:content-['']",
           "data-[active=true]:after:absolute",
-          "data-[active=true]:after:bottom-2",
+          "data-[active=true]:after:bottom-1",
           "data-[active=true]:after:left-0",
           "data-[active=true]:after:right-0",
           "data-[active=true]:after:h-[2px]",
           "data-[active=true]:after:rounded-[2px]",
           "data-[active=true]:after:bg-primary",
+
         ],
       }}
     >
@@ -65,7 +68,7 @@ export const Navbar = () => {
             <Logo height={40} logo="n-title" width={100} />
           </div>
         </NavbarBrand>
-        <NavbarItemsRenderer navbarItems={AdminNavbarItems} />
+        <NavbarItemsRenderer navbarItems={navbarItems} />
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">

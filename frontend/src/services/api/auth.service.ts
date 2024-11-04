@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import { BASE_URL, requestHeaders } from "../../shared/shared";
 
 import { RegistrationPayload, UserClaims } from "@/types/types";
+import { USER_LANDING_URL } from "@/config/constant";
 
 export const login = async (username: string, password: string) => {
   const response = await axios.post(BASE_URL + "auth/login", {
@@ -25,7 +26,7 @@ export const buildUserClaims = (token: string) => {
   return userClaims;
 };
 
-export const checkUserSessionValidity = async (token: string) => {
+export const checkUserSessionValidity = (token: string) => {
   try {
     const decodedToken = jwtDecode(token!);
     const currentTime = Date.now() / 10000;
@@ -34,7 +35,7 @@ export const checkUserSessionValidity = async (token: string) => {
   } catch (error) {
     console.log(error);
 
-    return true;
+    return false;
   }
 };
 
@@ -51,3 +52,9 @@ export const registerUser = async (registration: RegistrationPayload) => {
 
   return response.data;
 };
+
+
+export const getUserLandingUrl = (token: string) => {
+  const userClaims: UserClaims = buildUserClaims(token);
+  return USER_LANDING_URL.get(userClaims.role!);
+}

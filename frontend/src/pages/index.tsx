@@ -2,17 +2,24 @@ import { Button } from "@nextui-org/button";
 import { Checkbox } from "@nextui-org/checkbox";
 import { Input } from "@nextui-org/input";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { To, useNavigate } from "react-router-dom";
 
-import { login } from "@/services/api/auth.service";
+import { getUserLandingUrl, login } from "@/services/api/auth.service";
 import Logo from "@/components/ui/logo";
 
-export default function IndexPage() {
+interface LoginPageProps {
+  home: string,
+  defaultUser: string,
+  defaultPwd: string
+}
+
+export default function IndexPage({ home, defaultPwd, defaultUser }: LoginPageProps) {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
-  const [username, setUsername] = useState("RAZAFIM5");
+  const [username, setUsername] = useState(defaultUser);
   const [password, setPassword] = useState("test1234!!");
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loginError, setLoginError] = useState("");
 
   const authentificate = async () => {
     if (username.trim() === "") {
@@ -25,13 +32,16 @@ export default function IndexPage() {
       .then((response) => {
         const token = response.token;
 
+        const landingUrl = getUserLandingUrl(token);
         localStorage.setItem("token", token);
-
-        navigate("/dashboards");
+        navigate(landingUrl as To);
       })
       .catch((error) => {
         console.log(error);
-        setPasswordError("Nom d'utilisateur ou mot de passe incorrect");
+        setLoginError(error.response.data.error);
+        setTimeout(() => {
+          setLoginError("")
+        }, 7000)
       });
   };
   const navigate = useNavigate();
@@ -72,8 +82,15 @@ export default function IndexPage() {
               Afficher mot de passe
             </Checkbox>
           </div>
+          {
+            loginError === "" ? (
+              <></>
+            ) : <h1 className=" text-red-600">
+              * {loginError}
+            </h1>
+          }
         </div>
-        <div className="w-full p-5">
+        <div className="w-full p-5 mb-3">
           <Button
             className=" w-full h-12   bg-dark text-light"
             size="md"

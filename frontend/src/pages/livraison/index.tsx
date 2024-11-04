@@ -1,8 +1,11 @@
 import { Input, Textarea } from "@nextui-org/input";
 import { Autocomplete, AutocompleteItem, Button, Checkbox, DatePicker, Divider } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { now, getLocalTimeZone, DateValue } from "@internationalized/date";
-import { createLivraison } from "@/services/api/livraison.service";
+import { createLivraison, getAllFournisseurs } from "@/services/api/livraison.service";
+import { FetchType } from "@/shared/shared";
+import { EmplacementDataProps, Fournisseur } from "@/types/types";
+import { getAllEmplacements } from "@/services/api/batiment.service";
 export default function Livraison() {
 
 
@@ -18,11 +21,36 @@ export default function Livraison() {
    const [observation, setObservation] = useState('')
    const [requestError, setRequestError] = useState<any>(null);
    const [isDetailsBoxChecked, setIsDetailsBoxChecked] = useState(false)
+   const [selectedEmplacement, setSelectedEmplacement] = useState<number | null>(
+      null,
+   );
+   const [emplacements, setEmplacements] = useState<
+      EmplacementDataProps[] | null
+   >([]);
+   const [fournisseurs, setFournisseurs] = useState<
+      Fournisseur[] | null
+   >([]);
 
    // url parameter
+   const { page, size } = { page: 1, size: 5 };
 
 
    //useEffect
+
+   useEffect(() => {
+      getAllEmplacements({ page, size, fetch: FetchType.ALL })
+         .then((response) => {
+            setEmplacements(response.emplacements);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+
+      getAllFournisseurs()
+         .then((response) => {
+            setFournisseurs(response.fournisseurs)
+         })
+   }, [])
 
    const fakeFournisseurs = [
       { id: 1, name: 'Sidef' },
@@ -63,12 +91,14 @@ export default function Livraison() {
          dateEcheance: dateEcheance!.toDate(getLocalTimeZone()),
          bonCommande: bonCommande,
          dateCommande: dateCommande!.toDate(getLocalTimeZone()),
-         observation: observation
+         observation: observation,
+         emplacement: selectedEmplacement!
+
       }).catch((error) => {
          setRequestError(error.response.data)
          setTimeout(() => {
             setRequestError(null)
-         }, 10000)
+         }, 20000)
       })
    }
 
@@ -79,9 +109,12 @@ export default function Livraison() {
    }
 
 
-   const NewDetails = () => {
-      return
+   const onEmplacementChange = (item: any) => {
+      if (item) {
+         setSelectedEmplacement(parseInt(item.toString()))
+      }
    }
+
 
 
    return (
@@ -94,9 +127,9 @@ export default function Livraison() {
                <h1 className="text-small text-default-400 ml-1">
                   Information de livraison
                </h1>
-               <div className="flex gap-4 w-3/6">
+               <div className="flex gap-4 w-full">
                   <Autocomplete
-                     defaultItems={fakeFournisseurs}
+                     defaultItems={fournisseurs!}
                      label="Fournisseur "
                      placeholder="Rechercher "
                      variant="bordered"
@@ -111,7 +144,25 @@ export default function Livraison() {
                      defaultSelectedKey={1}
 
                   >
-                     {(item) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
+                     {(item) => <AutocompleteItem key={item.fournisseurId}>{item.fournisseurLi}</AutocompleteItem>}
+                  </Autocomplete>
+                  <Autocomplete
+                     defaultItems={emplacements!}
+                     label="Emplacement "
+                     placeholder="Rechercher "
+                     variant="bordered"
+                     size="sm"
+                     isInvalid={requestError?.emplacementError !== null && requestError?.fouremplacementErrornisseurError !== undefined}
+                     errorMessage={requestError?.emplacementError}
+                     listboxProps={{
+                        emptyContent: 'Aucun emplacement trouvé',
+                     }}
+                     isClearable
+                     onSelectionChange={(item) => onEmplacementChange(item)}
+                     defaultSelectedKey={1}
+
+                  >
+                     {(item) => <AutocompleteItem key={item.emplId}>{item.emplLi}</AutocompleteItem>}
                   </Autocomplete>
                </div>
 
@@ -153,8 +204,6 @@ export default function Livraison() {
 
                   <DatePicker
                      hideTimeZone
-
-
                      //defaultValue={dateCreation}
                      label="Date de livraison"
                      variant="bordered"

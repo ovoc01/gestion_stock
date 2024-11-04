@@ -374,7 +374,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                 <Button
                   color="danger"
                   radius="sm"
-                  size="lg"
+                  size="sm"
                   variant="light"
                   onPress={() => {
                     onClose();
@@ -385,7 +385,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                 <Button
                   className="bg-foreground text-background"
                   radius="sm"
-                  size="lg"
+                  size="sm"
                   onPress={async () => {
                     await onModalPressed(onClose);
                   }}
@@ -406,7 +406,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
       />
 
       <div className="flex flex-col gap-6">
-        <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+        {/* <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
           <div className="inline-block max-w-lg text-center justify-center">
             <h1
               className={title()}
@@ -417,7 +417,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
               {pageIcon} {pageTitle}
             </h1>
           </div>
-        </section>
+        </section> */}
         <div className="z-0 hover:z-50">{extraComponent}</div>
         <Table
           aria-label="Tableau"

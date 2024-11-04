@@ -7,7 +7,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/modal";
-import { Divider, Select, SelectItem } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Divider } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -25,6 +25,7 @@ import {
 import { getAllArticles } from "@/services/api/article.service";
 import { downloadFile } from "@/utils/download";
 import { DownloadType } from "@/config/site.enum";
+import { FetchType } from "@/shared/shared";
 
 export default function DetailsCommande() {
   const { isOpen, onOpenChange } = useDisclosure();
@@ -54,7 +55,7 @@ export default function DetailsCommande() {
         console.log(err);
       });
 
-    getAllArticles({ page, size })
+    getAllArticles({ page, size, fetch: FetchType.ALL })
       .then((response) => {
         setArticles(response.articles);
       })
@@ -79,6 +80,12 @@ export default function DetailsCommande() {
   const pdfExport = async () => {
     const response = await genererCession(idCommande!)
     await downloadFile(response, DownloadType.PDF)
+  }
+
+  const onArticleChange = (item: any) => {
+    if (item) {
+      setSelectedArticle(parseInt(item.toString()))
+    }
   }
 
   return (
@@ -120,28 +127,27 @@ export default function DetailsCommande() {
                   Details du mouvements
                 </h1>
                 <div className="flex w-full gap-4">
-                  <Select
-                    errorMessage={requestError?.articleError}
+                  <Autocomplete
+                    defaultItems={articles!}
+                    label="Article "
+                    placeholder="Rechercher "
+                    variant="bordered"
+                    size="md"
                     isInvalid={
                       requestError?.articleError !== null &&
                       requestError?.articleError !== undefined
                     }
-                    label="Articles"
-                    selectedKeys={
-                      selectedArticle ? [selectedArticle.toString()] : []
-                    }
-                    size="md"
-                    variant="bordered"
-                    onChange={(e) => {
-                      setSelectedArticle(parseInt(e.target.value));
+                    errorMessage={requestError?.articleError}
+                    listboxProps={{
+                      emptyContent: 'Aucun Article trouvé',
                     }}
+                    isClearable
+                    onSelectionChange={(item) => onArticleChange(item)}
+                    defaultSelectedKey={1}
+
                   >
-                    {articles!.map((article) => (
-                      <SelectItem key={article.artId} value={article.artId}>
-                        {article.artLi}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                    {(item) => <AutocompleteItem key={item.artId}>{item.artLi}</AutocompleteItem>}
+                  </Autocomplete>
                 </div>
                 <div className="flex  gap-4">
                   <Input

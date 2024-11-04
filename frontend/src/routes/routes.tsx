@@ -12,22 +12,31 @@ import SousFamillePage from "@/pages/referentiels/article/sous-famille";
 import UnitePage from "@/pages/referentiels/article/unite";
 import UniteOperationnelPage from "@/pages/referentiels/unop/index";
 import UtilisateurPage from "@/pages/utilisateurs";
-import UserDetails from "@/pages/utilisateurs/user-details";
+import { UserDetails } from "@/pages/utilisateurs/user-details";
 import MouvementSortie from "@/pages/mouvements/sortie";
 import MouvementEntree from "@/pages/mouvements/entree";
 import ValorisationStock from "@/pages/stock";
 import DetailsMagasin from "@/pages/referentiels/magasin/details";
 import DashboardPage from "@/pages/dashboard";
 import Livraison from "@/pages/livraison";
+import AdLayout from "@/layouts/_admin";
+import CommonUserAuthentication from "@/pages/auth/common";
+import AdminAuthentication from "@/pages/auth/admin";
 
 export const routes = createBrowserRouter([
   {
     path: "/",
-    element: <IndexPage />
+    element: <CommonUserAuthentication />
+
+  },
+  {
+    path: "/secure/sesion",
+    element: <AdminAuthentication />
+
   },
   {
     path: "/referentiels/",
-    element: <Layout />,
+    element: <AdLayout />,
     children: [
       {
         path: "unite-operationnels",
@@ -65,7 +74,7 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/mouvements/",
-    element: <Layout />,
+    element: <AdLayout />,
     children: [
       {
         path: "periodes",
@@ -87,21 +96,21 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/utilisateurs/",
-    element: <Layout />,
+    element: <AdLayout />,
     children: [
       {
         path: "",
         element: <UtilisateurPage />,
       },
       {
-        path: ":id",
+        path: ":id/*",
         element: <UserDetails />,
       },
     ],
   },
   {
     path: "/stocks/",
-    element: <Layout />,
+    element: <AdLayout />,
     children: [
       {
         path: "",
@@ -111,7 +120,7 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/details",
-    element: <Layout />,
+    element: <AdLayout />,
     children: [
       {
         path: "",
@@ -121,7 +130,7 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/dashboards",
-    element: <Layout />,
+    element: <AdLayout />,
     children: [
       {
         path: "",
@@ -129,13 +138,25 @@ export const routes = createBrowserRouter([
       },
     ],
   },
+
   {
     path: "/livraisons",
-    element: <Layout />,
+    element: <AdLayout />,
     children: [
       {
         path: "",
         element: <Livraison />
       }]
   }
+  ,
+  {
+    path: "/magasins",
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        element: <MagasinPage />,
+      },
+    ],
+  },
 ]);

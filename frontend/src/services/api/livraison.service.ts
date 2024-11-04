@@ -16,6 +16,7 @@ export const createLivraison = async (livraison: Livraison) => {
          bonCommande: livraison.bonCommande,
          dateCommande: livraison.dateCommande,
          observation: livraison.observation,
+         emplacement: livraison.emplacement
       },
       {
          headers: requestHeaders,
@@ -23,4 +24,16 @@ export const createLivraison = async (livraison: Livraison) => {
    );
 
    return response.data;
+}
+
+export const getAllFournisseurs = async () => {
+   const response = await axios.get(
+      BASE_URL + "fournisseurs",
+      {
+         headers: requestHeaders,
+      }
+
+   );
+   return response.data
+
 }

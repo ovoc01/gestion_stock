@@ -193,4 +193,11 @@ export type Livraison = {
   bonCommande: string;
   dateCommande: Date;
   observation?: string;
+  emplacement: number
 };
+
+
+export type Fournisseur = {
+  fournisseurId: number;
+  fournisseurLi: string;
+}
