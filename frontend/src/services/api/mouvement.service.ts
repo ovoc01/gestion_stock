@@ -144,3 +144,10 @@ export const createMouvementEntree = async (
 
   return response.data;
 };
+
+
+export const genererCession = async (id: number) => {
+  return await axios.get(`${BASE_URL}mouvements/commandes/cessions/${id}`, {
+    headers: requestHeaders,
+  });
+}

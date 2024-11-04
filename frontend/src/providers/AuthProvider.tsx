@@ -10,25 +10,34 @@ interface AuthContextType {
   isAuthenticated: boolean;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
   userClaims?: UserClaims;
+  isVerificationDone: boolean
 }
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userClaims, setUserClaims] = useState<UserClaims>();
+  const [isVerificationDone, setIsVerificationDone] = useState(false);
 
   useEffect(() => {
-    const checkAuthentication = async () => {
+    const checkAuthentication = () => {
       const token = localStorage.getItem("token");
+      try {
+        if (token) {
+          console.log(token)
+          const isTokenExpired = checkUserSessionValidity(token!)
+          console.log("custom hooks", !isTokenExpired)
+          setIsAuthenticated(!isTokenExpired);
+          setUserClaims(buildUserClaims(token));
+        } else {
+          throw new Error("No token found");
+        }
+      } catch (e) {
 
-      if (token) {
-        const isTokenExpired = await checkUserSessionValidity(token!);
-
-        setIsAuthenticated(!isTokenExpired);
-        setUserClaims(buildUserClaims(token));
-      } else {
-        throw new Error("No token found");
+      } finally {
+        setIsVerificationDone(true)
       }
+
     };
 
     checkAuthentication();
@@ -36,7 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, setIsAuthenticated, userClaims }}
+      value={{ isAuthenticated, setIsAuthenticated, userClaims, isVerificationDone }}
     >
       {children}
     </AuthContext.Provider>

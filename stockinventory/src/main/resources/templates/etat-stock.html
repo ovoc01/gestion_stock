@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <link rel="stylesheet" href="css/landscape.css" />
+   <link rel="stylesheet" href="css/etat-stock.css" />
+   <title>Etat Stock</title>
+</head>
+
+<body>
+   <div class='header' th:replace="~{header :: header}"></div>
+   <span class="when">
+      <strong>
+         Mois d'Octobre 2024
+      </strong>
+   </span>
+   <main class="container">
+      <div class="info">
+         <p>
+            <strong>Intitulé BU:</strong>
+            <span>SERVICE INFORMATIQUE</span>
+         </p>
+         <p>
+            <strong>Numéro BU:</strong>
+            <span>2200001AD001</span>
+         </p>
+         <p>
+            <strong>Numéro SL CHANTIER:</strong>
+            <span>2200001AD001.300800</span>
+         </p>
+      </div>
+      <div class="table-container">
+         <table>
+            <thead>
+               <tr>
+                  <th style="width: 200px; text-align:center; vertical-align: center;" rowspan="2">DÉSIGNATION</th>
+                  <th colspan="2" style="text-align:center; width: 150px;">STOCK DÉBUT</th>
+                  <th colspan="2" style="text-align:center; width: 150px;">ENTREES DU MOIS</th>
+                  <th colspan="2" style="text-align:center; width: 150px;">SORTIES DU MOIS</th>
+                  <th style="text-align:center; width: 70px;" rowspan="2">ECART CMUP</th>
+                  <th colspan="2" style="text-align:center;width: 200px;">STOCK FIN THEORIQUE</th>
+                  <th colspan="2" style="text-align:center; width: 200px;">ECART INVENTAIRE</th>
+                  <th colspan="2" style="text-align:center;width: 250px;">STOCK APRES INVENTAIRE</th>
+               </tr>
+               <tr>
+                  <th style="text-align:center;">Qté</th>
+                  <th style="text-align:center;">Montant</th>
+                  <th style="text-align:center;">Qté</th>
+                  <th style="text-align:center;">Montant</th>
+                  <th style="text-align:center;">Qté</th>
+                  <th style="text-align:center;">Montant</th>
+
+                  <th style="text-align:center;">Qté</th>
+                  <th style="text-align:center;">Montant</th>
+                  <th style="text-align:center;">Qté</th>
+                  <th style="text-align:center;">Montant</th>
+                  <th style="text-align:center;">Qté</th>
+                  <th style="text-align:center;">Montant</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  <td style="font-weight: bold;">Divers Informatique</td>
+                  <td style="text-align:center;"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+               <tr class="contrast">
+                  <td>Sous-total Divers informatique</td>
+                  <td style="text-align:center;"></td>
+                  <td style="text-align:center;"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+
+               <tr class="total contrast">
+                  <td>TOTAL GÉNÉRAL</td>
+                  <td style="text-align:center;"></td>
+                  <td style="text-align:center;"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+
+   </main>
+
+</body>
+
+</html>

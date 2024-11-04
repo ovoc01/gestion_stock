@@ -1,5 +1,5 @@
 import { Input } from "@nextui-org/input";
-import { Divider, Select, SelectItem } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Divider } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -133,6 +133,18 @@ export default function MouvementEntree() {
     setJustif(null);
   };
 
+  const onArticleChange = (item: any) => {
+    if (item) {
+      setSelectedArticle(parseInt(item.toString()))
+    }
+  }
+
+  const onEmplacementChange = (item: any) => {
+    if (item) {
+      setSelectedEmplacement(parseInt(item.toString()))
+    }
+  }
+
   return (
     <>
       <CrudComponent
@@ -141,28 +153,26 @@ export default function MouvementEntree() {
             <h1 className="text-3xl font-thin" />
             <h1 className="text-small text-default-400 ml-1">Emplacement</h1>
             <div className="flex gap-4">
-              <Select
-                errorMessage={requestError?.emplacementError}
-                isInvalid={
-                  requestError?.emplacementError !== null &&
-                  requestError?.emplacementError !== undefined
-                }
-                label="Emplacements"
-                size="md"
+
+
+              <Autocomplete
+                defaultItems={emplacements!}
+                label="Emplacement "
+                placeholder="Rechercher "
                 variant="bordered"
-                onChange={(e) => {
-                  setSelectedEmplacement(parseInt(e.target.value));
+                size="sm"
+                isInvalid={requestError?.emplacementError !== null && requestError?.fouremplacementErrornisseurError !== undefined}
+                errorMessage={requestError?.emplacementError}
+                listboxProps={{
+                  emptyContent: 'Aucun emplacement trouvé',
                 }}
+                isClearable
+                onSelectionChange={(item) => onEmplacementChange(item)}
+                defaultSelectedKey={1}
+
               >
-                {emplacements!.map((emplacement) => (
-                  <SelectItem
-                    key={emplacement.emplId}
-                    value={emplacement.emplId}
-                  >
-                    {emplacement.emplLi}
-                  </SelectItem>
-                ))}
-              </Select>
+                {(item) => <AutocompleteItem key={item.emplId}>{item.emplLi}</AutocompleteItem>}
+              </Autocomplete>
             </div>
 
             <Divider className="my-4" />
@@ -170,25 +180,28 @@ export default function MouvementEntree() {
               Details du mouvements
             </h1>
             <div className="flex w-full gap-4">
-              <Select
-                errorMessage={requestError?.articleError}
+
+              <Autocomplete
+                defaultItems={articles!}
+                label="Article "
+                placeholder="Rechercher "
+                variant="bordered"
+                size="sm"
                 isInvalid={
                   requestError?.articleError !== null &&
                   requestError?.articleError !== undefined
                 }
-                label="Articles"
-                size="md"
-                variant="bordered"
-                onChange={(e) => {
-                  setSelectedArticle(parseInt(e.target.value));
+                errorMessage={requestError?.articleError}
+                listboxProps={{
+                  emptyContent: 'Aucun Article trouvé',
                 }}
+                isClearable
+                onSelectionChange={(item) => onArticleChange(item)}
+                defaultSelectedKey={1}
+
               >
-                {articles!.map((article) => (
-                  <SelectItem key={article.artId} value={article.artId}>
-                    {article.artLi}
-                  </SelectItem>
-                ))}
-              </Select>
+                {(item) => <AutocompleteItem key={item.artId}>{item.artLi}</AutocompleteItem>}
+              </Autocomplete>
             </div>
             <div className="flex  gap-4">
               <Input
@@ -227,15 +240,7 @@ export default function MouvementEntree() {
               />
             </div>
             <div className="flex w-full gap-4">
-              <Input
-                label="References"
-                radius="sm"
-                size="md"
-                type="text"
-                validationBehavior="aria"
-                variant="bordered"
-                onChange={() => {}}
-              />
+
               <Input
                 errorMessage={requestError?.justifError}
                 isInvalid={
@@ -263,7 +268,7 @@ export default function MouvementEntree() {
         resetInput={resetInput}
         rowsData={data as Record<string, any>[]}
         onAdd={handleEntreeCreation}
-        onSearch={() => {}}
+        onSearch={() => { }}
       />
     </>
   );

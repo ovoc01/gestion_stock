@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-run spring boot with profile</actionName>
+            <displayName>run spring boot with profile</displayName>
+            <goals>
+                <goal>org.springframework.boot:spring-boot-maven-plugin:3.2.9:run</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>dev</activatedProfile>
+            </activatedProfiles>
+        </action>
+        <action>
+            <actionName>CUSTOM-mirindra</actionName>
+            <displayName>mirindra</displayName>
+            <goals>
+                <goal>org.springframework.boot:spring-boot-maven-plugin:3.2.9:run</goal>
+                <goal>-Dspring-boot.run.profiles=dev</goal>
+            </goals>
+        </action>
+    </actions>

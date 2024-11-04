@@ -1,6 +1,7 @@
 package com.colasmadagascar.stockinventory.utils;
 
 import io.jsonwebtoken.io.IOException;
+import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,8 +12,14 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Base64;
 import java.util.Locale;
+import org.springframework.stereotype.Component;
 
+import com.colasmadagascar.stockinventory.constant.Constant;
+
+@Component
+@RequiredArgsConstructor
 public class Utils {
+
     public static String formatTimestamp(String timestampStr) {
         try {
             // Define the input timestamp format
@@ -74,10 +81,33 @@ public class Utils {
         return Base64.getEncoder().encodeToString(bytes);
     }
 
-    public static String generateSKU(String fam,String sfam,String art){
-        String formattedFam = fam.substring(0,3).toUpperCase();
-        String formattedSfam = sfam.substring(0,3);
-        String formattedArt = art.toUpperCase().replaceAll("[^A-Z0-9]","").substring(0,4);
-        return formattedFam+"-"+formattedSfam+"-"+formattedArt;
+    public static String generateSKU(String fam, String sfam, String art) {
+        String formattedFam = fam.substring(0, 3).toUpperCase();
+        String formattedSfam = sfam.substring(0, 3);
+        String formattedArt = art.toUpperCase().replaceAll("[^A-Z0-9]", "").substring(0, 4);
+        return formattedFam + "-" + formattedSfam + "-" + formattedArt;
     }
+
+    public static String generateCessionLabel(String service) {
+        return new StringBuilder()
+                .append("cession")
+                .append(" ")
+                .append(service)
+                .append(" ")
+                .append(Constant.MONTH_IN_FRENCH.get(LocalDateTime.now().getMonthValue()))
+                .append(" ")
+                .append(LocalDateTime.now().getYear())
+                .toString()
+                .toUpperCase();
+    }
+
+    public static String formatDate(LocalDate localDate) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.FRENCH);
+        return localDate.format(dateTimeFormatter);
+    }
+
+    public static String formatCurrency(Number number) {
+        return String.format("%,.2f Ar", number).replace(",", " ").replace(".", ",");
+    }
+
 }

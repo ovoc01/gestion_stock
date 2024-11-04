@@ -15,7 +15,7 @@ public class CrossOriginConfiguration implements WebMvcConfigurer {
                 .addMapping("/**")
                 .allowCredentials(true)
                 .allowedMethods("*")
-                .allowedOriginPatterns("http://localhost:5173", "https://yourdomain.com") // Specify your allowed origins
+                .allowedOriginPatterns("*") // Specify your allowed origins
                 .allowedHeaders("*")
                 .exposedHeaders("Content-Disposition");
     }

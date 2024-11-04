@@ -2,11 +2,6 @@ package com.colasmadagascar.stockinventory.dataexport.tools;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,6 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelExportUtility<T> {
     private final Map<Class<?>, BiConsumer<Cell, Object>> cellValueSetters;
@@ -57,7 +58,7 @@ public class ExcelExportUtility<T> {
         }
     }
 
-    public ByteArrayInputStream exportToExcel(List<T> entities, String[] headers) throws Exception {
+    public ByteArrayInputStream exportToExcel(List<?> entities, String[] headers) throws Exception {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Sheet1");
         // Create header row
@@ -75,15 +76,15 @@ public class ExcelExportUtility<T> {
 
         // Populate rows with entity data
         int rowNum = 1;
-        for (T entity : entities) {
+        for (Object entity : entities) {
             Row row = sheet.createRow(rowNum++);
-            for (Method m :methods){
+            for (Method m : methods) {
                 ExcelRow excelRow = m.getAnnotation(ExcelRow.class);
-                if(excelRow!=null){
+                if (excelRow != null) {
                     System.out.println(m.getName());
                     m.setAccessible(true);
                     Object value = m.invoke(entity);
-                    Cell cell = row.createCell(excelRow.value()-1);
+                    Cell cell = row.createCell(excelRow.value() - 1);
                     setCellValue(cell, value);
                 }
             }

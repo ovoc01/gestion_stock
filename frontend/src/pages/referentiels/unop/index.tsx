@@ -71,7 +71,7 @@ export default function UniteOperationnelPage() {
 
         setTotalPage(Math.ceil(response.totalPages / size));
       })
-      .finally(() => {});
+      .finally(() => { });
   }, [isNewRowAdded, page, size]);
 
   useEffect(() => {
@@ -216,6 +216,7 @@ export default function UniteOperationnelPage() {
   };
 
   return (
+
     <CrudComponent
       isDeleteAuthorized
       isUpdateAuthorized
@@ -238,6 +239,7 @@ export default function UniteOperationnelPage() {
                 value={label}
                 variant="bordered"
                 onChange={(e) => setLabel(e.target.value)}
+                size="sm"
               />
               <Input
                 isRequired
@@ -251,6 +253,7 @@ export default function UniteOperationnelPage() {
                 value={numAffaire!}
                 variant="bordered"
                 onChange={(e) => setNumAffaire(e.target.value)}
+                size="sm"
               />
             </div>
             <Divider className="my-4" />
@@ -265,6 +268,7 @@ export default function UniteOperationnelPage() {
                   resquestError?.unopNumBuError !== null &&
                   resquestError?.unopNumBuError !== undefined
                 }
+                size="sm"
                 label="Numero bu"
                 type="text"
                 value={numbu!}
@@ -284,6 +288,7 @@ export default function UniteOperationnelPage() {
                   resquestError?.unopUeError !== undefined
                 }
                 label="UE"
+                size="sm"
                 type="text"
                 value={ue!}
                 variant="bordered"
@@ -298,6 +303,7 @@ export default function UniteOperationnelPage() {
                 }
                 label="Libéllé UE"
                 type="text"
+                size="sm"
                 value={ueLi!}
                 variant="bordered"
                 onChange={(e) => setUELi(e.target.value)}
@@ -314,6 +320,7 @@ export default function UniteOperationnelPage() {
               }
               label="Mdm id"
               type="text"
+              size="sm"
               value={mdmId!}
               variant="bordered"
               onChange={(e) => setMdmId(e.target.value)}
@@ -327,6 +334,7 @@ export default function UniteOperationnelPage() {
                 isRequired
                 label="Longitude"
                 type="text"
+                size="sm"
                 value={marker ? marker!.position.lng.toString() : ""}
                 variant="bordered"
                 onChange={(e) => setNumbu(e.target.value)}
@@ -336,6 +344,7 @@ export default function UniteOperationnelPage() {
                 isRequired
                 label="Latitude"
                 type="text"
+                size="sm"
                 value={marker ? marker!.position.lat.toString() : ""}
                 variant="bordered"
                 onChange={(e) => setBuli(e.target.value)}
@@ -377,7 +386,7 @@ export default function UniteOperationnelPage() {
       onPageChange={onPageChange}
       onRowDelete={onRowDelete}
       onRowUpdate={onRowUpdate}
-      onSearch={() => {}}
+      onSearch={() => { }}
     />
   );
 }

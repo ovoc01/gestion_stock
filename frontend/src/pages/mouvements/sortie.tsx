@@ -134,6 +134,11 @@ function Index() {
   const [emplId, setEmplId] = useState<number | null>(null);
   const [unopId, setUnopId] = useState<number | null>(null);
 
+  /* const resetInput = () => {
+    setEmplId(null);
+    setUnopId(null);
+  }; */
+
   const createNewCommande = () => {
     createCommande(emplId!, unopId!)
       .then((response) => {
@@ -165,9 +170,13 @@ function Index() {
                       selectedKeys={emplId ? emplId.toString() : []}
                       size="sm"
                       variant="bordered"
-                      onChange={(e) => {
-                        console.log(e);
-                        setEmplId(parseInt(e.target.value));
+                      onSelectionChange={(value) => {
+                        console.log(value);
+                        const selectedValue = Array.from(value)[0];
+
+                        setEmplId(
+                          selectedValue ? parseInt(selectedValue as string) : null,
+                        );
                       }}
                     >
                       {emplacements!.map((u) => (
@@ -177,13 +186,18 @@ function Index() {
                       ))}
                     </Select>
                     <Select
-                      label="De"
+                      key="test"
+                      label="A"
                       selectedKeys={unopId ? unopId.toString() : []}
                       size="sm"
                       variant="bordered"
-                      onChange={(e) => {
-                        console.log(e);
-                        setUnopId(parseInt(e.target.value));
+                      onSelectionChange={(value) => {
+                        console.log(value);
+                        const selectedValue = Array.from(value)[0];
+
+                        setUnopId(
+                          selectedValue ? parseInt(selectedValue as string) : null,
+                        );
                       }}
                     >
                       {unOp!.map((u) => (
@@ -291,12 +305,9 @@ export default function Commande() {
     // Any additional logic can go here if needed
   }, [location]); // Depend on location to trigger on URL change
 
-  const RenderPage =
-    idMagasin === null || idMagasin === undefined ? (
-      <Index />
-    ) : (
-      <DetailsCommande />
-    );
-
-  return RenderPage;
+  return idMagasin === null || idMagasin === undefined ? (
+    <Index />
+  ) : (
+    <DetailsCommande />
+  );
 }

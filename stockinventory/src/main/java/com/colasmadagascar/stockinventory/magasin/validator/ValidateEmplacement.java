@@ -1,6 +1,5 @@
 package com.colasmadagascar.stockinventory.magasin.validator;
 
-import com.colasmadagascar.stockinventory.mouvement.validator.MouvementStockValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

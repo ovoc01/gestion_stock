@@ -1,0 +1,52 @@
+
+
+
+
+.container {
+   font-size: 13px;
+   position: absolute;
+   top: 7%;
+}
+
+.container {
+   margin-top: 20px;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.mt-5 {
+   margin-top: 10px;
+}
+
+th {
+   text-align: left; /* Alignement à gauche, facultatif */
+}
+tr {
+   height: 20px; /* Hauteur des lignes, facultatif */
+}
+
+table {
+   width: 100%;
+}
+
+.mvt {
+   border-collapse: collapse; /* Fusionne les bordures des cellules */
+   width: 100%; /* Optionnel : ajuste la largeur du tableau */
+   margin-top: 20px;
+}
+
+.mvt th,
+.mvt td {
+   border: 2px solid black; /* Bordure fine, couleur grise */
+   padding: 3px; /* Espace à l'intérieur des cellules */
+   text-align: left; /* Alignement à gauche */
+}
+
+.visa {
+   margin-top: 30px;
+}
+
+.text-r {
+   text-align: right;
+}

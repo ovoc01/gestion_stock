@@ -61,10 +61,10 @@ public class AuthenticationService {
                 )
         );
         var user = utilisateurRepository.findByUsrLogin(request.getUsername()).orElseThrow();
-        HashMap<String,Object> extraClaims = new HashMap<>();
-        extraClaims.put("username",user.getFullName());
-        extraClaims.put("role",user.getRole().getAuthority());
-        var jwtToken = jwtService.generateToken(extraClaims,user);
+        HashMap<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("username", user.getFullName());
+        extraClaims.put("role", user.getRole().getAuthority());
+        var jwtToken = jwtService.generateToken(extraClaims, user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .userFullname(user.getFullName())
@@ -72,8 +72,7 @@ public class AuthenticationService {
     }
 
     @Transactional
-    public void createUserData(){
-
+    public void createUserData() {
 
         RegisterRequest request1 = new RegisterRequest();
         request1.setUsername("DOEJOHN4");

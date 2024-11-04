@@ -26,8 +26,8 @@ export default function DashboardPage() {
 
   const Index = () => {
     return (
-      <div className="w-full flex  h-[100%]  gap-8 py-8">
-        <div className=" p-8 border-solid flex flex-col gap-6 h-full w-4/6">
+      <div className="w-full flex  h-[100%]  gap-3 py-8">
+        <div className=" p-8 border-solid flex flex-col gap-6 h-full w-8/12">
           <div className="w-full flex gap-5 ">
             <StatsCard
               icon={faUsers}
@@ -40,7 +40,7 @@ export default function DashboardPage() {
             content={
               <Button
                 className="rounded-md border-solid border-primary text-primary"
-                size="lg"
+                size="sm"
                 variant="light"
               >
                 Voirs les détails
@@ -54,20 +54,20 @@ export default function DashboardPage() {
           </Tooltip>
           <div className="w-full flex flex-col gap-5 mt-6">
             <div className="w-full flex items-center justify-between">
-              <h1 className="text-2xl text-gray-500">
+              <h1 className="text-xl text-gray-500">
                 Historiques de mouvements{" "}
               </h1>
-              <h1 className=" text-xl flex items-center text-gray-300 transition cursor-pointer hover:text-primary">
+              <h1 className=" text-lg flex items-center text-gray-300 transition cursor-pointer hover:text-primary">
                 Voir tout
-                <span className="text-md ml-3">
+                <span className="text-sm ml-3">
                   <FontAwesomeIcon icon={faChevronRight} />
                 </span>
               </h1>
             </div>
           </div>
         </div>
-        <div className=" p-8 rounded-lg  w-2/6  flex justify-center ">
-          <div className="border-solid border-1  border-gray-300 w-4/5 shadow-lg rounded-lg max-h-[400px]">
+        <div className=" p-8 rounded-lg  w-4/12  flex justify-center">
+          <div className="border-solid border-1  border-gray-300 w-5/5 shadow-lg rounded-lg max-h-[400px]">
             <PolarGraph />
           </div>
         </div>

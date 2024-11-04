@@ -1,0 +1,73 @@
+@page {
+   size: landscape;
+}
+
+.ue {
+   /* position: absolute */
+   top: 18%;
+   left: 4%;
+   margin-top: 45px;
+}
+
+.container {
+   position: absolute;
+   top: 10%;
+   margin-top: 80px;
+   width: 100%;
+}
+
+th,
+td {
+   border: 1px solid black; /* Bordure fine, couleur grise */
+   padding: 3px; /* Espace à l'intérieur des cellules */
+   text-align: left; /* Alignement à gauche */
+}
+
+.designation th {
+   height: 50px;
+}
+
+.table-container {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+}
+
+table {
+   width: 100%; /* Full width */
+   border-collapse: collapse; /* Merge borders */
+   margin: 20px 0; /* Space above and below the table */
+}
+
+table th,
+td {
+   font-size: 10px;
+}
+
+table td {
+   height: 30px;
+}
+
+.contrast {
+   background-color: #f2f2f2;
+}
+
+.info {
+   font-size: 12px;
+}
+
+.when {
+   position: absolute;
+   left: 40%;
+   margin-top: 40px;
+}
+
+.when strong {
+   font-weight: 300;
+   font-size: 14px;
+}
+
+.total {
+   font-weight: 700;
+   text-transform: uppercase;
+}

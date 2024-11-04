@@ -1,6 +1,7 @@
 package com.colasmadagascar.stockinventory.configuration;
 
 import com.colasmadagascar.stockinventory.configuration.jwt.JwtAuthenticationFilter;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -34,7 +36,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/**")
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET,"/api/v1/test")
+                        .requestMatchers(HttpMethod.GET,"/api/v1/export/**")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/test")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
@@ -50,8 +54,15 @@ public class SecurityConfiguration {
     // Define the CORS configuration source
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:5173"); // Allow the specific origin
+        configuration.setAllowedOrigins(
+                Arrays.asList(
+                        "http://localhost:5173",
+                        "http://192.168.1.100:3000",
+                        "http://192.168.1.101:3000",
+                        "http://192.168.1.101:5173"));
+
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true); // If needed
@@ -60,5 +71,3 @@ public class SecurityConfiguration {
         return source;
     }
 }
-
-

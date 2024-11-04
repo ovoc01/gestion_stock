@@ -26,7 +26,7 @@ import { faPlus, faShare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-import { title } from "../primitives";
+
 
 import { levenshteinDistance } from "@/utils/index";
 import { SearchIcon } from "@/components/ui/icons";
@@ -66,17 +66,17 @@ interface CrudComponentProps {
   exportPDF?: () => void;
   exportExcel?: () => void;
   size?:
-    | "2xl"
-    | "xs"
-    | "sm"
-    | "md"
-    | "lg"
-    | "xl"
-    | "3xl"
-    | "4xl"
-    | "5xl"
-    | "full"
-    | undefined;
+  | "2xl"
+  | "xs"
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "3xl"
+  | "4xl"
+  | "5xl"
+  | "full"
+  | undefined;
   extraComponent?: React.ReactNode;
   modalClassName?: string;
   onRowClick?: (id: number) => void;
@@ -100,7 +100,7 @@ const ExportButton = ({ exportExcel, exportPDF }: ExportButtonProps) => {
           className=" text-background px-4 py-2"
           color="secondary"
           endContent={<FontAwesomeIcon icon={faShare} />}
-          size="lg"
+          size="md"
         >
           Exporter
         </Button>
@@ -183,7 +183,6 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
   addModalContent,
   errorMessage,
   pageTitle,
-  pageIcon,
   isUpdateAuthorized,
   isCustomActionAuthorized,
   isDeleteAuthorized,
@@ -374,7 +373,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                 <Button
                   color="danger"
                   radius="sm"
-                  size="lg"
+                  size="sm"
                   variant="light"
                   onPress={() => {
                     onClose();
@@ -385,7 +384,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                 <Button
                   className="bg-foreground text-background"
                   radius="sm"
-                  size="lg"
+                  size="sm"
                   onPress={async () => {
                     await onModalPressed(onClose);
                   }}
@@ -406,7 +405,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
       />
 
       <div className="flex flex-col gap-6">
-        <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+        {/* <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
           <div className="inline-block max-w-lg text-center justify-center">
             <h1
               className={title()}
@@ -417,7 +416,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
               {pageIcon} {pageTitle}
             </h1>
           </div>
-        </section>
+        </section> */}
         <div className="z-0 hover:z-50">{extraComponent}</div>
         <Table
           aria-label="Tableau"
@@ -428,7 +427,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                   isCompact
                   showControls
                   showShadow
-                  color="default"
+                  color="primary"
                   page={initialPage}
                   total={pages}
                   onChange={(page) => onPageChange!(page)}
@@ -447,7 +446,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                     inputWrapper: "border-1",
                   }}
                   placeholder="Rechercher..."
-                  size="lg"
+                  size="md"
                   startContent={<SearchIcon className="text-default-300" />}
                   value={searchTerm}
                   variant="bordered"
@@ -464,7 +463,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                     className="bg-foreground text-background px-4 py-2"
                     color="default"
                     endContent={<FontAwesomeIcon icon={faPlus} />}
-                    size="lg"
+                    size="md"
                     variant="flat"
                     onPress={onOpen}
                   >
@@ -479,15 +478,15 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
           <TableHeader
             columns={
               isDeleteAuthorized ||
-              isCustomActionAuthorized ||
-              isUpdateAuthorized
+                isCustomActionAuthorized ||
+                isUpdateAuthorized
                 ? columnWithAction
                 : columns
             }
           >
             {(column) => (
               <TableColumn key={column.key}>
-                <h1 className="text-lg">{column.label}</h1>
+                <h1 className="text-md">{column.label}</h1>
               </TableColumn>
             )}
           </TableHeader>
@@ -500,7 +499,7 @@ const CrudComponent: React.FC<CrudComponentProps> = ({
                 {(columnKey) => (
                   <TableCell
                     className={[
-                      "text-lg",
+                      "text-sm",
                       onRowClick === undefined ? "" : "cursor-pointer",
                     ].join(" ")}
                     onClick={() => {
