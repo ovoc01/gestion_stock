@@ -4,6 +4,7 @@ import { Button, ButtonGroup } from "@nextui-org/button";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { UserInfo } from "./info";
 import { UserInfoProps } from "@/types/types";
+import { UserAccessPage } from "./access";
 
 export function UserDetails() {
   //hooks initialization
@@ -34,7 +35,7 @@ export function UserDetails() {
       case 'information':
         return <UserInfo />
       case 'accès':
-        return <div>Accès</div>
+        return <UserAccessPage />
       default:
         return <UserInfo />
     }

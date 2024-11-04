@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import IndexPage from "@/pages";
 import PeriodePage from "@/pages/mouvements/periode";
 import ArticlePage from "@/pages/referentiels/article/index";
 import EmplacementPage from "@/pages/referentiels/magasin/emplacement";

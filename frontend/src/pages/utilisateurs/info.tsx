@@ -1,4 +1,4 @@
-import { faBuildingShield, faEye, faEyeSlash, faStore, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Input } from "@nextui-org/input";
 import {
@@ -16,7 +16,7 @@ import {
    useDisclosure,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getLocalTimeZone, fromDate, DateValue } from "@internationalized/date";
 
 import {
@@ -254,7 +254,7 @@ export function UserInfo() {
             </ModalContent>
          </Modal>
 
-         <div className="w-full flex gap-5 pt-5 ">
+         <div className="w-full flex gap-5 pt-5  overflow-auto hide-scrollbar">
 
             <div className="w-4/5 flex flex-col gap-4 pb-8 border-solid border-1  border-gray-300 rounded-lg shadow-md p-8">
                <h1 className="text-3xl font-thin">
