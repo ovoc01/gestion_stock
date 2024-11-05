@@ -28,12 +28,10 @@ import {
 } from "@/types/types";
 import { getAllRoles } from "@/services/api/admin.service";
 import {
-   addUserToService,
    getAllServiceExploitant,
    getAllUsrServiceExploitant,
 } from "@/services/api/service-exploitant.service";
 import {
-   addUtilisateurToMagasin,
    getAllMagasins,
    getAllUtilisateurMagasins,
 } from "@/services/api/batiment.service";
@@ -135,13 +133,13 @@ export function UserInfo() {
 
    const handleModalValidation = () => {
       if (acitiveModalContent === "service") {
-         addUserToService(userDetails.usrId, serviceId!).catch((error) => {
+         /* addUserToService(userDetails.usrId, serviceId!).catch((error) => {
             console.log("error", error);
-         });
+         }); */
       } else {
-         addUtilisateurToMagasin(userDetails.usrId, magasinId!).catch((error) => {
-            console.log("error", error);
-         });
+         /*  addUtilisateurToMagasin(userDetails.usrId, magasinId!).catch((error) => {
+             console.log("error", error);
+          }); */
       }
       setIsUserDataChanged(!isUserDataChanged);
    };

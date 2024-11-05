@@ -1,14 +1,17 @@
 .date {
    position: absolute;
-   top: 1.5%;
-   left: 80%;
-   width: 150px;
-   font-size: 14px;
+   top: 2%;
+   left: 75%;
+   width: 250px;
+   font-size: 11px;
+   margin-top: 17px;
 }
 
 .logo {
    width: 150px;
    height: 40px;
+   position: absolute;
+   margin-bottom: 40px;
 }
 
 body {
@@ -24,20 +27,27 @@ body {
 
 .title {
    position: absolute;
-   top: 1%;
+   top: 10%;
    left: 25%;
    font-size: 20px;
    text-align: center;
    width: 350px;
    font-weight: 700;
    text-transform: uppercase;
+   margin-top: 10px;
 }
 
 .ue {
    text-transform: uppercase;
    position: absolute;
-   top: 5%;
+   top: 15%;
+   margin-top: 45px;
    left: 6%;
    font-weight: bolder;
    font-size: 8px;
+}
+
+.container {
+   position: absolute;
+   top: 30%;
 }

@@ -1,5 +1,6 @@
 package com.colasmadagascar.stockinventory.magasin;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class MagasinService {
         return magasinRepository.findAll();
     }
 
-    public List<Magasin> getAllEntities(int size, int page,Fetch fetch) {
+    public List<Magasin> getAllEntities(int size, int page, Fetch fetch) {
         if (fetch == Fetch.ALL)
             return magasinRepository.findAll();
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by("magId").ascending());
@@ -67,16 +68,21 @@ public class MagasinService {
         magasinRepository.deleteById(id);
     }
 
-
     @Transactional
     public void addUtilisateurToMagasin(Long usrId, Long magId) {
         magasinRepository.addUtilisateurToMagasin(magId, usrId);
     }
 
     @Transactional
-    public void addUtilisateurToMagasin(Long usrId,Long[] magIds){
-        if(magIds == null) return;
-        for (Long id:magIds){
+    public void addUtilisateurToMagasin(Long usrId, Long magId, LocalDate debut) {
+        magasinRepository.addUtilisateurToMagasin(magId, usrId, debut);
+    }
+
+    @Transactional
+    public void addUtilisateurToMagasin(Long usrId, Long[] magIds) {
+        if (magIds == null)
+            return;
+        for (Long id : magIds) {
             magasinRepository.addUtilisateurToMagasin(id, usrId);
         }
     }

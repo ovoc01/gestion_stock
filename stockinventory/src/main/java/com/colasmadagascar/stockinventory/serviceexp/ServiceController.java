@@ -1,7 +1,9 @@
 package com.colasmadagascar.stockinventory.serviceexp;
 
+import com.colasmadagascar.stockinventory.serviceexp.request.UtilisateurServiceRequest;
 import com.colasmadagascar.stockinventory.shared.Fetch;
 
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import java.util.List;
 
@@ -26,7 +29,7 @@ public class ServiceController {
             @RequestParam(name = "fetch", defaultValue = "PAGINATION") Fetch fetch) {
         HashMap<String, Object> data = new HashMap<>();
         try {
-            List<ServiceExploitant> services = serviceService.getAllEntities(page, size,fetch);
+            List<ServiceExploitant> services = serviceService.getAllEntities(page, size, fetch);
             data.put("serviceExploitants", services);
             data.put("totalPages", serviceService.count());
             return new ResponseEntity<>(data, HttpStatus.OK);
@@ -100,21 +103,27 @@ public class ServiceController {
             response.put("services", serviceService.getUtilisateurService(id));
             // response.put("services", null);
             return ResponseEntity.ok(response);
-        } catch (Exception e) {
+        } catch (DataIntegrityViolationException e) {
+            response.put("serviceIdError", "Violation de contrainte");
+
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        catch (Exception e) {
             response.put("error", e.getMessage());
             e.printStackTrace();
             return ResponseEntity.badRequest().body(response);
         }
     }
 
-    @PostMapping("{id}/utilisateurs/{usrId}")
+    @PostMapping("/utilisateurs")
     @PreAuthorize("hasAuthority('Administrateur')")
-    public ResponseEntity<Object> addUtilisateurService(@PathVariable("usrId") Long usrId,
-            @PathVariable("id") Long serviceId) {
+    public ResponseEntity<Object> addUtilisateurService(@Valid @RequestBody UtilisateurServiceRequest uRequest) {
 
         HashMap<String, Object> response = new HashMap<>();
         try {
-            serviceService.addUtilisateurToService(usrId, serviceId);
+            serviceService.addUtilisateurToService(uRequest.getUsrId(), uRequest.getServiceId(), uRequest.getDepuis());
             response.put("message", "Service added successfully");
             return ResponseEntity.ok(response);
         } catch (Exception e) {

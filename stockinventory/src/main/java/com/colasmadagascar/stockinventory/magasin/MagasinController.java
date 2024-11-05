@@ -2,6 +2,7 @@ package com.colasmadagascar.stockinventory.magasin;
 
 import com.colasmadagascar.stockinventory.magasin.dto.MagasinDetailsDTO;
 import com.colasmadagascar.stockinventory.magasin.dto.UtilisateurMagasinDTO;
+import com.colasmadagascar.stockinventory.magasin.request.UtilisateurMagasinRequest;
 import com.colasmadagascar.stockinventory.shared.Fetch;
 
 import jakarta.validation.Valid;
@@ -27,7 +28,7 @@ public class MagasinController {
         HashMap<String, Object> data = new HashMap<>();
         System.out.println("kjskdjskdjsk");
         try {
-            List<Magasin> magasins = magasinService.getAllEntities(size, page,fetch);
+            List<Magasin> magasins = magasinService.getAllEntities(size, page, fetch);
             data.put("magasins", magasins);
             data.put("totalPages", magasinService.count());
 
@@ -111,14 +112,15 @@ public class MagasinController {
         }
     }
 
-    @PostMapping("{magId}/utilisateurs/{usrId}")
+    @PostMapping("/utilisateurs")
     // @PreAuthorize("hasAuthority('Administrateur')")
-    public ResponseEntity<Object> addUtilisateurToMagasin(@PathVariable("magId") Long magId,
-            @PathVariable("usrId") Long usrId) {
+    public ResponseEntity<Object> addUtilisateurToMagasin(
+            @Valid @RequestBody UtilisateurMagasinRequest uMagasinRequest) {
         HashMap<String, Object> data = new HashMap<>();
-        System.out.println("magId : " + magId);
+        System.out.println("magId : " + uMagasinRequest.getMagId());
         try {
-            magasinService.addUtilisateurToMagasin(usrId, magId);
+            magasinService.addUtilisateurToMagasin(uMagasinRequest.getUsrId(), uMagasinRequest.getMagId(),
+                    uMagasinRequest.getDebut());
             data.put("message", "Utilisateur ajouté au magasin");
             return ResponseEntity.ok(data);
         } catch (Exception e) {

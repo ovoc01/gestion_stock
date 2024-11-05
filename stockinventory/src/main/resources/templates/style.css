@@ -1,15 +1,11 @@
-
-
-
-
 .container {
    font-size: 13px;
    position: absolute;
-   top: 7%;
+   top: 17%;
 }
 
 .container {
-   margin-top: 20px;
+   margin-top: 70px;
    display: flex;
    flex-direction: column;
    gap: 10px;
