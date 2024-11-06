@@ -2,7 +2,7 @@ import { Link } from "@nextui-org/link";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/features/navbar";
 import { useAuth } from "@/hooks/useAuth";
-import UserSessionExpired from "@/pages/error/user-session-expired";
+import UserSessionExpired from "@/pages/admin/error/user-session-expired";
 import { useEffect, useState } from "react";
 import { NavBarItems, SimpleUserNavBar } from "@/config/site";
 import { NAVBAR_CONFIG } from "@/config/constant";
