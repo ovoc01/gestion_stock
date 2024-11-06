@@ -7,14 +7,15 @@ import { useEffect, useState } from "react";
 import { NavBarItems, SimpleUserNavBar } from "@/config/site";
 import { NAVBAR_CONFIG } from "@/config/constant";
 import { Spinner } from "@nextui-org/react";
+import { Outlet } from "react-router-dom";
 
-export default function DefaultLayout({ children }: { children: React.ReactNode }) {
+export default function DefaultLayout() {
   const { isAuthenticated, userClaims, isVerificationDone } = useAuth();
   const [navbarItems, setNavbarItems] = useState<NavBarItems[]>(SimpleUserNavBar);
 
   useEffect(() => {
     if (isAuthenticated && userClaims) {
-      setNavbarItems(NAVBAR_CONFIG.get(userClaims.role!)!);
+      setNavbarItems(NAVBAR_CONFIG.get("Utilisateur")!);
     }
   }, [isAuthenticated, userClaims]);
 
@@ -28,7 +29,7 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
         <div className="flex items-center flex-col h-screen w-full">
           <Navbar navbarItems={navbarItems} />
           <main className="container mx-auto w-full flex-grow">
-            {isAuthenticated ? children : <UserSessionExpired />}
+            {isAuthenticated ? <Outlet /> : <UserSessionExpired />}
           </main>
           <Toaster richColors position="top-right" />
           <footer className="w-full flex items-center justify-center py-3 bg-black">

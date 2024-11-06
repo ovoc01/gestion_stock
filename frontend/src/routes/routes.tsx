@@ -5,7 +5,6 @@ import ArticlePage from "@/pages/admin/referentiels/article/index";
 import EmplacementPage from "@/pages/admin/referentiels/magasin/emplacement";
 import FamillePage from "@/pages/admin/referentiels/article/famille";
 import Layout from "@/pages/admin/referentiels/layout";
-import MagasinPage from "@/pages/admin/referentiels/magasin/index";
 import ServiceExploitantPage from "@/pages/admin/referentiels/service/index";
 import SousFamillePage from "@/pages/admin/referentiels/article/sous-famille";
 import UnitePage from "@/pages/admin/referentiels/article/unite";
@@ -21,6 +20,9 @@ import Livraison from "@/pages/admin/livraison";
 import AdLayout from "@/layouts/_admin";
 import CommonUserAuthentication from "@/pages/admin/auth/common";
 import AdminAuthentication from "@/pages/admin/auth/admin";
+import DefaultLayout from "@/layouts/default";
+import { IndexPage } from "@/pages/common";
+import { MagasinPage } from "@/pages/common/magasin";
 
 export const routes = createBrowserRouter([
   {
@@ -158,4 +160,15 @@ export const routes = createBrowserRouter([
       },
     ],
   },
+
+  {
+    path: '/home',
+    element: <DefaultLayout />,
+    children: [
+      {
+        path: '',
+        element: <IndexPage />
+      }
+    ]
+  }
 ]);

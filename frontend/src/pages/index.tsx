@@ -34,7 +34,7 @@ export default function IndexPage({ defaultUser }: LoginPageProps) {
 
         const landingUrl = getUserLandingUrl(token);
         localStorage.setItem("token", token);
-        navigate(landingUrl as To);
+        navigate("/home");
       })
       .catch((error) => {
         console.log(error);
