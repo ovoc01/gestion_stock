@@ -16,7 +16,7 @@ import {
    useDisclosure,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getLocalTimeZone, fromDate, DateValue } from "@internationalized/date";
 
 import {
@@ -38,7 +38,7 @@ import {
 import { toast } from "sonner";
 export function UserInfo() {
    //hooks initialisation
-
+   const navigate = useNavigate();
    const location = useLocation();
    const user = location.state as UserInfoProps;
 
@@ -62,6 +62,7 @@ export function UserInfo() {
    const [acitiveModalContent,] = useState<string | null>(
       null,
    );
+
 
    const [serviceId, setServiceId] = useState<number | null>(null);
    const [magasinId, setMagasinId] = useState<number | null>(null);
@@ -349,11 +350,12 @@ export function UserInfo() {
                   </Button>
                   <Button
                      className="h-[40px] px-5"
-                     color="secondary"
                      size="sm"
                      radius="sm"
                      variant="bordered"
-
+                     onPress={() => {
+                        navigate('utilisateurs')
+                     }}
                   >
                      Annulez
                   </Button>

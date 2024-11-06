@@ -165,7 +165,7 @@ export const addUtilisateurToMagasin = async (usrId: number, magId: number, debu
     {
       magId: magId,
       usrId: usrId,
-      debut: debut
+      depuis: debut
     },
     {
       headers: requestHeaders,
