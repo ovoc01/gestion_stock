@@ -13,6 +13,6 @@ public class UtilisateurMagasinRequest {
    private Long usrId;
 
    @NotNull(message = "Date de début requis")
-   private LocalDate debut;
+   private LocalDate depuis;
    private LocalDate fin;
 }

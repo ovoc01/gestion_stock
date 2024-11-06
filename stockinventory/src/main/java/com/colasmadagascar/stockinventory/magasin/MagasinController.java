@@ -120,7 +120,7 @@ public class MagasinController {
         System.out.println("magId : " + uMagasinRequest.getMagId());
         try {
             magasinService.addUtilisateurToMagasin(uMagasinRequest.getUsrId(), uMagasinRequest.getMagId(),
-                    uMagasinRequest.getDebut());
+                    uMagasinRequest.getDepuis());
             data.put("message", "Utilisateur ajouté au magasin");
             return ResponseEntity.ok(data);
         } catch (Exception e) {

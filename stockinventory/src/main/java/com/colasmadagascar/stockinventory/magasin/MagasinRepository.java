@@ -20,7 +20,7 @@ public interface MagasinRepository extends JpaRepository<Magasin, Long> {
 
     long count();
 
-    @Query(nativeQuery = true, value = "insert into utilisateur_magasin(mag_id, usr_id,debut) values (?1, ?2,?3)")
+    @Query(nativeQuery = true, value = "insert into utilisateur_magasin(mag_id, usr_id,depuis) values (?1, ?2,?3)")
     @Modifying
     void addUtilisateurToMagasin(Long magId, Long usrId, LocalDate debut);
 
