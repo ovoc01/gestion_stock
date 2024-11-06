@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.data.domain.PageRequest;
 
 @Service
@@ -48,7 +49,7 @@ public class EmplacementService {
         emplacementRepository.createEmplacement(request.getEmplLi(), request.getServiceId(), request.getMagId());
     }
 
-    public List<EmplacementDTO> getAllEntitiesDTO(int page, int size,Fetch fetch) {
+    public List<EmplacementDTO> getAllEntitiesDTO(int page, int size, Fetch fetch, Authentication authentication) {
         if (fetch == Fetch.ALL)
             return emplacementRepository.findAllEmplacementDTO();
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -57,7 +58,8 @@ public class EmplacementService {
 
     @Transactional
     public void updateEmplacement(EmplacementUpdateRequest request) {
-        emplacementRepository.updateEmplacement(request.getEmplId(), request.getEmplLi(), request.getServiceId(), request.getMagId());
+        emplacementRepository.updateEmplacement(request.getEmplId(), request.getEmplLi(), request.getServiceId(),
+                request.getMagId());
     }
-    
+
 }

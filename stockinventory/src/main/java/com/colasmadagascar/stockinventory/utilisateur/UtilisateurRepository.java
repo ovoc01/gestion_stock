@@ -1,6 +1,6 @@
 package com.colasmadagascar.stockinventory.utilisateur;
 
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -10,9 +10,12 @@ import java.util.Optional;
 
 @Repository
 
-public interface UtilisateurRepository extends JpaRepository<Utilisateur,Long> {
-    Optional<Utilisateur > findByUsrLogin(String login);
+public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> {
+    Optional<Utilisateur> findByUsrLogin(String login);
 
     @Query(nativeQuery = true, value = "SELECT * FROM v_utilisateur_lib_complet")
-    List<UtilisateurDTO> findAllBy();
+    List<UtilisateurDTO> findAllBy(Pageable pageable);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM v_utilisateur_lib_complet WHERE usr_id = ?1")
+    UtilisateurDTO findByUsrId(Long id);
 }

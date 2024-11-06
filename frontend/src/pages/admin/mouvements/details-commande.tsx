@@ -43,6 +43,7 @@ export default function DetailsCommande() {
 
   const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
   const [articles, setArticles] = useState<ArticleDataProps[] | null>([]);
+  const [isFetchLoading, setIsFetchLoading] = useState(false);
 
   const { page, size } = { page: 1, size: 5 };
 
@@ -78,8 +79,16 @@ export default function DetailsCommande() {
   };
 
   const pdfExport = async () => {
-    const response = await genererCession(idCommande!)
-    await downloadFile(response, DownloadType.PDF)
+    try {
+      setIsFetchLoading(true)
+      const response = await genererCession(idCommande!)
+
+      await downloadFile(response, DownloadType.PDF)
+    } catch (e) {
+      alert("Une erreur c'est produites")
+    } finally {
+      setIsFetchLoading(false)
+    }
   }
 
   const onArticleChange = (item: any) => {
@@ -306,7 +315,7 @@ export default function DetailsCommande() {
             </h6>
           </div>
           <div className=" mt-5 flex flex-col gap-2">
-            <Button className="w-40 bg-black text-white" size="lg" onPress={pdfExport}>
+            <Button className="w-40 bg-black text-white" size="lg" onPress={pdfExport} isLoading={isFetchLoading}>
               Génerer cession
             </Button>
           </div>

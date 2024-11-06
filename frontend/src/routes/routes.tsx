@@ -1,26 +1,26 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import PeriodePage from "@/pages/mouvements/periode";
-import ArticlePage from "@/pages/referentiels/article/index";
-import EmplacementPage from "@/pages/referentiels/magasin/emplacement";
-import FamillePage from "@/pages/referentiels/article/famille";
-import Layout from "@/pages/referentiels/layout";
-import MagasinPage from "@/pages/referentiels/magasin/index";
-import ServiceExploitantPage from "@/pages/referentiels/service/index";
-import SousFamillePage from "@/pages/referentiels/article/sous-famille";
-import UnitePage from "@/pages/referentiels/article/unite";
-import UniteOperationnelPage from "@/pages/referentiels/unop/index";
-import UtilisateurPage from "@/pages/utilisateurs";
-import { UserDetails } from "@/pages/utilisateurs/user-details";
-import MouvementSortie from "@/pages/mouvements/sortie";
-import MouvementEntree from "@/pages/mouvements/entree";
-import ValorisationStock from "@/pages/stock";
-import DetailsMagasin from "@/pages/referentiels/magasin/details";
-import DashboardPage from "@/pages/dashboard";
-import Livraison from "@/pages/livraison";
+import PeriodePage from "@/pages/admin/mouvements/periode";
+import ArticlePage from "@/pages/admin/referentiels/article/index";
+import EmplacementPage from "@/pages/admin/referentiels/magasin/emplacement";
+import FamillePage from "@/pages/admin/referentiels/article/famille";
+import Layout from "@/pages/admin/referentiels/layout";
+import MagasinPage from "@/pages/admin/referentiels/magasin/index";
+import ServiceExploitantPage from "@/pages/admin/referentiels/service/index";
+import SousFamillePage from "@/pages/admin/referentiels/article/sous-famille";
+import UnitePage from "@/pages/admin/referentiels/article/unite";
+import UniteOperationnelPage from "@/pages/admin/referentiels/unop/index";
+import UtilisateurPage from "@/pages/admin/utilisateurs";
+import { UserDetails } from "@/pages/admin/utilisateurs/user-details";
+import MouvementSortie from "@/pages/admin/mouvements/sortie";
+import MouvementEntree from "@/pages/admin/mouvements/entree";
+import ValorisationStock from "@/pages/admin/stock";
+import DetailsMagasin from "@/pages/admin/referentiels/magasin/details";
+import DashboardPage from "@/pages/admin/dashboard";
+import Livraison from "@/pages/admin/livraison";
 import AdLayout from "@/layouts/_admin";
-import CommonUserAuthentication from "@/pages/auth/common";
-import AdminAuthentication from "@/pages/auth/admin";
+import CommonUserAuthentication from "@/pages/admin/auth/common";
+import AdminAuthentication from "@/pages/admin/auth/admin";
 
 export const routes = createBrowserRouter([
   {

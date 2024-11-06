@@ -25,6 +25,12 @@ public interface EmplacementRepository extends JpaRepository<Emplacement, Long> 
    @Query(nativeQuery = true, value = "SELECT * FROM v_emplacement_lib")
    java.util.List<EmplacementDTO> findAllEmplacementDTO();
 
+   @Query(nativeQuery = true, value = "SELECT * FROM v_emplacement_lib")
+   java.util.List<EmplacementDTO> findAllEmplacementDTOAccessible();
+
+   @Query(nativeQuery = true, value = "SELECT * FROM v_emplacement_lib")
+   Page<EmplacementDTO> findAllEmplacementDTOAccessible(Pageable pageable);
+
    @Query(nativeQuery = true, value = "UPDATE emplacement SET empl_li = ?2, service_id = ?3, mag_id = ?4 WHERE empl_id = ?1")
    @Modifying
    void updateEmplacement(Long emplId, String emplLi, Long serviceId, Long magId);

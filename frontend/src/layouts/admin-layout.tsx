@@ -5,7 +5,7 @@ import { NavBarItems, SimpleUserNavBar } from "@/config/site";
 import { NAVBAR_CONFIG } from "@/config/constant";
 import { Spinner } from "@nextui-org/react";
 import { Sidebar } from "@/components/features/sidebar";
-import UserSessionExpired from "@/pages/error/user-session-expired";
+import UserSessionExpired from "@/pages/admin/error/user-session-expired";
 import { Outlet } from "react-router-dom";
 import { Toaster } from "sonner";
 

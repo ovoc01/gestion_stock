@@ -17,15 +17,6 @@ import {
   SelectItem,
   Selection,
 } from "@nextui-org/react";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  getKeyValue,
-} from "@nextui-org/table";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -35,13 +26,15 @@ import {
   RegistrationPayload,
   RoleDataProps,
   ServiceExploitantDataProps,
+  UserInfoProps,
 } from "@/types/types";
 import { getAllServiceExploitant } from "@/services/api/service-exploitant.service";
 import { getAllMagasins } from "@/services/api/batiment.service";
 import { registerUser } from "@/services/api/auth.service";
 import { getAllRoles, getAllUtilisateurs } from "@/services/api/admin.service";
 import { title } from "@/components/primitives";
-import { SearchIcon } from "@/components/ui/icons";
+import { SearchIcon } from "@/components/ui/icons"; // Assuming DefaultTable is in this path
+import { DefaultTable } from "@/components/ui/table/default";
 
 export default function UtilisateurPage() {
   const navigate = useNavigate();
@@ -64,12 +57,23 @@ export default function UtilisateurPage() {
   const [pageNeedReload, setPageNeedReload] = useState(false);
 
   const { page, size } = { page: 1, size: 5 };
-  //TODO
+
+  const onRowClick = (id: number, user: UserInfoProps) => {
+    navigate(`/utilisateurs/${id}`, { state: user })
+  }
 
   useEffect(() => {
     getAllUtilisateurs().then((response) => {
-      setData(response.users);
+
+      if (response.users) {
+        const usersWithOnClick = response.users.map((user: UserInfoProps) => ({
+          ...user,
+          onClick: () => onRowClick(user.usrId, user), // Add onClick to each user
+        }));
+        setData(usersWithOnClick);
+      }
     });
+
 
     getAllRoles().then((response) => {
       setRoles(response.roles);
@@ -91,6 +95,20 @@ export default function UtilisateurPage() {
         console.error("Erreur lors de la récupération des données ", error);
       });
   }, [pageNeedReload]);
+  const chipClassName = [
+    {
+      key: 'active',
+      class: 'bg-green-100 text-green-600'
+    },
+    {
+      key: 'inactive',
+      class: 'bg-red-100 text-red-600'
+    },
+    {
+      key: 'pending',
+      class: 'bg-yellow-100 text-yellow-600'
+    }
+  ]
 
   const columns = [
     {
@@ -194,7 +212,7 @@ export default function UtilisateurPage() {
         isDismissable={false}
         isKeyboardDismissDisabled={true}
         isOpen={isOpen}
-        size="3xl"
+        size="2xl"
         onOpenChange={() => {
           onOpenChange();
           resetInput();
@@ -204,12 +222,11 @@ export default function UtilisateurPage() {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Ajouter un nouveau utilisateurs
+                Ajouter un nouveau utilisateur
               </ModalHeader>
               <ModalBody>
-                <h1 className="text-small text-default-400 ml-1">
-                  Nom et prénoms
-                </h1>
+                {/* Nom et Prénom */}
+                <h1 className="text-small text-default-400 ml-1">Nom et Prénoms</h1>
                 <div className="flex gap-4">
                   <Input
                     isRequired
@@ -250,10 +267,9 @@ export default function UtilisateurPage() {
                 </div>
 
                 <Divider className="my-4" />
-                <h1 className="text-small text-default-400 ml-1">
-                  Role et informations de connections
-                </h1>
-                <div className="flex  gap-4">
+                {/* Role and Connection Info */}
+                <h1 className="text-small text-default-400 ml-1">Role et informations de connections</h1>
+                <div className="flex gap-4">
                   <Input
                     isClearable
                     errorMessage={requestError?.usernameError}
@@ -305,88 +321,96 @@ export default function UtilisateurPage() {
                       setUsrPassword(e.target.value);
                     }}
                   />
+
                 </div>
-                <div className="flex w-3/6  gap-4">
+                <div>
                   <Select
-                    isMultiline
-                    isRequired
-                    errorMessage={requestError?.roleIdError}
-                    isInvalid={
-                      requestError?.roleIdError !== null &&
-                      requestError?.roleIdError !== undefined
-                    }
-                    label="Role de l'utilisateur"
-                    size="sm"
                     variant="bordered"
+                    aria-label="Select Role"
+                    label="Role"
+                    size="sm"
+                    required
+                    value={role}
                     onChange={(e) => {
                       setRole(parseInt(e.target.value));
                     }}
                   >
-                    {roles!.map((role) => (
-                      <SelectItem key={role.roleId} value={role.roleId}>
-                        {role.roleLi}
+                    {roles!.map((roleData) => (
+                      <SelectItem key={roleData.roleId} value={roleData.roleId}>
+                        {roleData.roleLi}
                       </SelectItem>
                     ))}
                   </Select>
                 </div>
-                <Divider className="my-4" />
-                <h1 className="text-small text-default-400 ml-1">
-                  Accès magasins
-                </h1>
-                <Select
-                  isMultiline
-                  label="Magasins"
-                  selectedKeys={selectedMagasins}
-                  selectionMode="multiple"
-                  size="sm"
-                  variant="bordered"
-                  onSelectionChange={setSelectedMagasins}
-                >
-                  {magasins!.map((mag) => (
-                    <SelectItem key={mag.magId} value={mag.magId}>
-                      {mag.magLi}
-                    </SelectItem>
-                  ))}
-                </Select>
-                <div className="flex gap-4">
-                  <DatePicker
-                    isRequired
-                    label="Du"
-                    radius="sm"
-                    size="sm"
-                    validationBehavior="aria"
-                    variant="bordered"
-                    onChange={() => { }}
-                  />
-                  <DatePicker
-                    label="À"
-                    radius="sm"
-                    size="sm"
-                    validationBehavior="aria"
-                    variant="bordered"
-                    onChange={() => { }}
-                  />
-                </div>
-                <Divider className="my-4" />
 
-                <Select
-                  label="Services"
-                  selectedKeys={selectedServices}
-                  selectionMode="multiple"
-                  size="sm"
-                  variant="bordered"
-                  onSelectionChange={setSelectedServices}
-                >
-                  {services!.map((service) => (
-                    <SelectItem
-                      key={service.serviceId}
-                      value={service.serviceId}
+                <Divider className="my-4" />
+                {/* Magasins and Services */}
+                <h1 className="text-small text-default-400 ml-1">Magasins</h1>
+                <div className="flex gap-4 flex-col">
+                  <Select
+                    aria-label="Magasins"
+                    label="Magasins"
+                    size="sm"
+                    selectedKeys={selectedMagasins}
+                    selectionMode="multiple"
+                    onSelectionChange={setSelectedMagasins}
+                    multiple
+                    required
+                    variant="bordered"
+                  >
+                    {magasins!.map((mag) => (
+                      <SelectItem key={mag.magId} value={mag.magId}>
+                        {mag.magLi}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                  <div className="flex gap-4">
+                    <DatePicker
+                      isRequired
+                      label="Du"
+                      radius="sm"
+                      size="sm"
+                      validationBehavior="aria"
+                      variant="bordered"
+                      onChange={() => { }}
+                    />
+                    <DatePicker
+                      label="À"
+                      radius="sm"
+                      size="sm"
+                      validationBehavior="aria"
+                      variant="bordered"
+                      onChange={() => { }}
+                    />
+                  </div>
+                  <Divider className="my-4" />
+                  <h1 className="text-small text-default-400 ml-1">Services</h1>
+                  <div>
+                    <Select
+                      aria-label="Services"
+                      label="Services"
+                      size="sm"
+                      selectionMode="multiple"
+                      selectedKeys={selectedServices}
+                      onSelectionChange={setSelectedServices}
+                      multiple
+                      required
+                      variant="bordered"
                     >
-                      {service.serviceLi}
-                    </SelectItem>
-                  ))}
-                </Select>
+                      {services!.map((service) => (
+                        <SelectItem
+                          key={service.serviceId}
+                          value={service.serviceId}
+                        >
+                          {service.serviceLi}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
+
+                </div>
               </ModalBody>
+
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Annulez
@@ -416,76 +440,52 @@ export default function UtilisateurPage() {
           </div>
         </section>
 
-        <Table
-          aria-label="Tableau"
-          className="w-full"
-          topContent={
-            <div className="flex flex-col gap-4">
-              <div className="flex justify-between gap-3 items-end">
-                <Input
-                  isClearable
-                  classNames={{
-                    base: "w-full sm:max-w-[44%]",
-                    inputWrapper: "border-1",
-                  }}
-                  placeholder="Rechercher..."
-                  size="lg"
-                  startContent={<SearchIcon className="text-default-300" />}
-                  variant="bordered"
-                  onChange={handleSearch}
-                  onClear={() => {
-                    setSearchTerm("");
-                  }}
-                />
-                <div className="flex gap-3">
-                  <Button
-                    className="bg-foreground text-background px-4 py-2"
-                    color="default"
-                    endContent={<FontAwesomeIcon icon={faPlus} />}
-                    size="lg"
-                    variant="flat"
-                    onPress={onOpen}
-                  >
-                    Ajouter
-                  </Button>
-                </div>
-              </div>
-            </div>
-          }
-          topContentPlacement="outside"
-        >
-          <TableHeader columns={columns}>
-            {(column) => (
-              <TableColumn key={column.key}>
-                <h1 className="text-lg">{column.label}</h1>
-              </TableColumn>
-            )}
-          </TableHeader>
-          <TableBody
-            emptyContent={"Pas d'élément à afficher"}
-            items={filteredRows}
-          >
-            {(item) => (
-              <TableRow
-                key={item[columns[0].key]}
-                className=" hover:bg-slate-100 hover:cursor-pointer"
-              >
-                {(columnKey) => (
-                  <TableCell
-                    className="text-lg"
-                    onClick={() => {
-                      const id = getKeyValue(item, columns[0].key);
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-between gap-3 items-end">
+            <Input
+              isClearable
+              classNames={{
+                base: "w-full sm:max-w-[44%]",
+                inputWrapper: "border-1",
+              }}
+              placeholder="Rechercher..."
+              size="sm"
+              startContent={<SearchIcon className="text-default-300" />}
+              variant="bordered"
+              onChange={handleSearch}
+              onClear={() => {
+                setSearchTerm("");
+              }}
+            />
+            <Button
+              className="bg-foreground text-background px-4 py-2"
+              color="default"
+              endContent={<FontAwesomeIcon icon={faPlus} />}
+              size="sm"
+              variant="flat"
+              onPress={onOpen}
+            >
+              Ajouter
+            </Button>
+          </div>
+        </div>
 
-                      navigate(`/utilisateurs/${id}`, { state: item });
-                    }}
-                  >
-                    {getKeyValue(item, columnKey)}
-                  </TableCell>
-                )}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+        <DefaultTable
+          chipClassName={chipClassName}
+          headers={columns.map(({ key, label }) => ({
+            key,
+            label,
+            isChip: key === "roleLi", // Assuming roles should be displayed as chips
+          }))}
+          data={filteredRows}
+          isWithPagination={true} // Enable pagination
+          onNextBtnPress={() => {
+            // Handle next page logic
+          }}
+          onPreviousBtnPress={() => {
+            // Handle previous page logic
+          }}
+        />
       </div>
     </>
   );

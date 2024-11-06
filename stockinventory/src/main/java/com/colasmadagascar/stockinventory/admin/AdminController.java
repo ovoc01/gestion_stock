@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.colasmadagascar.stockinventory.serviceexp.ServiceExploitantService;
@@ -28,10 +29,11 @@ public class AdminController {
    }
 
    @GetMapping("/utilisateurs")
-   public ResponseEntity<Object> getAllUtilisateurs() {
+   public ResponseEntity<Object> getAllUtilisateurs(@RequestParam(name = "page", defaultValue = "1") Integer page,
+         @RequestParam(name = "size", defaultValue = "5") Integer size) {
       HashMap<String, Object> response = new HashMap<>();
       try {
-         response.put("users", utilisateurService.getAllUtilisateur());
+         response.put("users", utilisateurService.getAllUtilisateur(page, size));
          return ResponseEntity.ok(response);
       } catch (Exception e) {
          response.put("error", e.getMessage());
@@ -67,23 +69,16 @@ public class AdminController {
       }
    }
 
-   
    @GetMapping("/utilisateurs/{id}")
    public ResponseEntity<Object> getUtilisateurById(Long id) {
       HashMap<String, Object> response = new HashMap<>();
       try {
-         response.put("user", utilisateurService.getEntityById(id));
+         response.put("user", utilisateurService.getUtilisateurById(id));
          return ResponseEntity.ok(response);
       } catch (Exception e) {
          response.put("error", e.getMessage());
          return ResponseEntity.badRequest().body(response);
       }
    }
-   
-   
-   
-
-
-   
 
 }

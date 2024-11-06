@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "type": "spring-boot",
+            "name": "Spring-boot configuration",
+            "mainClass": "com.colasmadagascar.stockinventory.StockInventoryApplication",
+            "module": "",
+            "activeProfiles": [
+                "dev"
+            ],
+        },
+    ]
+}

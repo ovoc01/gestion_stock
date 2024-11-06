@@ -38,9 +38,9 @@ export function DefaultTable({
             </thead>
             <tbody>
                {data?.map((record, index) => (
-                  <tr key={index} className="hover:bg-gray-100">
+                  <tr key={index} className="hover:bg-gray-100 cursor-pointer">
                      {headers.map(({ key, isChip }) => (
-                        <td key={key} className="py-2 px-4 border-b  text-gray-500">
+                        <td key={key} className="py-2 px-4 border-b  text-gray-500" onClick={record.onClick}>
                            {isChip ? (
                               <Chip className={
                                  chipClassName!.find

@@ -2,8 +2,10 @@ import axios from "axios";
 
 import { BASE_URL, requestHeaders } from "../../shared/shared";
 
-export const getAllUtilisateurs = async () => {
-  const response = await axios.get(BASE_URL + "admin/utilisateurs", {
+export const getAllUtilisateurs = async (page?: number, size?: number) => {
+  page ??= 1;
+  size ??= 5
+  const response = await axios.get(`${BASE_URL}admin/utilisateurs?page=${page}&size=${size}`, {
     headers: requestHeaders,
   });
 

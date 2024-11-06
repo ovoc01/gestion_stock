@@ -158,11 +158,15 @@ export const getAllUtilisateurMagasins = async (usrId: number) => {
   return response.data;
 };
 
-export const addUtilisateurToMagasin = async (usrId: number, magId: number) => {
+export const addUtilisateurToMagasin = async (usrId: number, magId: number, debut: Date) => {
   console.log(usrId, magId);
   const response = await axios.post(
-    BASE_URL + "magasins/" + magId + "/utilisateurs/" + usrId,
-    {},
+    BASE_URL + "magasins/utilisateurs",
+    {
+      magId: magId,
+      usrId: usrId,
+      depuis: debut
+    },
     {
       headers: requestHeaders,
     },
